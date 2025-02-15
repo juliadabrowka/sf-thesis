@@ -1,0 +1,9 @@
+{{ __title$.value }}
+
+@for (trip of __trips$$.value; track trip.Id) {
+  {{ trip.Name }}
+  <sf-trip-inline
+    [sfTripInfo]="trip"
+  ></sf-trip-inline>
+}
+<!--    create pipe to filter by category - weekend, bike or classic-->

@@ -1,0 +1,25 @@
+.bg {
+  background-color: #1abc9c;
+  width: 100%;
+  padding: 12px;
+  height: auto;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    background-color: #95a5a6 !important;
+    box-shadow: none !important;
+  }
+}
+
+button:hover:enabled {
+  background: linear-gradient(135deg, #d35400, #b93c16);
+  box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
+}
+

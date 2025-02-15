@@ -1,0 +1,12 @@
+nz-sider {
+  height: 100vh;
+
+  > div > nz-collapse:nth-child(1) > nz-collapse-panel > div.ant-collapse-content > div > nz-collapse > nz-collapse-panel > div.ant-collapse-header {
+    padding: 0;
+  }
+}
+
+sf-icon-and-text {
+  display: flex;
+  height: 30px;
+}

@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  animation: changeBackground 10s infinite;
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes changeBackground {
+  0% {
+    background-image: url('../../assets/japonia.jpg');
+  }
+  33% {
+    background-image: url('../../assets/hamaki.jpg');
+  }
+  66% {
+    background-image: url('../../assets/norge.jpg');
+  }
+  100% {
+    background-image: url('../../assets/kuba-dzieci.jpg');
+  }
+}

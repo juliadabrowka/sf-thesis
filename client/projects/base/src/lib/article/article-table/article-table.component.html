@@ -1,0 +1,23 @@
+<nz-table #sortTable [nzData]="__articles$$.value" [nzBordered]="true" [nzOuterBordered]="true">
+  <thead>
+  <tr>
+    @for (column of __columns; track column) {
+      <th
+        [nzSortFn]="column.sortFn"
+        class="th"
+      >
+        {{ column.name }}
+      </th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of sortTable.data; track data.Id) {
+      <tr (click)="sfOnArticleClick.emit(data)">
+        <td>{{ data.Title }}</td>
+        <td>{{ data.Country }}</td>
+        <td>{{ data.ArticleCategory }}</td>
+      </tr>
+    }
+  </tbody>
+</nz-table>

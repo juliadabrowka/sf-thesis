@@ -1,0 +1,31 @@
+<form nz-form [formGroup]="__formGroup" class="login-form" (ngSubmit)="__submitForm()">
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Wpisz nazwę użytkownika" [nzValidateStatus]="__controls.username">
+      <nz-input-group [nzPrefixIcon]="'user'">
+        <input
+          type="text"
+          nz-input
+          [formControl]="__controls.username"
+          placeholder="Nazwa użytkownika"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Wpisz hasło" [nzValidateStatus]="__controls.password">
+      <nz-input-group [nzPrefixIcon]="'lock'">
+        <input type="password" nz-input [formControl]="__controls.password" placeholder="Hasło"/>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <sf-button
+    [sfButtonText]="'Zaloguj się'"
+    [sfDisabled]="__formGroup.invalid"
+    (sfOnButtonClicked)="__submitForm()"
+  ></sf-button>
+  @if (loginError) {
+    <div class="error-message">{{ loginError }}</div>
+  }
+</form>
+
+<ng-template></ng-template>

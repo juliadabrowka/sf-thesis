@@ -1,0 +1,19 @@
+.content {
+  display: inline-block;
+  background-image: url("../../assets/kalendarz-wyjazdow.png");
+  height: 300px;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+}
+
+.title {
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 5px 10px;
+  font-size: 34px;
+  margin: 156px auto auto auto;
+  font-weight: 700;
+  width: fit-content;
+  letter-spacing: 2px;
+}

@@ -1,0 +1,87 @@
+<nz-sider [nzWidth]="230">
+  <nz-collapse [nzExpandIconPosition]="'end'">
+    <nz-collapse-panel [nzHeader]="postsTemplate">
+      <nz-collapse class="trips-collapse-panel" [nzBordered]="false" [nzGhost]="true" [nzExpandIconPosition]="'end'">
+        <nz-collapse-panel [nzHeader]="tripsTemplate">
+          <sf-icon-and-text
+            [sfIcon]="__icons.classicTrip"
+            [sfText]="'Classic'"
+          ></sf-icon-and-text>
+          <sf-icon-and-text
+            [sfIcon]="__icons.weekendTrip"
+            [sfText]="'Weekend'"
+          ></sf-icon-and-text>
+          <sf-icon-and-text
+            [sfIcon]="__icons.bikeTrip"
+            [sfText]="'Rower'"
+          ></sf-icon-and-text>
+        </nz-collapse-panel>
+      </nz-collapse>
+        <sf-icon-and-text
+          [sfIcon]="__icons.recommendations"
+          [sfText]="'Rekomendacje'"
+        ></sf-icon-and-text>
+        <sf-icon-and-text
+          [sfIcon]="__icons.tips"
+          [sfText]="'Ciekawostki'"
+        ></sf-icon-and-text>
+        <sf-icon-and-text
+          [sfIcon]="__icons.photoRel"
+          [sfText]="'Fotorelacje'"
+        ></sf-icon-and-text>
+    </nz-collapse-panel>
+  </nz-collapse>
+  <nz-collapse [nzExpandIconPosition]="'end'">
+    <nz-collapse-panel [nzHeader]="mediaTemplate">
+      <sf-icon-and-text
+        [sfIcon]="__icons.mediaLibrary"
+        [sfText]="'Bilbioteka'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.addMedia"
+        [sfText]="'Dodaj nowe'"
+      ></sf-icon-and-text>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+  <nz-collapse [nzExpandIconPosition]="'end'">
+    <nz-collapse-panel [nzHeader]="formsTemplate">
+      <sf-icon-and-text
+        [sfIcon]="__icons.allForms"
+        [sfText]="'Wszystkie formularze'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.addForm"
+        [sfText]="'Dodaj nowy'"
+      ></sf-icon-and-text>
+    </nz-collapse-panel>
+  </nz-collapse>
+</nz-sider>
+
+<ng-template #postsTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.posts"
+    [sfText]="'Wpisy'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #tripsTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.trips"
+    [sfText]="'Wyprawy'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #mediaTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.media"
+    [sfText]="'Media'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #formsTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.forms"
+    [sfText]="'Formularze'"
+  ></sf-icon-and-text>
+</ng-template>

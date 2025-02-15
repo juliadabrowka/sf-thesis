@@ -1,0 +1,10 @@
+<pre> {{ __article$.value | json }}</pre>
+
+<sf-article-form
+  [sfArticle]="__article$.value"
+></sf-article-form>
+
+<sf-button
+  [sfButtonText]="__article$.value?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
+  (sfOnButtonClicked)="__article$.value?.Id ? __onSaveClick() : __onCreateClick()"
+></sf-button>

@@ -1,0 +1,9 @@
+.icon-text-container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  fa-icon {
+    margin-right: 4px;
+  }
+}

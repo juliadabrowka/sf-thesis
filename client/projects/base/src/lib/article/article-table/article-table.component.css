@@ -1,0 +1,14 @@
+.th {
+  background-color: rgba(147, 84, 137, 0.61);
+
+}
+
+tr > th:nth-child(1) {
+  width: 75%
+}
+
+tbody > tr {
+  cursor: pointer;
+}
+
+

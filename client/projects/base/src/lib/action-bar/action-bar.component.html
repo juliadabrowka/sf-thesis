@@ -1,0 +1,31 @@
+<div class="action-bar-container" [ngClass]="currentActionBarClass">
+  <div class="logo">
+    <img src="./assets/logotyp-superfemka.png"
+         alt="Superfemka logotyp"
+         class="logotype"
+         [routerLink]="'/'"
+    >
+  </div>
+  <div [ngClass]="currentActionsClass">
+    <span [routerLink]="'kalendarium-wypraw'">KALENDARIUM WYPRAW</span>
+    <span nz-dropdown [nzDropdownMenu]="menu">
+        PODRÓŻUJ Z NAMI
+        <fa-icon
+          [icon]="__icons.dropDownArrow"
+          [size]="'xs'"
+        ></fa-icon>
+      </span>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu nzSelectable>
+        <li nz-menu-item>1st menu item</li>
+        <li nz-menu-item>2nd menu item</li>
+        <li nz-menu-item>3rd menu item</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <span>STYL I FORMA WYPRAW</span>
+    <div class="search">
+      <fa-icon [icon]="__icons.search"></fa-icon>
+    </div>
+  </div>
+</div>

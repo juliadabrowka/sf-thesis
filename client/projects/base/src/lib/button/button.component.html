@@ -1,0 +1,8 @@
+<button
+  nz-button
+  class="bg"
+  [nzType]="'primary'"
+  [disabled]="__disabled$$.value"
+  (click)="sfOnButtonClicked.emit()"
+>{{ __text$$.value }}
+</button>
