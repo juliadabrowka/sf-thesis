@@ -1,6 +1,5 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, signal} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject} from 'rxjs';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ArticleCategory, ArticleDTO, Country,} from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -33,7 +32,7 @@ export class SfArticleFormComponent {
   private readonly store = inject(Store);
 
   @Input() public set sfArticle(article: ArticleDTO | null | undefined) {
-    this.__article$.next(article ?? undefined);
+    this.__article$$.set(article ?? undefined);
 
     if (article) {
       this.__formGroup.patchValue({
@@ -56,7 +55,7 @@ export class SfArticleFormComponent {
   public readonly __categories = Object.values(ArticleCategory).map(o => ({label: o, value: o}));
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
   public readonly __formGroup = new FormGroup(this.__controls);
-  public readonly __article$ = new BehaviorSubject<ArticleDTO | undefined>(undefined);
+  public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
 
   constructor() {
     this.__formGroup.valueChanges
@@ -64,7 +63,7 @@ export class SfArticleFormComponent {
         takeUntilDestroyed()
       )
       .subscribe(async (fg) => {
-        const currentArticle = this.__article$.value ? this.__article$.value : new ArticleDTO();
+        const currentArticle = this.__article$$() ?? new ArticleDTO();
         const updatedArticle = {
           ...currentArticle,
           Title: fg.title,

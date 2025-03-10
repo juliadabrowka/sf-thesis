@@ -1,6 +1,5 @@
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'sf-button',
@@ -13,16 +12,16 @@ import {BehaviorSubject} from 'rxjs';
 export class SfButtonComponent {
   private readonly cdr = inject(ChangeDetectorRef);
 
-  public readonly __text$$ = new BehaviorSubject<string | undefined>(undefined);
-  public readonly __disabled$$ = new BehaviorSubject<boolean>(false)
+  public readonly __text$$ = signal<string | undefined>(undefined);
+  public readonly __disabled$$ = signal<boolean>(false)
 
   @Input() public set sfButtonText(text: string | null | undefined) {
-    this.__text$$.next(text ?? undefined);
+    this.__text$$.set(text ?? undefined);
     this.cdr.markForCheck();
   }
 
   @Input() public set sfDisabled(disabled: boolean | null | undefined) {
-    this.__disabled$$.next(disabled ?? false);
+    this.__disabled$$.set(disabled ?? false);
     this.cdr.detectChanges();
   }
 

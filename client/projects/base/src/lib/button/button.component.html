@@ -2,7 +2,7 @@
   nz-button
   class="bg"
   [nzType]="'primary'"
-  [disabled]="__disabled$$.value"
+  [disabled]="__disabled$$()"
   (click)="sfOnButtonClicked.emit()"
->{{ __text$$.value }}
+>{{ __text$$() }}
 </button>

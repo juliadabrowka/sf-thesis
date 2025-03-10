@@ -1,19 +1,15 @@
-import {ChangeDetectorRef, Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 import {ArticleDTO, SfArticleFormComponent, SfButtonComponent} from '@sf/sf-base';
 import {ActivatedRoute} from '@angular/router';
-import {BehaviorSubject} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {JsonPipe} from '@angular/common';
-import {createArticle, loadArticleDetails} from '@sf/sf-shared';
-import {selectCurrentArticle} from '../../../../../shared/src/lib/state/articles/articles.selectors';
+import {createArticle, loadArticleDetails, selectCurrentArticle} from '@sf/sf-shared';
 
 @Component({
   selector: 'sf-backoffice-article',
   imports: [
     SfButtonComponent,
-    SfArticleFormComponent,
-    JsonPipe
+    SfArticleFormComponent
   ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.css',
@@ -23,7 +19,7 @@ export class SfBackofficeArticleComponent {
   private readonly store = inject(Store);
   private readonly route = inject(ActivatedRoute);
 
-  public readonly __article$ = new BehaviorSubject<ArticleDTO | undefined>(undefined);
+  public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
 
 
   constructor() {
@@ -31,8 +27,7 @@ export class SfBackofficeArticleComponent {
       .pipe(
         takeUntilDestroyed())
       .subscribe(article => {
-        this.__article$.next(article);
-        console.log(article);
+        this.__article$$.set(article);
         this.cdr.markForCheck();
       });
 
@@ -49,11 +44,11 @@ export class SfBackofficeArticleComponent {
   }
 
   __onSaveClick() {
-    const article = this.__article$.value;
+    const article = this.__article$$();
     if (article) this.store.dispatch(createArticle({article}))
   }
 
   __onCreateClick() {
-    console.log("create", this.__article$.value)
+    console.log("create", this.__article$$())
   }
 }

@@ -1,11 +1,9 @@
-import {ChangeDetectorRef, Component, inject} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ArticleDTO, SfArticleTableComponent} from '@sf/sf-base';
 import {ActivatedRoute, Router} from '@angular/router';
-import {selectAllArticles} from '../../../../../../shared/src/lib/state/articles/articles.selectors';
-import {loadArticleList} from '@sf/sf-shared';
+import {loadArticleList, selectAllArticles} from '@sf/sf-shared';
 
 @Component({
   selector: 'sf-backoffice-article-table',
@@ -21,7 +19,7 @@ export class SfBackofficeArticleTableComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  public __articles$$ = new BehaviorSubject<ArticleDTO[]>([]);
+  public __articles$$ = signal<ArticleDTO[]>([]);
 
   constructor() {
     this.store.dispatch(loadArticleList());
@@ -31,8 +29,8 @@ export class SfBackofficeArticleTableComponent {
       takeUntilDestroyed()
     )
       .subscribe((articles) => {
-        console.log(articles)
-        this.__articles$$.next(articles);
+        this.__articles$$.set(articles);
+
         this.cdr.markForCheck();
       })
   }

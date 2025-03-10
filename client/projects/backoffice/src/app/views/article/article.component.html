@@ -1,10 +1,8 @@
-<pre> {{ __article$.value | json }}</pre>
-
 <sf-article-form
-  [sfArticle]="__article$.value"
+  [sfArticle]="__article$$()"
 ></sf-article-form>
 
 <sf-button
-  [sfButtonText]="__article$.value?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
-  (sfOnButtonClicked)="__article$.value?.Id ? __onSaveClick() : __onCreateClick()"
+  [sfButtonText]="__article$$()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
+  (sfOnButtonClicked)="__article$$()?.Id ? __onSaveClick() : __onCreateClick()"
 ></sf-button>

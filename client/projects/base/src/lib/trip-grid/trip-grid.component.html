@@ -1,6 +1,6 @@
-{{ __title$.value }}
+{{ __title$() }}
 
-@for (trip of __trips$$.value; track trip.Id) {
+@for (trip of __trips$$(); track trip.Id) {
   {{ trip.Name }}
   <sf-trip-inline
     [sfTripInfo]="trip"

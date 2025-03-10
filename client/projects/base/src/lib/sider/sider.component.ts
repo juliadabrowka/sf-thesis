@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {SfIconAndTextComponent} from '../icon-and-text/icon-and-text.component';
 import {SfIcons} from '../icons';
 import {NzCollapseComponent, NzCollapseModule, NzCollapsePanelComponent} from 'ng-zorro-antd/collapse';
-import {BehaviorSubject} from 'rxjs';
 import {NzSiderComponent} from 'ng-zorro-antd/layout';
 import {ArticleDTO} from '../../data-types';
 
@@ -22,10 +21,10 @@ export class SfSiderComponent {
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected readonly __icons = SfIcons;
-  public readonly posts$$ = new BehaviorSubject<ArticleDTO[]>([]);
+  public readonly __posts$$ = signal<ArticleDTO[]>([]);
 
   @Input() public set sfPosts(posts: ArticleDTO[] | null | undefined) {
-    this.posts$$.next(posts ?? []);
+    this.__posts$$.set(posts ?? []);
     this.cdr.markForCheck();
   }
 
