@@ -1,11 +1,11 @@
 import {Routes} from '@angular/router';
-import {SfMainPageViewComponent} from './main-page-view.component';
+import {SfBackofficeMainPageViewComponent} from './main-page-view.component';
 import {mainPageRoutes} from '@sf/sf-base';
 
 export const mainPageViewRoutes: Routes = [
   {
     path: '',
-    component: SfMainPageViewComponent,
+    component: SfBackofficeMainPageViewComponent,
     children: [...mainPageRoutes]
   }
 ]

@@ -11,14 +11,14 @@ public class TripController(ITripService tripService) : ControllerBase
     [HttpGet("tripList")]
     public async Task<ActionResult<TripDTO[]>> TripList()
     {
-        var trips = await tripService.GetTrip();
+        var trips = await tripService.GetTrips();
         return Ok(trips);
     }
     
     [HttpPost("createTrip")]
     public async Task<ActionResult<TripDTO>> CreateTrip(TripDTO tripDto)
     {
-        TripDTO[] trips = await tripService.GetTrip();
+        TripDTO[] trips = await tripService.GetTrips();
         bool tripAlreadyExists = trips.Any(t => t.Id == tripDto.Id);
         if (tripAlreadyExists)
         {

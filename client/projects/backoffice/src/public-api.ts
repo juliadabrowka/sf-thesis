@@ -1,2 +1,2 @@
 export * from './app/app.routes'
-export * from './app/views/login/login.routes'
+export * from './app/views/login-view/login-view.routes'

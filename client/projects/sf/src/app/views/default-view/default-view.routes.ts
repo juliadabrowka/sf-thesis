@@ -1,10 +1,10 @@
-import {SfDefaultViewComponent} from './default-view.component';
+import {SfBackofficeDefaultViewComponent} from './default-view.component';
 import {Routes} from '@angular/router';
 
 export const defaultViewRoutes: Routes = [
   {
     path: '',
-    component: SfDefaultViewComponent,
+    component: SfBackofficeDefaultViewComponent,
     children: [
       {
         path: '',

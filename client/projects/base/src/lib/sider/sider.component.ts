@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal
+} from '@angular/core';
 import {SfIconAndTextComponent} from '../icon-and-text/icon-and-text.component';
 import {SfIcons} from '../icons';
 import {NzCollapseComponent, NzCollapseModule, NzCollapsePanelComponent} from 'ng-zorro-antd/collapse';
@@ -15,7 +24,8 @@ import {ArticleDTO} from '../../data-types';
     NzSiderComponent
   ],
   templateUrl: './sider.component.html',
-  styleUrl: './sider.component.css'
+  styleUrl: './sider.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfSiderComponent {
   private readonly cdr = inject(ChangeDetectorRef);
@@ -25,7 +35,6 @@ export class SfSiderComponent {
 
   @Input() public set sfPosts(posts: ArticleDTO[] | null | undefined) {
     this.__posts$$.set(posts ?? []);
-    this.cdr.markForCheck();
   }
 
   @Output() sfOnElementClicked = new EventEmitter<number>();

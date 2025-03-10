@@ -1,10 +1,11 @@
-import {ArticleEffects, articlesReducer} from '@sf/sf-shared';
-
+import {ArticleEffects, articleReducer, TripEffects, tripReducer} from '@sf/sf-shared';
 
 export const sfReducers = {
-  articles: articlesReducer,
+  articles: articleReducer,
+  trips: tripReducer
 };
 
 export const sfEffects = [
   ArticleEffects,
+  TripEffects
 ]

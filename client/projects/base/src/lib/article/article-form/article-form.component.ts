@@ -7,7 +7,7 @@ import {NzUploadFile} from 'ng-zorro-antd/upload';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective, NzTextareaCountComponent} from 'ng-zorro-antd/input';
-import {UploadComponent} from '../../upload/upload.component';
+import {SfUploadComponent} from '../../upload/upload.component';
 import {setArticle} from '@sf/sf-shared';
 
 @Component({
@@ -21,7 +21,7 @@ import {setArticle} from '@sf/sf-shared';
     NzSelectComponent,
     NzInputDirective,
     NzTextareaCountComponent,
-    UploadComponent,
+    SfUploadComponent,
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',

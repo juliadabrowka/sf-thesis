@@ -1,8 +1,10 @@
 .th {
   background-color: rgba(147, 84, 137, 0.61);
-
 }
 
+.ant-table-column-has-sorters:hover {
+  background-color: rgba(246, 236, 119, 0.61);
+}
 tr > th:nth-child(1) {
   width: 75%
 }
@@ -12,3 +14,10 @@ tbody > tr {
 }
 
 
+.th[_ngcontent-ng-c1541301650] {
+  background-color: rgba(147, 84, 137, 0.61);
+}
+
+.th[_ngcontent-ng-c1541301650] > {
+  background: rgba(124, 62, 114, 0.61);
+}

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
@@ -8,7 +8,8 @@ import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
     FaIconComponent
   ],
   templateUrl: './icon-and-text.component.html',
-  styleUrl: './icon-and-text.component.css'
+  styleUrl: './icon-and-text.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfIconAndTextComponent {
   @Input() public sfIcon: IconDefinition | null | undefined;

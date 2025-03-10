@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {TripService} from '../../../base/src/services/trip-service.service';
+import {TripService} from '@sf/sf-base';
 
 @Component({
   selector: 'sf-root',
@@ -11,6 +11,7 @@ import {TripService} from '../../../base/src/services/trip-service.service';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TripService]
 })
 export class AppComponent {

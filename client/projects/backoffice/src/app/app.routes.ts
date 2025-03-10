@@ -1,8 +1,9 @@
 import {Routes} from '@angular/router';
-import {SfBackofficeComponent} from './views/backoffice/backoffice.component';
-import {SfBackofficeArticleTableComponent} from './views/article/article-table/article-table.component';
 import {authGuard} from './auth-guard';
-import {SfBackofficeArticleComponent} from './views/article/article.component';
+import {SfBackofficeTripViewComponent} from './views/trip-view/trip-view.component';
+import {SfBackofficeArticleViewComponent} from './views/article-view/article-view.component';
+import {SfBackofficeComponent} from './views/backoffice-view/backoffice.component';
+import {SfBackofficeMainPageViewComponent} from './views/main-page-view/main-page-view.component';
 
 export const backofficeRoutes: Routes = [
   {
@@ -12,16 +13,20 @@ export const backofficeRoutes: Routes = [
     children: [
       {
         path: '',
-        component: SfBackofficeArticleTableComponent
+        component: SfBackofficeMainPageViewComponent
       },
       {
         path: 'articles/:articleId',
-        component: SfBackofficeArticleComponent,
+        component: SfBackofficeArticleViewComponent,
 
       },
       {
         path: 'create-article',
-        component: SfBackofficeArticleComponent,
+        component: SfBackofficeArticleViewComponent,
+      },
+      {
+        path: 'create-trip',
+        component: SfBackofficeTripViewComponent,
       },
     ]
   }

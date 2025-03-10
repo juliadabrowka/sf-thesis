@@ -1,11 +1,11 @@
 import {Routes} from '@angular/router';
-import {SfTripCalendarViewComponent} from './trip-calendar-view.component';
+import {SfBackofficeTripCalendarViewComponent} from './trip-calendar-view.component';
 import {tripCalendarRoutes} from '@sf/sf-base';
 
 export const tripCalendarViewRoutes: Routes = [
   {
     path: '',
-    component: SfTripCalendarViewComponent,
+    component: SfBackofficeTripCalendarViewComponent,
     children: [...tripCalendarRoutes]
   }
 ]

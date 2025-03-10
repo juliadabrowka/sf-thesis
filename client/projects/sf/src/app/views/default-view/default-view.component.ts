@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {SfActionBarComponent} from '@sf/sf-base';
 import {RouterOutlet} from '@angular/router';
 
@@ -9,8 +9,9 @@ import {RouterOutlet} from '@angular/router';
     RouterOutlet
   ],
   templateUrl: './default-view.component.html',
-  styleUrl: './default-view.component.css'
+  styleUrl: './default-view.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SfDefaultViewComponent {
+export class SfBackofficeDefaultViewComponent {
 
 }

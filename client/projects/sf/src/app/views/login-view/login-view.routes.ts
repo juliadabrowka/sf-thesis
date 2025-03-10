@@ -1,11 +1,11 @@
 import {Routes} from '@angular/router';
-import {SfLoginViewComponent} from './login-view.component';
+import {SfBackofficeLoginViewComponent} from './login-view.component';
 import {loginRoutes} from '@sf/sf-backoffice';
 
 export const loginViewRoutes: Routes = [
   {
     path: '',
-    component: SfLoginViewComponent,
+    component: SfBackofficeLoginViewComponent,
     children: [...loginRoutes]
   }
 ]

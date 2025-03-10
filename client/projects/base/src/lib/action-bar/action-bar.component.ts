@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {NzDropDownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {NzMenuDirective, NzMenuItemComponent} from 'ng-zorro-antd/menu';
@@ -19,7 +19,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     NgClass
   ],
   templateUrl: './action-bar.component.html',
-  styleUrl: './action-bar.component.css'
+  styleUrl: './action-bar.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfActionBarComponent {
   protected readonly __icons = SfIcons;

@@ -6,7 +6,7 @@ namespace sf.Services;
 
 public interface ITripService
 {
-    Task<TripDTO[]> GetTrip();
+    Task<TripDTO[]> GetTrips();
     Task<TripDTO> GetTripDetails(int tripId);
     Task<TripDTO> CreateTrip(TripDTO tripDto);
     Task<TripDTO> UpdateTrip(TripDTO tripDto);
@@ -42,7 +42,7 @@ public class TripService : ITripService
         return _mapper.Map<TripDTO>(t);
     }
 
-    public async Task<TripDTO[]> GetTrip()
+    public async Task<TripDTO[]> GetTrips()
     {
         var trips = await _tripRepository.GetTrips();
         return _mapper.Map<TripDTO[]>(trips);

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
 import {NzUploadChangeParam, NzUploadComponent, NzUploadFile} from 'ng-zorro-antd/upload';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {SfIconAndTextComponent} from '../icon-and-text/icon-and-text.component';
@@ -12,9 +12,10 @@ import {SfIcons} from '../icons';
     SfIconAndTextComponent
   ],
   templateUrl: './upload.component.html',
-  styleUrl: './upload.component.css'
+  styleUrl: './upload.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UploadComponent {
+export class SfUploadComponent {
   public readonly __icons = SfIcons;
 
   public fileList: NzUploadFile[] = [];

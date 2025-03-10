@@ -21,6 +21,7 @@ export * from './lib/main-page/main-page-routes';
 
 export * from './lib/sider/sider.component';
 
-export * from './lib/trip-calendar/trip-calendar-routes';
+export * from './lib/trip/trip-calendar/trip-calendar-routes';
+export * from './lib/trip/trip-table/trip-table.component'
 
 export * from './lib/upload/upload.component';

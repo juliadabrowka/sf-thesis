@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
 @Component({
@@ -7,8 +7,9 @@ import {RouterOutlet} from '@angular/router';
     RouterOutlet,
   ],
   templateUrl: './main-page-view.component.html',
-  styleUrl: './main-page-view.component.css'
+  styleUrl: './main-page-view.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SfMainPageViewComponent {
+export class SfBackofficeMainPageViewComponent {
 
 }

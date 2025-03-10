@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, ou
 import {ArticleDTO} from '@sf/sf-base';
 import {NzTableModule, NzTableSortFn, NzThAddOnComponent} from 'ng-zorro-antd/table';
 
-interface ColumnItem {
+export interface ColumnItem<T> {
   name: string;
-  sortFn: NzTableSortFn<ArticleDTO>;
+  sortFn: NzTableSortFn<T>;
 }
 
 @Component({
@@ -15,13 +15,13 @@ interface ColumnItem {
   ],
   templateUrl: './article-table.component.html',
   styleUrl: './article-table.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfArticleTableComponent {
   private readonly cdr = inject(ChangeDetectorRef);
 
   public readonly __articles$$ = signal<ArticleDTO[]>([]);
-  public readonly __columns: ColumnItem[] = [
+  public readonly __columns: ColumnItem<ArticleDTO>[] = [
     {
       name: "Tytuł",
       sortFn: (a: ArticleDTO, b: ArticleDTO) => a.Title.localeCompare(b.Title),
@@ -38,9 +38,11 @@ export class SfArticleTableComponent {
 
   @Input() public set sfArticles(articles: ArticleDTO[] | null | undefined) {
     this.__articles$$.set(articles ?? []);
-
-    this.cdr.markForCheck();
   }
 
   public readonly sfOnArticleClick = output<ArticleDTO>();
+
+  trackByIndex(_: number, data: ArticleDTO): number {
+    return data.Id;
+  }
 }

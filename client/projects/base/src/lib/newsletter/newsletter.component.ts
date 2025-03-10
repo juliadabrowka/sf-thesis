@@ -1,11 +1,12 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'sf-newsletter',
   imports: [],
   templateUrl: './newsletter.component.html',
-  styleUrl: './newsletter.component.css'
+  styleUrl: './newsletter.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewsletterComponent {
+export class SfNewsletterComponent {
 
 }

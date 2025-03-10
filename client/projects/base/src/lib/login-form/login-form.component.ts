@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, inject} from '@angular/core';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent} from 'ng-zorro-antd/form';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzInputDirective, NzInputGroupComponent} from 'ng-zorro-antd/input';
@@ -24,7 +24,8 @@ import {LockOutline, UserOutline} from '@ant-design/icons-angular/icons';
     NzIconModule,
   ],
   templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css'
+  styleUrl: './login-form.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfLoginFormComponent {
   private readonly iconService = inject(NzIconService);

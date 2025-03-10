@@ -1,0 +1,27 @@
+<nz-table #sortTable [nzData]="__trips$$()" [nzBordered]="true" [nzOuterBordered]="true">
+  <thead>
+  <tr>
+    @for (column of __columns; track column) {
+      <th
+        [nzSortFn]="column.sortFn"
+        class="th"
+      >
+        {{ column.name }}
+      </th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of sortTable.data; track data.Id) {
+      <tr (click)="sfOnTripClick.emit(data)">
+        <td>{{ data.Name }}</td>
+        <td>{{ data.Country }}</td>
+        <td>{{ data.DateFrom }}</td>
+        <td>{{ data.DateTo }}</td>
+        <td>{{ data.Price }}</td>
+        <td>{{ data.ParticipantsCurrent }}</td>
+        <td>{{ data.Type }}</td>
+      </tr>
+    }
+  </tbody>
+</nz-table>

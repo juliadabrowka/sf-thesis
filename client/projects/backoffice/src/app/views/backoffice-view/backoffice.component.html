@@ -1,0 +1,33 @@
+<nz-layout class="container">
+  <nz-header class="header">
+    <img src="../../../assets/logotyp-superfemka.png" class="logo" alt="logo" [routerLink]="'./'"/>
+    <ul nz-menu nzTheme="dark" nzMode="horizontal">
+      <li nz-submenu [nzTitle]="addPostTemplate" (click)="__createNewArticle()"></li>
+      <li nz-submenu [nzTitle]="addTripTemplate" (click)="__createNewTrip()"></li>
+    </ul>
+  </nz-header>
+  <nz-layout class="main-layout">
+    <sf-sider
+      (sfOnElementClicked)="__onElementIdClicked($event)"
+    ></sf-sider>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+  <nz-footer>footer</nz-footer>
+</nz-layout>
+
+<ng-template #addPostTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.add"
+    [sfText]="'Utwórz wpis'"
+  ></sf-icon-and-text>
+</ng-template>
+
+
+<ng-template #addTripTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.add"
+    [sfText]="'Utwórz wyprawę'"
+  ></sf-icon-and-text>
+</ng-template>
