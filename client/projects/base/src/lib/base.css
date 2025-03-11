@@ -9,3 +9,19 @@ body {
   font-style: normal;
   font-size: 13px;
 }
+
+.table {
+  .th {
+    background-color: rgba(147, 84, 137, 0.61);
+  }
+
+  .ant-table-column-has-sorters:hover {
+    background-color: rgba(246, 236, 119, 0.61);
+  }
+
+  tbody > tr {
+    cursor: pointer;
+  }
+}
+
+

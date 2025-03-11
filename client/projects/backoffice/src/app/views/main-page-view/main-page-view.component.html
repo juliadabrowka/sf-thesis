@@ -1,8 +1,27 @@
-<sf-article-table
-  [sfArticles]="__articles$$()"
-  (sfOnArticleClick)="__onArticleClicked($event)"
-></sf-article-table>
-<sf-trip-table
-  [sfTrips]="__trips$$()"
-  (sfOnTripClick)="__onTripClicked($event)"
-></sf-trip-table>
+<nz-card [nzTitle]="articlesTemplate">
+  <sf-article-table
+    [sfArticles]="__articles$$()"
+    (sfOnArticleClick)="__onArticleClicked($event)"
+  ></sf-article-table>
+</nz-card>
+
+<nz-card [nzTitle]="tripsTemplate">
+  <sf-trip-table
+    [sfTrips]="__trips$$()"
+    (sfOnTripClick)="__onTripClicked($event)"
+  ></sf-trip-table>
+</nz-card>
+
+<ng-template #articlesTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.posts"
+    [sfText]="'Wpisy'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #tripsTemplate>
+  <sf-icon-and-text
+    [sfIcon]="__icons.trips"
+    [sfText]="'Wyprawy'"
+  ></sf-icon-and-text>
+</ng-template>

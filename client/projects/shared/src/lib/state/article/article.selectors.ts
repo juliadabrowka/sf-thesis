@@ -12,3 +12,8 @@ export const selectCurrentArticle = createSelector(
   selectArticles,
   (state) => state?.article
 );
+
+export const selectLoading = createSelector(
+  selectArticles,
+  (state) => state.loading
+)
