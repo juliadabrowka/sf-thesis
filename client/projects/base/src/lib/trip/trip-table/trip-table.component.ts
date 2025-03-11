@@ -35,19 +35,19 @@ export class SfTripTableComponent {
   public readonly __columns: ColumnItem<TripDTO>[] = [
     {
       name: 'Nazwa',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Name.localeCompare(b.Name),
+      sortFn: (a: TripDTO, b: TripDTO) => a.Article.Title.localeCompare(b.Article.Title),
     },
     {
       name: 'Kraj',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Country.localeCompare(b.Country),
+      sortFn: (a: TripDTO, b: TripDTO) => a.Article.Country.localeCompare(b.Article.Country),
     },
     {
       name: 'Data rozpoczęcia',
-      sortFn: (a: TripDTO, b: TripDTO) => a.DateFrom.getTime() - b.DateFrom.getTime()
+      sortFn: null
     },
     {
       name: 'Data zakończenia',
-      sortFn: (a: TripDTO, b: TripDTO) => a.DateTo.getTime() - b.DateTo.getTime()
+      sortFn: null
     },
     {
       name: 'Cena',

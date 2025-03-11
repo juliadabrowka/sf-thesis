@@ -4,7 +4,7 @@ import {NzTableModule, NzTableSortFn, NzThAddOnComponent} from 'ng-zorro-antd/ta
 
 export interface ColumnItem<T> {
   name: string;
-  sortFn: NzTableSortFn<T>;
+  sortFn: NzTableSortFn<T> | null;
 }
 
 @Component({

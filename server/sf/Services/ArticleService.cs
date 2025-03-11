@@ -1,5 +1,6 @@
 using AutoMapper;
 using sf.Models;
+using sf.Program.Data;
 using sf.Repositories;
 
 namespace sf.Services;
@@ -17,6 +18,7 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
     private readonly ITripRepository _tripRepository;
+    private readonly SfDbContext _sfDbContext;
 
     public ArticleService(IArticleRepository articleRepository, IMapper mapper)
     {
@@ -38,19 +40,19 @@ public class ArticleService : IArticleService
 
     public async Task<ArticleDTO> CreateArticle(ArticleDTO articleDto)
     {
-        if (articleDto.TripId.HasValue)
+        if (articleDto == null)
         {
-            var trip = await _tripRepository.GetTripDetails(articleDto.TripId.Value);
-            if (trip == null)
-            {
-                throw new ApplicationException($"Trip with ID {articleDto.TripId} not found.");
-            }
+            throw new ArgumentNullException(nameof(articleDto), "ArticleDTO cannot be null");
+        }
+        var articleEntity = _mapper.Map<Article>(articleDto);
+        var a = await _articleRepository.CreateArticle(articleEntity);
+        
+        if (a.ArticleCategory == ArticleCategory.Wyprawy && a.Trip != null)
+        {
+            await _tripRepository.CreateTrip(a.Trip);
         }
         
-        var postEntity = _mapper.Map<Article>(articleDto);
-        var createdPost = await _articleRepository.CreateArticle(postEntity);
-
-        return _mapper.Map<ArticleDTO>(createdPost);
+        return _mapper.Map<ArticleDTO>(a);
     }
 
     public async Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto)

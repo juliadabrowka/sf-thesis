@@ -5,8 +5,7 @@
   [nzVirtualForTrackBy]="trackByIndex"
   [nzFrontPagination]="false"
   [nzShowPagination]="false"
-  [nzScroll]="{ x: '100%', y: '500px' }"
-  [nzVirtualItemSize]="54"
+  [nzScroll]="{x: '100%', y: '500px'}"
 >
   <thead>
   <tr>
@@ -21,7 +20,7 @@
   </tr>
   </thead>
   <tbody>
-  <ng-template nz-virtual-scroll let-data let-index="index">
+  <ng-template nz-virtual-scroll let-data>
     <tr (click)="sfOnArticleClick.emit(data)">
       <td>{{ data.Title }}</td>
       <td>{{ data.Country }}</td>

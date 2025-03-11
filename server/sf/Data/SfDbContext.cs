@@ -54,10 +54,10 @@ public class SfDbContext : DbContext
             .HasForeignKey(sa => sa.SurveyQuestionId);
         
         // trip - post
-        modelBuilder.Entity<Trip>()
-            .HasMany<Article>(t => t.Articles)
-            .WithOne(p => p.Trip)
-            .HasForeignKey(o => o.TripId);
+        // modelBuilder.Entity<Trip>()
+        //     .HasOne<Article>(t => t.ArticleId)
+        //     .WithOne(p => p.Trip)
+        //     .HasForeignKey<Trip>(o => o.ArticleId);
 
         // trip - trip application
         modelBuilder.Entity<Trip>()

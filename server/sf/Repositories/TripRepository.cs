@@ -27,7 +27,6 @@ public class TripRepository : ITripRepository
     public async Task<Trip[]> GetTrips()
     {
         return await _sfDbContext.Trips
-            .Include(t => t.Articles)
             .Include(t => t.TripApplications)
             .ToArrayAsync();
     }
@@ -35,7 +34,6 @@ public class TripRepository : ITripRepository
     public async Task<Trip> GetTripDetails(int tripId)
     {
         var t = await _sfDbContext.Trips
-            .Include(t => t.Articles)
             .Include(t => t.TripApplications)
             .FirstOrDefaultAsync(t => t.Id == tripId);
         

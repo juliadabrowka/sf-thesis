@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, signal} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ArticleCategory, ArticleDTO, Country,} from '../../../data-types';
+import {ArticleCategory, ArticleDTO, Country, DefaultTripTypeValue, TripDTO, TripType,} from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
@@ -9,6 +9,9 @@ import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective, NzTextareaCountComponent} from 'ng-zorro-antd/input';
 import {SfUploadComponent} from '../../upload/upload.component';
 import {setArticle} from '@sf/sf-shared';
+import {NzDatePickerComponent, NzRangePickerComponent} from 'ng-zorro-antd/date-picker';
+import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
+import {NzRowDirective} from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'sf-article-form',
@@ -22,6 +25,10 @@ import {setArticle} from '@sf/sf-shared';
     NzInputDirective,
     NzTextareaCountComponent,
     SfUploadComponent,
+    NzRangePickerComponent,
+    NzDatePickerComponent,
+    NzInputNumberComponent,
+    NzRowDirective,
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -31,6 +38,7 @@ export class SfArticleFormComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
 
+  public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
   @Input() public set sfArticle(article: ArticleDTO | null | undefined) {
     this.__article$$.set(article ?? undefined);
 
@@ -51,11 +59,17 @@ export class SfArticleFormComponent {
     title: new FormControl<string>('', {nonNullable: true}),
     content: new FormControl<string>('', {nonNullable: true}),
     country: new FormControl<Country>(Country.Polska, {nonNullable: true}),
+    dates: new FormControl<[Date | null, Date | null] | null>(null),
+    price: new FormControl<number>(0, {nonNullable: true}),
+    tripType: new FormControl<TripType>(TripType.Classic, {nonNullable: true}),
+    participantsTotal: new FormControl<number>(0, {nonNullable: true}),
+    participantsCurrent: new FormControl<number>(0, {nonNullable: true}),
   };
   public readonly __categories = Object.values(ArticleCategory).map(o => ({label: o, value: o}));
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
+  public readonly __tripTypes = Object.values(TripType).map(o => ({label: o, value: o}));
   public readonly __formGroup = new FormGroup(this.__controls);
-  public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
+  public isTrip: boolean | undefined;
 
   constructor() {
     this.__formGroup.valueChanges
@@ -72,7 +86,21 @@ export class SfArticleFormComponent {
           Country: fg.country
         } as ArticleDTO;
 
+        this.isTrip = fg.category === ArticleCategory.Wyprawy;
         if (articleChanged(currentArticle, updatedArticle)) {
+          if (this.isTrip) {
+            const trip = new TripDTO();
+            trip.Type = fg.tripType ?? DefaultTripTypeValue;
+            trip.Price = fg.price ?? 0;
+            trip.ParticipantsCurrent = fg.participantsCurrent ?? 0;
+            trip.ParticipantsTotal = fg.participantsTotal ?? 0;
+            trip.Article = updatedArticle
+
+            updatedArticle.Trip = trip;
+
+            //this.store.dispatch(setTrip({trip}))
+          }
+          console.log(updatedArticle)
           this.store.dispatch(setArticle({article: updatedArticle}));
         }
 
@@ -83,7 +111,6 @@ export class SfArticleFormComponent {
   __onFilesUpload(files: NzUploadFile[]) {
     console.log(files)
   }
-
 }
 
 export function articleChanged(prev: ArticleDTO, current: ArticleDTO) {

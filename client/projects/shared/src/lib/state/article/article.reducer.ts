@@ -22,8 +22,11 @@ export const articleReducer = createReducer(
   on(createArticleSuccess, (state, {article}) =>
     ({...state, article, loading: false, error: null})),
 
-  on(createArticleFailure, (state, {error}) =>
-    ({...state, loading: false, error})),
+  on(createArticleFailure, (state, {error}) => {
+      console.log(error)
+      return ({...state, loading: false, error})
+    }
+  ),
 
     on(updateArticle, (state, {article}) =>
         article.Id !== undefined

@@ -44,6 +44,7 @@ export class ArticleDTO {
   Country: Country = DefaultCountryValue;
   ArticleCategory = DefaultArticleCategoryValue;
   TripId: number | undefined;
+  Trip: TripDTO | undefined;
 }
 
 export const DefaultRatingValue = Rating.Good
@@ -103,15 +104,12 @@ export const DefaultTripTypeValue = TripType.Classic
 
 export class TripDTO {
   Id: number | undefined
-  Name: string = '';
-  Country: Country = DefaultCountryValue;
-  DateFrom: Date = new Date();
-  DateTo: Date = new Date();
   Price: number = 0;
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   Type: TripType = DefaultTripTypeValue;
   SurveyId: number | undefined
-  PostIds: number[] = [];
+  ArticleId: number | undefined;
+  Article: ArticleDTO = new ArticleDTO();
   TripApplicationIds: number[] = [];
 }

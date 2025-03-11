@@ -1,5 +1,6 @@
 using AutoMapper;
 using sf.Models;
+using sf.Program.Data;
 using sf.Repositories;
 
 namespace sf.Services;
@@ -15,6 +16,8 @@ public class TripService : ITripService
 {
     private readonly ITripRepository _tripRepository;
     private readonly IMapper _mapper;
+    private readonly SfDbContext _sfDbContext;
+    private readonly IArticleService _articleService;
 
     public TripService(ITripRepository tripRepository, IMapper mapper)
     {
@@ -24,7 +27,10 @@ public class TripService : ITripService
 
     public async Task<TripDTO> CreateTrip(TripDTO tripDto)
     {
+        var a = _articleService.GetArticleDetails(tripDto.ArticleId);
+        
         var tripEntity = _mapper.Map<Trip>(tripDto);
+        tripEntity.ArticleId = a.Id;
         var createdTrip = await _tripRepository.CreateTrip(tripEntity);
         
         return _mapper.Map<TripDTO>(createdTrip);

@@ -18,23 +18,24 @@ public class ArticleController : ControllerBase
     [HttpGet("articleList")]
     public async Task<ActionResult<ArticleDTO[]>> ArticleList()
     {
-        var posts = await _articleService.GetArticles();
-        return Ok(posts);
+        var articles = await _articleService.GetArticles();
+        return Ok(articles);
     }
 
     [HttpPost("createArticle")]
     public async Task<ActionResult<ArticleDTO>> CreateArticle([FromBody] ArticleDTO articleDto)
     {
-        ArticleDTO[] posts = await _articleService.GetArticles();
-        bool postAlreadyExists = posts.Any(p => p.Id == articleDto.Id);
-
-        if (postAlreadyExists)
+        if (articleDto.Id.HasValue)
         {
-            throw new ApplicationException("PostDTO already exists");
+            ArticleDTO existingArticle = await _articleService.GetArticleDetails(articleDto.Id.Value);
+            if (existingArticle != null)
+            {
+                throw new ApplicationException("ArticleDTO with given ID already exists");
+            }
         }
 
-        var post = await _articleService.CreateArticle(articleDto);
-        return Ok(post);
+        var article = await _articleService.CreateArticle(articleDto);
+        return Ok(article);
     }
 
     [HttpPost("updateArticle")]
@@ -47,7 +48,7 @@ public class ArticleController : ControllerBase
     [HttpGet("articles/{articleId}")]
     public async Task<ActionResult<ArticleDTO>> ArticleDetails(int articleId)
     {
-        var post = await _articleService.GetArticleDetails(articleId);
-        return Ok(post);
+        var article = await _articleService.GetArticleDetails(articleId);
+        return Ok(article);
     }
 }

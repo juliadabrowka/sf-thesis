@@ -6,7 +6,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {ArticleEffects, articleReducer} from '@sf/sf-backoffice';
+import {ArticleEffects, articleReducer} from '@sf/sf-shared';
 
 export const appConfig: ApplicationConfig = {
   providers: [

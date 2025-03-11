@@ -8,6 +8,7 @@ import {
   faHeart,
   faIcons,
   faMagnifyingGlass,
+  faNewspaper,
   faPersonBiking,
   faPersonHiking,
   faPhotoFilm,
@@ -15,8 +16,7 @@ import {
   faPlus,
   faRectangleList,
   faSquarePlus,
-  faThumbsUp,
-  faThumbtackSlash
+  faThumbsUp
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SfIcons = {
@@ -31,7 +31,7 @@ export const SfIcons = {
   media: faPhotoFilm,
   mediaLibrary: faIcons,
   photoRel: faCameraRetro,
-  posts: faThumbtackSlash,
+  posts: faNewspaper,
   recommendations: faHeart,
   search: faMagnifyingGlass,
   tips: faThumbsUp,

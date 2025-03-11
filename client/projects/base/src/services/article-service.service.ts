@@ -19,7 +19,7 @@ export class ArticleService {
   }
 
     public createArticle(articleDto: ArticleDTO) {
-      return this.http.post<ArticleDTO>(this.apiUrl + '/createArticle', articleDto);
+      return this.http.post<ArticleDTO>(this.apiUrl + '/createArticle', articleDto) as Observable<ArticleDTO>;
   }
 
     public updateArticle(articleDto: ArticleDTO) {

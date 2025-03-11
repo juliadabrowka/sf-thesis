@@ -19,6 +19,48 @@
     </nz-form-control>
   </nz-form-item>
 
+  @if (isTrip) {
+    <span class="trip-fields-display">
+        <nz-form-item>
+          <nz-form-label>Rodzaj wyprawy</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              [formControl]="__controls.tripType"
+              [nzOptions]="__tripTypes">
+            </nz-select>
+          </nz-form-control>
+  </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label>Daty</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker [formControl]="__controls.dates"></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+          <nz-form-label>Cena</nz-form-label>
+          <nz-form-control>
+            <nz-input-number [formControl]="__controls.price"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Całkowita liczba uczestników</nz-form-label>
+          <nz-form-control>
+            <nz-input-number [formControl]="__controls.participantsTotal"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Aktualna liczba uczestników</nz-form-label>
+          <nz-form-control>
+            <nz-input-number [formControl]="__controls.participantsCurrent"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </span>
+  }
+
   <nz-form-item>
     <nz-form-label>Tytuł</nz-form-label>
     <nz-form-control>

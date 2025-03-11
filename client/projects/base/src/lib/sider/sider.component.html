@@ -1,34 +1,34 @@
 <nz-sider [nzWidth]="230">
   <nz-collapse [nzExpandIconPosition]="'end'">
     <nz-collapse-panel [nzHeader]="postsTemplate">
-      <nz-collapse class="trips-collapse-panel" [nzBordered]="false" [nzGhost]="true" [nzExpandIconPosition]="'end'">
-        <nz-collapse-panel [nzHeader]="tripsTemplate">
-          <sf-icon-and-text
-            [sfIcon]="__icons.classicTrip"
-            [sfText]="'Classic'"
-          ></sf-icon-and-text>
-          <sf-icon-and-text
-            [sfIcon]="__icons.weekendTrip"
-            [sfText]="'Weekend'"
-          ></sf-icon-and-text>
-          <sf-icon-and-text
-            [sfIcon]="__icons.bikeTrip"
-            [sfText]="'Rower'"
-          ></sf-icon-and-text>
-        </nz-collapse-panel>
-      </nz-collapse>
-        <sf-icon-and-text
-          [sfIcon]="__icons.recommendations"
-          [sfText]="'Rekomendacje'"
-        ></sf-icon-and-text>
-        <sf-icon-and-text
-          [sfIcon]="__icons.tips"
-          [sfText]="'Ciekawostki'"
-        ></sf-icon-and-text>
-        <sf-icon-and-text
-          [sfIcon]="__icons.photoRel"
-          [sfText]="'Fotorelacje'"
-        ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.recommendations"
+        [sfText]="'Rekomendacje'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.tips"
+        [sfText]="'Ciekawostki'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.photoRel"
+        [sfText]="'Fotorelacje'"
+      ></sf-icon-and-text>
+    </nz-collapse-panel>
+  </nz-collapse>
+  <nz-collapse [nzExpandIconPosition]="'end'">
+    <nz-collapse-panel [nzHeader]="tripsTemplate">
+      <sf-icon-and-text
+        [sfIcon]="__icons.classicTrip"
+        [sfText]="'Classic'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.weekendTrip"
+        [sfText]="'Weekend'"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="__icons.bikeTrip"
+        [sfText]="'Rower'"
+      ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>
   <nz-collapse [nzExpandIconPosition]="'end'">
@@ -61,7 +61,7 @@
 <ng-template #postsTemplate>
   <sf-icon-and-text
     [sfIcon]="__icons.posts"
-    [sfText]="'Wpisy'"
+    [sfText]="'Posty'"
   ></sf-icon-and-text>
 </ng-template>
 

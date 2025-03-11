@@ -31,6 +31,7 @@ export class SfBackofficeArticleViewComponent {
       .pipe(
         takeUntilDestroyed())
       .subscribe(article => {
+        console.log(article)
         this.__article$$.set(article);
       });
 
@@ -61,7 +62,7 @@ export class SfBackofficeArticleViewComponent {
     if (article) {
       this.store.dispatch(createArticle({article}));
       this.message.success('Post poprawnie dodany');
-      await this.router.navigate(['admin-backoffice']);
+      //await this.router.navigate(['admin-backoffice']);
     }
   }
 }

@@ -1,3 +1,5 @@
-/*:host {*/
-/*  width: 100vw;*/
-/*}*/
+.trip-fields-display {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px
+}

@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   ArticleDTO,
   SfArticleTableComponent,
@@ -7,25 +8,25 @@ import {
   SfTripTableComponent,
   TripDTO
 } from '@sf/sf-base';
-import {loadArticleList, loadTripList, selectAllArticles, selectAllTrips, selectLoading} from '@sf/sf-shared';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
+import {loadArticleList, loadTripList, selectAllArticles, selectLoading} from '@sf/sf-shared';
 import {NzCardComponent} from 'ng-zorro-antd/card';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
 
 @Component({
-  selector: 'sf-backoffice-main-page-view',
+  selector: 'sf-backoffice-view',
   imports: [
-    SfArticleTableComponent,
-    SfTripTableComponent,
+    SfIconAndTextComponent,
     NzCardComponent,
-    SfIconAndTextComponent
+    SfArticleTableComponent,
+    SfTripTableComponent
   ],
-  templateUrl: './main-page-view.component.html',
-  styleUrl: './main-page-view.component.css',
+  templateUrl: './backoffice-view.component.html',
+  styleUrl: './backoffice-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SfBackofficeMainPageViewComponent {
+export class SfBackofficeComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly store = inject(Store)
@@ -44,15 +45,9 @@ export class SfBackofficeMainPageViewComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((articles) => {
         this.__articles$$.set(articles);
+        //this.__trips$$.set(trips)
         this.__loading$$.set(false);
       })
-
-    this.store.select(selectAllTrips)
-      .pipe(takeUntilDestroyed())
-      .subscribe((trips) => {
-        this.__trips$$.set(trips);
-        this.__loading$$.set(false);
-      });
 
     this.store.select(selectLoading)
       .pipe(takeUntilDestroyed())
@@ -65,6 +60,5 @@ export class SfBackofficeMainPageViewComponent {
 
   __onTripClicked(trip: TripDTO) {
     console.log(trip);
-
   }
 }

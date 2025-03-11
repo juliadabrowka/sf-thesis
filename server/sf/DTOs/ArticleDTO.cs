@@ -16,4 +16,5 @@ public class ArticleDTO
     public ArticleCategory ArticleCategory { get; set; }
 
     public int? TripId { get; set; }
+    public TripDTO? Trip { get; set; }
 }

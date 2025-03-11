@@ -30,7 +30,10 @@ export class ArticleEffects {
       ofType(createArticle),
       mergeMap(({article}) =>
         this.articleService.createArticle(article).pipe(
-          map((createdArticle: ArticleDTO) => createArticleSuccess({article: createdArticle})),
+          map((createdArticle: ArticleDTO) => {
+            console.log(createdArticle);
+            return createArticleSuccess({article: createdArticle})
+          }),
           catchError(error => of(createArticleFailure({error})))
         ))
     ));

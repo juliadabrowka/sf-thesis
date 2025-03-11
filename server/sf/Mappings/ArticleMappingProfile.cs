@@ -7,6 +7,10 @@ public class ArticleMappingProfile : Profile
 {
     public ArticleMappingProfile()
     {
-        CreateMap<Article, ArticleDTO>().ReverseMap();
+        CreateMap<Article, ArticleDTO>()
+            .ForMember(dest => dest.Trip, opt => opt.MapFrom(src => src.Trip));
+
+        CreateMap<ArticleDTO, Article>()
+            .ForMember(dest => dest.Trip, opt => opt.Ignore());
     }
 }
