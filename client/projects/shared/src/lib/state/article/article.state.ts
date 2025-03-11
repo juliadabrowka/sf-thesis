@@ -11,7 +11,7 @@ export interface SfArticleState extends EntityState<ArticleDTO> {
 }
 
 export const articleAdapter = createEntityAdapter<ArticleDTO>({
-  selectId: (article: ArticleDTO) => article.Id
+  selectId: (article: ArticleDTO) => article.Id ?? -1
 });
 
 export const articleState: SfArticleState = articleAdapter.getInitialState({

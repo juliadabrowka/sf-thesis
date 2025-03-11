@@ -11,7 +11,7 @@ export interface SfTripState extends EntityState<TripDTO> {
 }
 
 export const tripAdapter = createEntityAdapter<TripDTO>({
-  selectId: (trip: TripDTO) => trip.Id
+  selectId: (trip: TripDTO) => trip.Id ?? -1
 });
 
 export const tripState: SfTripState = tripAdapter.getInitialState({

@@ -25,10 +25,14 @@ export const articleReducer = createReducer(
   on(createArticleFailure, (state, {error}) =>
     ({...state, loading: false, error})),
 
-  on(updateArticle, (state, {article}) =>
-    articleAdapter.updateOne(
-      {id: article.Id, changes: article},
-      {...state, loading: true, error: null})),
+    on(updateArticle, (state, {article}) =>
+        article.Id !== undefined
+            ? articleAdapter.updateOne(
+                {id: article.Id, changes: article},
+                {...state, loading: true, error: null}
+            )
+            : state
+    ),
 
   on(setArticle, (state, {article}) => ({...state, article, loading: true, error: null})),
 

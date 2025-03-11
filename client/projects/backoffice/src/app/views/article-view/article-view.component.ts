@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 import {ArticleDTO, SfArticleFormComponent, SfButtonComponent} from '@sf/sf-base';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {createArticle, loadArticleDetails, selectCurrentArticle} from '@sf/sf-shared';
+import {createArticle, loadArticleDetails, selectCurrentArticle, updateArticle} from '@sf/sf-shared';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'sf-backoffice-article-view',
@@ -19,6 +20,8 @@ export class SfBackofficeArticleViewComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly message = inject(NzMessageService)
 
   public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
 
@@ -43,12 +46,22 @@ export class SfBackofficeArticleViewComponent {
       });
   }
 
-  __onSaveClick() {
+  async __onSaveClick() {
     const article = this.__article$$();
-    if (article) this.store.dispatch(createArticle({article}))
+    if (article) {
+      this.store.dispatch(updateArticle({article}));
+      this.message.success('Post poprawnie aktualizowany');
+      await this.router.navigate(['admin-backoffice']);
+    }
   }
 
-  __onCreateClick() {
-    console.log("create", this.__article$$())
+  async __onCreateClick() {
+    const article = this.__article$$();
+    console.log(article)
+    if (article) {
+      this.store.dispatch(createArticle({article}));
+      this.message.success('Post poprawnie dodany');
+      await this.router.navigate(['admin-backoffice']);
+    }
   }
 }

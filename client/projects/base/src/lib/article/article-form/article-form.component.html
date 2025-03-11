@@ -10,6 +10,16 @@
   </nz-form-item>
 
   <nz-form-item>
+    <nz-form-label>Kraj</nz-form-label>
+    <nz-form-control>
+      <nz-select
+        [formControl]="__controls.country"
+        [nzOptions]="__countries">
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
     <nz-form-label>Tytuł</nz-form-label>
     <nz-form-control>
       <input nz-input [formControl]="__controls.title"/>
@@ -25,16 +35,6 @@
           nz-input
           [formControl]="__controls.content"></textarea>
       </nz-textarea-count>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label>Kraj</nz-form-label>
-    <nz-form-control>
-      <nz-select
-        [formControl]="__controls.country"
-        [nzOptions]="__countries">
-      </nz-select>
     </nz-form-control>
   </nz-form-item>
 

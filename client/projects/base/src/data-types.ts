@@ -38,18 +38,18 @@ export const DefaultArticleCategoryValue = ArticleCategory.Fotorelacje;
 export const DefaultCountryValue = Country.Polska;
 
 export class ArticleDTO {
-  Id: number = 0;
+  Id: number | undefined;
   Title: string = '';
   Content: string = '';
   Country: Country = DefaultCountryValue;
   ArticleCategory = DefaultArticleCategoryValue;
-  TripId: number = 0;
+  TripId: number | undefined;
 }
 
 export const DefaultRatingValue = Rating.Good
 
 export class OpinionDTO {
-  Id: number = 0;
+  Id: number | undefined;
   Token: string = '';
   Author: string = '';
   Content: string = '';
@@ -57,22 +57,22 @@ export class OpinionDTO {
 }
 
 export class SurveyAnswerDTO {
-  Id: number = 0;
+  Id: number | undefined
   Answer: string = '';
-  SurveyQuestionId: number = 0;
-  SurveyResponseId: number = 0;
+  SurveyQuestionId: number | undefined
+  SurveyResponseId: number | undefined
 }
 
 export class SurveyDTO {
-  Id: number = 0;
+  Id: number | undefined;
   Title: string = '';
   Country: Country = DefaultCountryValue;
-  TripId: number = 0;
+  TripId: number | undefined;
   SurveyQuestionIds: number[] = [];
 }
 
 export class SurveyQuestionDTO {
-  Id: number = 0;
+  Id: number | undefined;
   QuestionText: string = '';
   IsCommon: boolean = false;
   SurveyIds: number[] = [];
@@ -80,29 +80,29 @@ export class SurveyQuestionDTO {
 }
 
 export class SurveyResponseDTO {
-  Id: number = 0;
+  Id: number | undefined
   RepliedOn: Date = new Date();
-  TripApplicationId: number = 0;
+  TripApplicationId: number | undefined
   SurveyAnswerIds: number[] = [];
 }
 
 export const DefaultStatusValue = Status.Created;
 
 export class TripApplicationDTO {
-  Id: number = 0;
+  Id: number | undefined
   Name: string = '';
   Email: string = '';
   PhoneNumber: string = '';
   ExtraInfo: string = '';
   Status: Status = DefaultStatusValue;
-  TripId: number = 0;
-  SurveyResponseId: number = 0;
+  TripId: number | undefined
+  SurveyResponseId: number | undefined
 }
 
 export const DefaultTripTypeValue = TripType.Classic
 
 export class TripDTO {
-  Id: number = 0;
+  Id: number | undefined
   Name: string = '';
   Country: Country = DefaultCountryValue;
   DateFrom: Date = new Date();
@@ -111,7 +111,7 @@ export class TripDTO {
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   Type: TripType = DefaultTripTypeValue;
-  SurveyId: number = 0;
+  SurveyId: number | undefined
   PostIds: number[] = [];
   TripApplicationIds: number[] = [];
 }

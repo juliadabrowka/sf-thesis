@@ -43,6 +43,6 @@ export class SfArticleTableComponent {
   public readonly sfOnArticleClick = output<ArticleDTO>();
 
   trackByIndex(_: number, data: ArticleDTO): number {
-    return data.Id;
+    return data.Id ?? 0;
   }
 }

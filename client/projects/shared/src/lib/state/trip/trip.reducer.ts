@@ -26,9 +26,12 @@ export const tripReducer = createReducer(
     ({...state, loading: false, error})),
 
   on(updateTrip, (state, {trip}) =>
-    tripAdapter.updateOne(
-      {id: trip.Id, changes: trip},
-      {...state, loading: true, error: null})),
+    trip.Id
+      ? tripAdapter.updateOne(
+        {id: trip.Id, changes: trip},
+        {...state, loading: true, error: null})
+      : state
+  ),
 
   on(setTrip, (state, {trip}) => ({...state, trip, loading: true, error: null})),
 
