@@ -8,9 +8,15 @@ public class ArticleMappingProfile : Profile
     public ArticleMappingProfile()
     {
         CreateMap<Article, ArticleDTO>()
-            .ForMember(dest => dest.Trip, opt => opt.MapFrom(src => src.Trip));
+            .ForMember(
+                dest => dest.TripDto,
+                opt => opt.MapFrom(
+                    src => src.Trip));
 
         CreateMap<ArticleDTO, Article>()
-            .ForMember(dest => dest.Trip, opt => opt.Ignore());
+            .ForMember(
+                dest => dest.Trip,
+                opt => opt.MapFrom(
+                    src => src.TripDto));
     }
 }

@@ -7,7 +7,7 @@ import {ArticleCategory, ArticleDTO} from '@sf/sf-base';
 export class SfBackofficeFilterOutTripsPipe implements PipeTransform {
 
   transform(articles: ArticleDTO[]): ArticleDTO[] {
-    return articles.filter(a => a.ArticleCategory !== ArticleCategory.Wyprawy);
+    return articles.filter(a => a.ArticleCategory === ArticleCategory.Wyprawy);
   }
 
 }

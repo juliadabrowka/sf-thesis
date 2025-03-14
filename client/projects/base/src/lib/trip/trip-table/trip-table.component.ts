@@ -9,7 +9,7 @@ import {
   signal
 } from '@angular/core';
 import {NzTableModule, NzThAddOnComponent} from "ng-zorro-antd/table";
-import {ColumnItem, TripDTO} from '@sf/sf-base';
+import {ArticleDTO, ColumnItem, TripDTO} from '@sf/sf-base';
 
 @Component({
   selector: 'sf-trip-table',
@@ -24,22 +24,23 @@ import {ColumnItem, TripDTO} from '@sf/sf-base';
 export class SfTripTableComponent {
   private readonly cdr = inject(ChangeDetectorRef)
 
-  public readonly __trips$$ = signal<TripDTO[]>([]);
+  public readonly __trips$$ = signal<ArticleDTO[]>([]);
 
-  @Input() public set sfTrips(trips: TripDTO[] | null | undefined) {
+  @Input() public set sfTrips(trips: ArticleDTO[] | null | undefined) {
+    console.log(trips)
     this.__trips$$.set(trips ?? []);
   }
 
-  @Output() public readonly sfOnTripClick = new EventEmitter<TripDTO>();
+  @Output() public readonly sfOnTripClick = new EventEmitter<ArticleDTO>();
 
   public readonly __columns: ColumnItem<TripDTO>[] = [
     {
       name: 'Nazwa',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Article.Title.localeCompare(b.Article.Title),
+      sortFn: (a: TripDTO, b: TripDTO) => (a.ArticleDto?.Title ?? "").localeCompare(b.ArticleDto?.Title ?? ""),
     },
     {
       name: 'Kraj',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Article.Country.localeCompare(b.Article.Country),
+      sortFn: (a: TripDTO, b: TripDTO) => (a.ArticleDto?.Country ?? "").localeCompare(b.ArticleDto?.Country ?? ""),
     },
     {
       name: 'Data rozpoczęcia',
@@ -63,4 +64,7 @@ export class SfTripTableComponent {
     },
   ]
 
+  trackByIndex(_: number, data: ArticleDTO): number {
+    return data.Id ?? 0;
+  }
 }

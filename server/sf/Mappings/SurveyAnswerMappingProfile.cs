@@ -9,9 +9,12 @@ public class SurveyAnswerMappingProfile : Profile
     {
         CreateMap<SurveyAnswer, SurveyAnswerDTO>()
             .ForMember(dest => dest.SurveyQuestionId,
-                opt => opt.MapFrom(src => src.SurveyQuestion != null ? src.SurveyQuestion.Id : (int?)null))
+                opt => opt.MapFrom(
+                    src => src.SurveyQuestion.Id))
             .ForMember(dest => dest.SurveyResponseId,
-                opt => opt.MapFrom(src => src.SurveyResponse != null ? src.SurveyResponse.Id : (int?)null))
+                opt => opt.MapFrom(
+                    src => 
+                        src.SurveyResponse != null ? src.SurveyResponse.Id : (int?)null))
             .ReverseMap();
     }
 }

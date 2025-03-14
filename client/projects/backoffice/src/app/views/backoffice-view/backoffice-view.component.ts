@@ -9,18 +9,18 @@ import {
   TripDTO
 } from '@sf/sf-base';
 import {Store} from '@ngrx/store';
-import {loadArticleList, loadTripList, selectAllArticles, selectLoading} from '@sf/sf-shared';
-import {NzCardComponent} from 'ng-zorro-antd/card';
+import {loadArticleList, loadTripList, selectAllArticles, selectAllTrips, selectLoading} from '@sf/sf-shared';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {SfBackofficeFilterOutTripsPipe} from './backoffice-view-filter-out-trips.pipe';
 
 
 @Component({
   selector: 'sf-backoffice-view',
   imports: [
     SfIconAndTextComponent,
-    NzCardComponent,
     SfArticleTableComponent,
-    SfTripTableComponent
+    SfTripTableComponent,
+    SfBackofficeFilterOutTripsPipe
   ],
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',
@@ -45,7 +45,13 @@ export class SfBackofficeComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((articles) => {
         this.__articles$$.set(articles);
-        //this.__trips$$.set(trips)
+        this.__loading$$.set(false);
+      })
+
+    this.store.select(selectAllTrips)
+      .pipe(takeUntilDestroyed())
+      .subscribe((trips) => {
+        this.__trips$$.set(trips)
         this.__loading$$.set(false);
       })
 
@@ -58,7 +64,7 @@ export class SfBackofficeComponent {
     await this.router.navigate([`articles/${article.Id}`], {relativeTo: this.route});
   }
 
-  __onTripClicked(trip: TripDTO) {
+  __onTripClicked(trip: ArticleDTO) {
     console.log(trip);
   }
 }

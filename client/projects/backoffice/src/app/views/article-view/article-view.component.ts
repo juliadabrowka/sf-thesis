@@ -58,7 +58,6 @@ export class SfBackofficeArticleViewComponent {
 
   async __onCreateClick() {
     const article = this.__article$$();
-    console.log(article)
     if (article) {
       this.store.dispatch(createArticle({article}));
       this.message.success('Post poprawnie dodany');

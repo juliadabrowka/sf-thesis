@@ -11,6 +11,7 @@
   },
   "private": true,
   "peerDependencies": {
+    "ng-zorro-antd": "^19.1.0",
     "@ngrx/effects": "^19.0.1",
     "@ngrx/entity": "^19.0.1",
     "@ngrx/store": "^19.0.1"

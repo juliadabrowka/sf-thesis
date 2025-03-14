@@ -13,5 +13,5 @@ public class SurveyResponse
     
     public int TripApplicationId { get; set; }
     public TripApplication TripApplication { get; set; }
-    public ICollection<SurveyAnswer> SurveyAnswers { get; set; } = new List<SurveyAnswer>();
+    public ICollection<SurveyAnswer> SurveyAnswers { get; set; }
 }

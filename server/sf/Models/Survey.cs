@@ -14,5 +14,5 @@ public class Survey
     
     public int? TripId { get; set; }
     public Trip? Trip { get; set; }
-    public ICollection<SurveyQuestion> SurveyQuestions { get; set; } = new List<SurveyQuestion>();
+    public ICollection<SurveyQuestion> SurveyQuestions { get; set; }
 }

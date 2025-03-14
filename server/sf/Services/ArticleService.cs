@@ -2,6 +2,7 @@ using AutoMapper;
 using sf.Models;
 using sf.Program.Data;
 using sf.Repositories;
+using ApplicationException = System.ApplicationException;
 
 namespace sf.Services;
 
@@ -18,12 +19,12 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
     private readonly ITripRepository _tripRepository;
-    private readonly SfDbContext _sfDbContext;
 
-    public ArticleService(IArticleRepository articleRepository, IMapper mapper)
+    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository)
     {
         _articleRepository = articleRepository;
         _mapper = mapper;
+        _tripRepository = tripRepository;
     }
     
     public async Task<ArticleDTO[]> GetArticles()
@@ -45,14 +46,32 @@ public class ArticleService : IArticleService
             throw new ArgumentNullException(nameof(articleDto), "ArticleDTO cannot be null");
         }
         var articleEntity = _mapper.Map<Article>(articleDto);
-        var a = await _articleRepository.CreateArticle(articleEntity);
-        
-        if (a.ArticleCategory == ArticleCategory.Wyprawy && a.Trip != null)
+        var article = await _articleRepository.CreateArticle(articleEntity);
+         if (article == null)
+         {
+             throw new ApplicationException("Article is null but should not be");
+         }
+        if (article.ArticleCategory == ArticleCategory.Wyprawy)
         {
-            await _tripRepository.CreateTrip(a.Trip);
+            if (articleDto.TripDto == null)
+            {
+                throw new ApplicationException("Trip given in the article is null but should bot be");
+            }
+
+            var t = _mapper.Map<Trip>(articleDto.TripDto);
+
+            var trip = await _tripRepository.CreateTrip(t);
+            article.Trip = trip;
+            article.TripId = trip.Id;
+           
+            trip.Article = article;
+            trip.ArticleId = article.Id;
+
+            await _articleRepository.UpdateArticle(article);
+            await _tripRepository.UpdateTrip(trip);
         }
         
-        return _mapper.Map<ArticleDTO>(a);
+        return _mapper.Map<ArticleDTO>(article);
     }
 
     public async Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto)
@@ -94,26 +113,26 @@ public class ArticleService : IArticleService
             article.Country = articleDto.Country;
             isUpdated = true;
         }
-
-        if (article.TripId != articleDto.TripId)
-        {
-            if (articleDto.TripId.HasValue)
-            { 
-                var newTrip = await _tripRepository.GetTripDetails(articleDto.TripId.Value);
-                if (newTrip == null)
-                {
-                    throw new ApplicationException($"Trip with ID {articleDto.TripId.Value} not found.");
-                }
-
-                article.TripId = articleDto.TripId.Value;
-                article.Trip = newTrip;
-            }
-            else
-            {
-                article.TripId = null;
-                article.Trip = null;
-            }
-        }
+        //
+        // if (article.TripId != articleDto.TripId)
+        // {
+        //     if (articleDto.TripId.HasValue)
+        //     { 
+        //         var newTrip = await _tripRepository.GetTripDetails(articleDto.TripId.Value);
+        //         if (newTrip == null)
+        //         {
+        //             throw new ApplicationException($"Trip with ID {articleDto.TripId.Value} not found.");
+        //         }
+        //
+        //         article.TripId = articleDto.TripId.Value;
+        //         article.Trip = newTrip;
+        //     }
+        //     else
+        //     {
+        //         article.TripId = null;
+        //         article.Trip = null;
+        //     }
+        // }
 
         if (isUpdated)
         {
@@ -122,5 +141,4 @@ public class ArticleService : IArticleService
 
         return _mapper.Map<ArticleDTO>(article);
     }
-
 }

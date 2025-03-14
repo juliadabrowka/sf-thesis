@@ -1,7 +1,4 @@
-using System.Data.SqlClient;
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using sf.Models;
 using sf.Program.Data;
 

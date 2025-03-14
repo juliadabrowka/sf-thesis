@@ -51,18 +51,27 @@ public class SfDbContext : DbContext
         modelBuilder.Entity<SurveyQuestion>()
             .HasMany(sq => sq.SurveyAnswers)
             .WithOne(sa => sa.SurveyQuestion)
-            .HasForeignKey(sa => sa.SurveyQuestionId);
+            .HasForeignKey(sa => sa.SurveyQuestionId)
+            .OnDelete(DeleteBehavior.Restrict); 
         
-        // trip - post
-        // modelBuilder.Entity<Trip>()
-        //     .HasOne<Article>(t => t.ArticleId)
-        //     .WithOne(p => p.Trip)
-        //     .HasForeignKey<Trip>(o => o.ArticleId);
+        // trip - article
+        modelBuilder.Entity<Trip>()
+            .HasOne<Article>(t => t.Article)
+            .WithOne(p => p.Trip)
+            .HasForeignKey<Trip>(o => o.ArticleId)
+            .OnDelete(DeleteBehavior.Restrict); 
+
+        modelBuilder.Entity<Article>()
+            .HasOne(a => a.Trip)
+            .WithOne(t => t.Article)
+            .HasForeignKey<Trip>(t => t.ArticleId)
+            .OnDelete(DeleteBehavior.Restrict); 
 
         // trip - trip application
         modelBuilder.Entity<Trip>()
             .HasMany<TripApplication>(t => t.TripApplications)
             .WithOne(ta => ta.Trip)
-            .HasForeignKey(o => o.TripId);
+            .HasForeignKey(o => o.TripId)
+            .OnDelete(DeleteBehavior.Restrict); 
     }
 }

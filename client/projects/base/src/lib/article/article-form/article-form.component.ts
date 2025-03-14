@@ -4,31 +4,15 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ArticleCategory, ArticleDTO, Country, DefaultTripTypeValue, TripDTO, TripType,} from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
-import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
-import {NzSelectComponent} from 'ng-zorro-antd/select';
-import {NzInputDirective, NzTextareaCountComponent} from 'ng-zorro-antd/input';
 import {SfUploadComponent} from '../../upload/upload.component';
 import {setArticle} from '@sf/sf-shared';
-import {NzDatePickerComponent, NzRangePickerComponent} from 'ng-zorro-antd/date-picker';
-import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
-import {NzRowDirective} from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'sf-article-form',
   imports: [
-    NzFormDirective,
     ReactiveFormsModule,
-    NzFormItemComponent,
-    NzFormLabelComponent,
-    NzFormControlComponent,
-    NzSelectComponent,
-    NzInputDirective,
-    NzTextareaCountComponent,
     SfUploadComponent,
-    NzRangePickerComponent,
-    NzDatePickerComponent,
-    NzInputNumberComponent,
-    NzRowDirective,
+
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -94,9 +78,8 @@ export class SfArticleFormComponent {
             trip.Price = fg.price ?? 0;
             trip.ParticipantsCurrent = fg.participantsCurrent ?? 0;
             trip.ParticipantsTotal = fg.participantsTotal ?? 0;
-            trip.Article = updatedArticle
 
-            updatedArticle.Trip = trip;
+            updatedArticle.TripDto = trip;
 
             //this.store.dispatch(setTrip({trip}))
           }

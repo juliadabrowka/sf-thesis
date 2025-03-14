@@ -62,12 +62,7 @@ namespace sf.Migrations
                     b.Property<int?>("TripId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("TripId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TripId1");
 
                     b.ToTable("Articles");
                 });
@@ -203,8 +198,14 @@ namespace sf.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticleId")
+                    b.Property<int?>("ArticleId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ParticipantsCurrent")
                         .HasColumnType("integer");
@@ -215,10 +216,16 @@ namespace sf.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<int?>("SurveyId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId")
+                        .IsUnique();
 
                     b.ToTable("Trips");
                 });
@@ -302,15 +309,6 @@ namespace sf.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("sf.Models.Article", b =>
-                {
-                    b.HasOne("sf.Models.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId1");
-
-                    b.Navigation("Trip");
-                });
-
             modelBuilder.Entity("sf.Models.Survey", b =>
                 {
                     b.HasOne("sf.Models.Trip", "Trip")
@@ -325,7 +323,7 @@ namespace sf.Migrations
                     b.HasOne("sf.Models.SurveyQuestion", "SurveyQuestion")
                         .WithMany("SurveyAnswers")
                         .HasForeignKey("SurveyQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("sf.Models.SurveyResponse", "SurveyResponse")
@@ -349,14 +347,29 @@ namespace sf.Migrations
                     b.Navigation("TripApplication");
                 });
 
+            modelBuilder.Entity("sf.Models.Trip", b =>
+                {
+                    b.HasOne("sf.Models.Article", "Article")
+                        .WithOne("Trip")
+                        .HasForeignKey("sf.Models.Trip", "ArticleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Article");
+                });
+
             modelBuilder.Entity("sf.Models.TripApplication", b =>
                 {
                     b.HasOne("sf.Models.Trip", "Trip")
                         .WithMany("TripApplications")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("sf.Models.Article", b =>
+                {
                     b.Navigation("Trip");
                 });
 

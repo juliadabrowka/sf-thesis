@@ -8,7 +8,7 @@ public class TripApplicationDTO
     public string PhoneNumber { get; set; }
     public string ExtraInfo { get; set; }
     public Status Status { get; set;}
-    public DateTime AppliedAt = new DateTime();
+    public DateTime AppliedAt { get; set; }
     
     public int TripId { get; set; }
     public int? SurveyResponseId { get; set; }

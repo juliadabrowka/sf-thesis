@@ -27,12 +27,9 @@ public class TripService : ITripService
 
     public async Task<TripDTO> CreateTrip(TripDTO tripDto)
     {
-        var a = _articleService.GetArticleDetails(tripDto.ArticleId);
-        
         var tripEntity = _mapper.Map<Trip>(tripDto);
-        tripEntity.ArticleId = a.Id;
-        var createdTrip = await _tripRepository.CreateTrip(tripEntity);
         
+        var createdTrip = await _tripRepository.CreateTrip(tripEntity);
         return _mapper.Map<TripDTO>(createdTrip);
     }
 
