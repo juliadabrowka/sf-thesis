@@ -12,6 +12,7 @@ import {Store} from '@ngrx/store';
 import {loadArticleList, loadTripList, selectAllArticles, selectAllTrips, selectLoading} from '@sf/sf-shared';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {SfBackofficeFilterOutTripsPipe} from './backoffice-view-filter-out-trips.pipe';
+import {NzCardComponent} from 'ng-zorro-antd/card';
 
 
 @Component({
@@ -20,7 +21,8 @@ import {SfBackofficeFilterOutTripsPipe} from './backoffice-view-filter-out-trips
     SfIconAndTextComponent,
     SfArticleTableComponent,
     SfTripTableComponent,
-    SfBackofficeFilterOutTripsPipe
+    SfBackofficeFilterOutTripsPipe,
+    NzCardComponent
   ],
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',

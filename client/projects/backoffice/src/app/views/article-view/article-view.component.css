@@ -1,0 +1,26 @@
+.remove-button {
+  border: 1px solid black;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    color: #bc1a1a;
+    border-color: #bc1a1a;
+  }
+}
+
+.tooltip-content {
+  color: black;
+  margin-bottom: 5px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.tooltip {
+  padding: 6px;
+}

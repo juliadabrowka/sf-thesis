@@ -1,16 +1,23 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal} from '@angular/core';
-import {ArticleDTO, SfArticleFormComponent, SfButtonComponent} from '@sf/sf-base';
+import {ArticleDTO, SfArticleFormComponent, SfButtonComponent, SfIconAndTextComponent, SfIcons} from '@sf/sf-base';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {createArticle, loadArticleDetails, selectCurrentArticle, updateArticle} from '@sf/sf-shared';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzCardComponent} from 'ng-zorro-antd/card';
+import {NzTooltipDirective} from 'ng-zorro-antd/tooltip';
+import {NzButtonComponent} from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'sf-backoffice-article-view',
   imports: [
     SfButtonComponent,
-    SfArticleFormComponent
+    SfArticleFormComponent,
+    NzCardComponent,
+    SfIconAndTextComponent,
+    NzTooltipDirective,
+    NzButtonComponent
   ],
   templateUrl: './article-view.component.html',
   styleUrl: './article-view.component.css',
@@ -24,14 +31,13 @@ export class SfBackofficeArticleViewComponent {
   private readonly message = inject(NzMessageService)
 
   public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
-
+  public readonly __icons = SfIcons;
 
   constructor() {
     this.store.select(selectCurrentArticle)
       .pipe(
         takeUntilDestroyed())
       .subscribe(article => {
-        console.log(article)
         this.__article$$.set(article);
       });
 
@@ -63,5 +69,12 @@ export class SfBackofficeArticleViewComponent {
       this.message.success('Post poprawnie dodany');
       //await this.router.navigate(['admin-backoffice']);
     }
+  }
+
+  public __removeArticle(articleId: number | undefined) {
+    if (!articleId) {
+      throw new Error('Article id is undefined but should not be.');
+    }
+    console.log(articleId);
   }
 }

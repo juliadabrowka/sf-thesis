@@ -6,13 +6,26 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
 import {SfUploadComponent} from '../../upload/upload.component';
 import {setArticle} from '@sf/sf-shared';
+import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
+import {NzSelectComponent} from 'ng-zorro-antd/select';
+import {NzDatePickerComponent, NzRangePickerComponent} from 'ng-zorro-antd/date-picker';
+import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
+import {NzInputDirective} from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'sf-article-form',
   imports: [
     ReactiveFormsModule,
     SfUploadComponent,
-
+    NzFormItemComponent,
+    NzFormDirective,
+    NzFormLabelComponent,
+    NzFormControlComponent,
+    NzSelectComponent,
+    NzDatePickerComponent,
+    NzInputNumberComponent,
+    NzInputDirective,
+    NzRangePickerComponent
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -31,7 +44,12 @@ export class SfArticleFormComponent {
         category: article.ArticleCategory,
         title: article.Title,
         content: article.Content,
-        country: article.Country
+        country: article.Country,
+        dates: [article.TripDto?.DateFrom ?? null, article.TripDto?.DateTo ?? null],
+        price: article.TripDto?.Price,
+        tripType: article.TripDto?.Type,
+        participantsCurrent: article.TripDto?.ParticipantsCurrent,
+        participantsTotal: article.TripDto?.ParticipantsTotal
       })
     }
 
@@ -53,7 +71,7 @@ export class SfArticleFormComponent {
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
   public readonly __tripTypes = Object.values(TripType).map(o => ({label: o, value: o}));
   public readonly __formGroup = new FormGroup(this.__controls);
-  public isTrip: boolean | undefined;
+  public isTripCategorySelected: boolean | undefined;
 
   constructor() {
     this.__formGroup.valueChanges
@@ -70,9 +88,9 @@ export class SfArticleFormComponent {
           Country: fg.country
         } as ArticleDTO;
 
-        this.isTrip = fg.category === ArticleCategory.Wyprawy;
+        this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
         if (articleChanged(currentArticle, updatedArticle)) {
-          if (this.isTrip) {
+          if (this.isTripCategorySelected) {
             const trip = new TripDTO();
             trip.Type = fg.tripType ?? DefaultTripTypeValue;
             trip.Price = fg.price ?? 0;
@@ -82,8 +100,10 @@ export class SfArticleFormComponent {
             updatedArticle.TripDto = trip;
 
             //this.store.dispatch(setTrip({trip}))
+          } else {
+            updatedArticle.TripDto = undefined;
+            updatedArticle.TripId = undefined;
           }
-          console.log(updatedArticle)
           this.store.dispatch(setArticle({article: updatedArticle}));
         }
 

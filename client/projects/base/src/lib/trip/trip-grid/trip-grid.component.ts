@@ -1,11 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, signal} from '@angular/core';
-import {SfTripInlineComponent} from '../trip-inline/trip-inline.component';
 import {TripDTO} from '@sf/sf-base';
 
 @Component({
   selector: 'sf-trip-grid',
   imports: [
-    SfTripInlineComponent,
   ],
   templateUrl: './trip-grid.component.html',
   styleUrl: './trip-grid.component.css',

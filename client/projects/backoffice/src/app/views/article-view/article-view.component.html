@@ -1,8 +1,45 @@
-<sf-article-form
-  [sfArticle]="__article$$()"
-></sf-article-form>
+<nz-card [nzTitle]="'Post'" [nzExtra]="extraTemplate">
+  <sf-article-form
+    [sfArticle]="__article$$()"
+  ></sf-article-form>
 
-<sf-button
-  [sfButtonText]="__article$$()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
-  (sfOnButtonClicked)="__article$$()?.Id ? __onSaveClick() : __onCreateClick()"
-></sf-button>
+  <sf-button
+    [sfButtonText]="__article$$()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
+    (sfOnButtonClicked)="__article$$()?.Id ? __onSaveClick() : __onCreateClick()"
+  ></sf-button>
+</nz-card>
+
+<ng-template #extraTemplate>
+  <div class="remove-button"
+       nz-tooltip
+       [nzTooltipColor]="'white'"
+       [nzTooltipTrigger]="'click'"
+       [nzTooltipTitle]="removeConfirmation"
+  >
+    <sf-icon-and-text
+      [sfText]="'Usuń'"
+      [sfIcon]="__icons.delete"
+    ></sf-icon-and-text>
+  </div>
+  <ng-template #removeConfirmation>
+    <div class="tooltip">
+      <div class="tooltip-content">Napewno chcesz usunąć?</div>
+      <div class="buttons">
+        <button
+          nz-button
+          [nzType]="'default'"
+          [nzSize]="'small'"
+        >Anuluj
+        </button>
+        <button
+          nz-button
+          [nzType]="'primary'"
+          [nzDanger]="true"
+          [nzSize]="'small'"
+          (click)="__removeArticle(__article$$()?.Id)"
+        >Usuń
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

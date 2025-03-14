@@ -19,7 +19,7 @@
     </nz-form-control>
   </nz-form-item>
 
-  @if (isTrip) {
+  @if (isTripCategorySelected) {
     <span class="trip-fields-display">
         <nz-form-item>
           <nz-form-label>Rodzaj wyprawy</nz-form-label>
@@ -29,7 +29,7 @@
               [nzOptions]="__tripTypes">
             </nz-select>
           </nz-form-control>
-  </nz-form-item>
+        </nz-form-item>
 
       <nz-form-item>
           <nz-form-label>Daty</nz-form-label>
@@ -71,12 +71,10 @@
   <nz-form-item>
     <nz-form-label>Wpis</nz-form-label>
     <nz-form-control>
-      <nz-textarea-count [nzMaxCharacterCount]="1256">
         <textarea
           rows="20"
           nz-input
           [formControl]="__controls.content"></textarea>
-      </nz-textarea-count>
     </nz-form-control>
   </nz-form-item>
 

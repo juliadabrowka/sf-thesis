@@ -16,7 +16,8 @@ import {
   faPlus,
   faRectangleList,
   faSquarePlus,
-  faThumbsUp
+  faThumbsUp,
+  faTrashCan
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SfIcons = {
@@ -26,6 +27,7 @@ export const SfIcons = {
   allForms: faRectangleList,
   bikeTrip: faPersonBiking,
   classicTrip: faPersonHiking,
+  delete: faTrashCan,
   dropDownArrow: faChevronDown,
   forms: faFolderTree,
   media: faPhotoFilm,
