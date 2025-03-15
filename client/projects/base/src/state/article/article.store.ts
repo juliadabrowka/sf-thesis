@@ -1,13 +1,14 @@
-import {inject} from '@angular/core';
-import {ArticleDTO, ArticleService} from '@sf/sf-base';
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import {computed, inject} from '@angular/core';
+import {ArticleCategory, ArticleDTO, ArticleService} from '@sf/sf-base';
+import {patchState, signalStore, withComputed, withMethods, withProps, withState} from '@ngrx/signals';
 import {firstValueFrom} from 'rxjs';
-import {SelectEntityId} from '@ngrx/signals/entities';
+import {addEntity, SelectEntityId, updateEntity, withEntities} from '@ngrx/signals/entities';
 
 type SfArticleState = {
   articles: ArticleDTO[];
   article: ArticleDTO | undefined;
   loading: boolean;
+  categoryFilter: ArticleCategory | undefined,
   error: any;
 }
 
@@ -15,6 +16,7 @@ const initialState: SfArticleState = {
   articles: [],
   article: undefined,
   loading: false,
+  categoryFilter: undefined,
   error: null
 }
 
@@ -23,53 +25,66 @@ const selectId: SelectEntityId<ArticleDTO> = (article) => article.Id ?? -1;
 export const ArticleStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
-  withMethods((store, articleService = inject(ArticleService)) => ({
+  withEntities<ArticleDTO>(),
+  withProps(() => ({articleService: inject(ArticleService)})),
+  withComputed((store) => ({
+    currentArticle: computed(() => store.article())
+  })),
+  withMethods((store) => ({
       async createArticle(article: ArticleDTO) {
         patchState(store, {loading: true});
-        const createArticleApiCall$ = await articleService.createArticle(article);
+        const createArticleApiCall$ = await store.articleService.createArticle(article);
         const createdArticle = await firstValueFrom(createArticleApiCall$);
-        //patchState(store, addEntity(createdArticle, { selectId }));
+        patchState(store, addEntity(createdArticle, {selectId}));
         patchState(store, {loading: false})
       },
 
       async updateArticle(article: ArticleDTO) {
         patchState(store, {loading: true});
-        const updateArticleApiCall$ = await articleService.updateArticle(article);
+        const updateArticleApiCall$ = await store.articleService.updateArticle(article);
         const updatedArticle = await firstValueFrom(updateArticleApiCall$);
-        // if (updatedArticle?.Id !== undefined) {
-        //   patchState(
-        //     store,
-        //     article: updatedArticle
-        //   );
-        // }
+        patchState(
+          store,
+          updatedArticle.Id !== undefined
+            ? updateEntity({
+              id: updatedArticle.Id,
+              changes: updatedArticle,
+            }, {selectId})
+            : {article: undefined, error: 'Failed to update article: missing Id'}
+        );
         patchState(store, {loading: false});
       },
 
       async loadArticleDetails(id: number) {
         patchState(store, {loading: true});
-        const loadArticleDetailsApiCall$ = await articleService.getArticleDetails(id);
+        const loadArticleDetailsApiCall$ = await store.articleService.getArticleDetails(id);
         const articleDetails = await firstValueFrom(loadArticleDetailsApiCall$);
         patchState(store, {article: articleDetails, loading: false});
       },
 
-      async setArticle(article: ArticleDTO | undefined) {
-        patchState(store, {loading: true});
-        patchState(store, {article, loading: false});
+    setArticle(article: ArticleDTO | undefined) {
+      patchState(store, {article, loading: true});
+      patchState(store, {loading: false});
       },
 
       async deleteArticles(ids: number[]) {
         patchState(store, {loading: true});
-        const deleteArticleApiCall$ = await articleService.deleteArticles(ids);
+        const deleteArticleApiCall$ = await store.articleService.deleteArticles(ids);
         await firstValueFrom(deleteArticleApiCall$);
         patchState(store, {loading: false});
       },
 
       async loadArticleList() {
         patchState(store, {loading: true});
-        const getArticleListApiCall$ = await articleService.getArticles();
+        const getArticleListApiCall$ = await store.articleService.getArticles();
         const articles = await firstValueFrom(getArticleListApiCall$);
         patchState(store, {articles, loading: false})
-      }
+      },
+
+    changeCategoryFilter(categoryFilter: ArticleCategory) {
+      patchState(store, {loading: true, categoryFilter});
+      patchState(store, {loading: false});
+    },
     })
   )
 )

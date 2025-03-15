@@ -105,8 +105,8 @@ export const DefaultTripTypeValue = TripType.Classic
 export class TripDTO {
   Id: number | undefined
   Price: number = 0;
-  DateFrom: Date | undefined;
-  DateTo: Date | undefined;
+  DateFrom: Date = new Date();
+  DateTo: Date = new Date();
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   Type: TripType = DefaultTripTypeValue;

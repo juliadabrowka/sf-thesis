@@ -5,6 +5,9 @@ export * from './services/trip-service.service';
 export * from './services/auth-service.service';
 export * from './services/article-service.service';
 
+export * from './state/article/article.store'
+export * from './state/trip/trip.store'
+
 export * from './lib/action-bar/action-bar.component';
 
 export * from './lib/article/article-form/article-form.component';

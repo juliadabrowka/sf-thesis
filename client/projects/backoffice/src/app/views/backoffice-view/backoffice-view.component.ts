@@ -1,10 +1,15 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ArticleDTO, SfArticleTableComponent, SfIconAndTextComponent, SfIcons, SfTripTableComponent} from '@sf/sf-base';
+import {
+  ArticleDTO,
+  ArticleStore,
+  SfArticleTableComponent,
+  SfIconAndTextComponent,
+  SfIcons,
+  SfTripTableComponent
+} from '@sf/sf-base';
 import {SfBackofficeFilterOutTripsPipe} from './backoffice-view-filter-out-trips.pipe';
 import {NzCardComponent} from 'ng-zorro-antd/card';
-import {ArticleStore} from '../../../../../base/src/state/article/article.store';
-import {JsonPipe} from '@angular/common';
 
 
 @Component({
@@ -14,8 +19,7 @@ import {JsonPipe} from '@angular/common';
     SfArticleTableComponent,
     SfTripTableComponent,
     SfBackofficeFilterOutTripsPipe,
-    NzCardComponent,
-    JsonPipe
+    NzCardComponent
   ],
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',
@@ -29,9 +33,14 @@ export class SfBackofficeComponent {
   private readonly articleStore = inject(ArticleStore);
 
   public readonly __icons = SfIcons;
-  public readonly __articles$$ = this.articleStore.articles();
+  public readonly __articles$$ = computed(() => this.articleStore.articles())
+  public readonly __articles = signal<ArticleDTO[]>([])
   //public readonly __trips$$ = signal<TripDTO[]>([]);
   public readonly __loading$$ = this.articleStore.loading();
+
+  constructor() {
+    this.articleStore.loadArticleList();
+  }
 
   async __onArticleClicked(article: ArticleDTO) {
     await this.router.navigate([`articles/${article.Id}`], {relativeTo: this.route});

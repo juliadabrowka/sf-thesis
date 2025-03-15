@@ -25,7 +25,7 @@ export class AppComponent {
   }
 
   async __createNewArticle() {
-    await this.store.setArticle(undefined)
+    //await this.store.setArticle(undefined)
     await this.router.navigate(['create-article'], {relativeTo: this.activatedRoute});
   }
 

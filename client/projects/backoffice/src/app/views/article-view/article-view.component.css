@@ -1,12 +1,12 @@
 .remove-button {
-  border: 1px solid black;
+  border: 1px solid #030a22;
   padding: 3px 8px;
   border-radius: 5px;
   cursor: pointer;
 
   &:hover {
-    color: #bc1a1a;
-    border-color: #bc1a1a;
+    color: #9a2424;
+    border-color: #9a2424;
   }
 }
 
@@ -23,4 +23,11 @@
 
 .tooltip {
   padding: 6px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
 }

@@ -45,7 +45,7 @@ public class ArticleRepository : IArticleRepository
 
         if (p == null)
         {
-            throw new ApplicationException("Post not found");
+            throw new ApplicationException("Article not found");
         }
 
         return p;

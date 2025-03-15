@@ -10,19 +10,20 @@ export class TripService {
   constructor(private http: HttpClient) {
   }
 
-  public createTrip(tripDto: TripDTO): Observable<TripDTO> {
+  public async createTrip(tripDto: TripDTO) {
     return this.http.post(this.apiUrl + '/createTrip', {tripDto}) as Observable<TripDTO>;
   }
 
-  public updateTrip(tripDto: TripDTO) {
+  public async updateTrip(tripDto: TripDTO) {
     return this.http.post(this.apiUrl + '/updateTrip', tripDto) as Observable<TripDTO>;
   }
 
-  public getTrips() {
+  public async getTrips() {
     return this.http.get(this.apiUrl + '/tripList') as Observable<TripDTO[]>;
   }
-  public getTripDetails(tripId: number): Observable<TripDTO> {
-    return this.http.get(this.apiUrl + '/getTripDetails/\$\{tripId}') as Observable<TripDTO>;
+
+  public async getTripDetails(tripId: number) {
+    return this.http.get(`${this.apiUrl}/getTripDetails/${tripId}`) as Observable<TripDTO>;
   }
 }
 

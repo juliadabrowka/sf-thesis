@@ -1,7 +1,3 @@
-@if (sfLoading) {
-  LOADING
-}
-
 <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
   <nz-form-item>
     <nz-form-label>Kategoria</nz-form-label>
@@ -30,7 +26,7 @@
     </nz-form-control>
   </nz-form-item>
 
-  @if (isTripCategorySelected$ | async) {
+  @if (isTripCategorySelected) {
     <span class="trip-fields-display">
         <nz-form-item>
           <nz-form-label>Rodzaj wyprawy</nz-form-label>
