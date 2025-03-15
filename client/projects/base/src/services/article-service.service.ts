@@ -10,23 +10,23 @@ export class ArticleService {
     constructor(private http: HttpClient) {
     }
 
-    public getArticles() {
+  public async getArticles() {
       return this.http.get<ArticleDTO[]>(this.apiUrl + '/articleList') as Observable<ArticleDTO[]>;
   }
 
-  public getArticleDetails(articleId: number) {
+  public async getArticleDetails(articleId: number) {
     return this.http.get<ArticleDTO>(`${this.apiUrl}/articles/${articleId}`);
   }
 
-    public createArticle(articleDto: ArticleDTO) {
+  public async createArticle(articleDto: ArticleDTO) {
       return this.http.post<ArticleDTO>(this.apiUrl + '/createArticle', articleDto) as Observable<ArticleDTO>;
   }
 
-    public updateArticle(articleDto: ArticleDTO) {
+  public async updateArticle(articleDto: ArticleDTO) {
       return this.http.post(this.apiUrl + '/updateArticle', articleDto) as Observable<ArticleDTO>;
     }
 
-    public deleteArticles(ids: number[]) {
+  public async deleteArticles(ids: number[]) {
       return this.http.delete(this.apiUrl + `/deleteArticles`, {body: {ids}}) as unknown as Observable<void>
   }
 }

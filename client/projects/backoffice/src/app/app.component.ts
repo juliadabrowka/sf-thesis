@@ -3,20 +3,20 @@ import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router'
 import {NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent} from 'ng-zorro-antd/layout';
 import {NzMenuDirective, NzSubMenuComponent} from 'ng-zorro-antd/menu';
 import {SfIconAndTextComponent, SfIcons, SfSiderComponent} from '@sf/sf-base';
-import {Store} from '@ngrx/store';
-import {setArticle, setTrip} from '@sf/sf-shared';
+import {ArticleStore} from '../../../base/src/state/article/article.store';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent, NzMenuDirective, NzSubMenuComponent, SfIconAndTextComponent, SfSiderComponent, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ArticleStore]
 })
 export class AppComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly store = inject(Store)
+  private readonly store = inject(ArticleStore)
 
   public readonly __icons = SfIcons;
 
@@ -25,12 +25,12 @@ export class AppComponent {
   }
 
   async __createNewArticle() {
-    this.store.dispatch(setArticle({article: undefined}))
+    await this.store.setArticle(undefined)
     await this.router.navigate(['create-article'], {relativeTo: this.activatedRoute});
   }
 
   async __createNewTrip() {
-    this.store.dispatch(setTrip({trip: undefined}))
+    //this.store.dispatch(setTrip({trip: undefined}))
     await this.router.navigate(['create-trip'], {relativeTo: this.activatedRoute});
   }
 

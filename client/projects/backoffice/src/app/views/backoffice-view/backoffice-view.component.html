@@ -1,13 +1,14 @@
 <nz-card [nzTitle]="articlesTemplate">
   <sf-article-table
-    [sfArticles]="__articles$$()"
+    [sfArticles]="__articles$$"
     (sfOnArticleClick)="__onArticleClicked($event)"
   ></sf-article-table>
 </nz-card>
-
+<pre> articles {{ __articles$$ | json }}</pre>
+<pre> articles {{ __loading$$ | json }}</pre>
 <nz-card [nzTitle]="tripsTemplate">
   <sf-trip-table
-    [sfTrips]="__articles$$() | sfBackofficeFilterOutTrips"
+    [sfTrips]="__articles$$ | sfBackofficeFilterOutTrips"
     (sfOnTripClick)="__onTripClicked($event)"
   ></sf-trip-table>
 </nz-card>

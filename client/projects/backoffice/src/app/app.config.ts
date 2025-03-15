@@ -4,9 +4,6 @@ import {backofficeRoutes} from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {provideStore} from '@ngrx/store';
-import {provideEffects} from '@ngrx/effects';
-import {ArticleEffects, articleReducer} from '@sf/sf-shared';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,8 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(backofficeRoutes),
     provideHttpClient(),
     provideAnimations(),
-    provideAnimationsAsync(),
-    provideStore({articles: articleReducer}),
-    provideEffects([ArticleEffects]),
+    provideAnimationsAsync()
   ]
 };

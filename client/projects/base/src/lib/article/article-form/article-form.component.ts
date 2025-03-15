@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Input} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ArticleCategory, ArticleDTO, Country, TripDTO, TripType,} from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -11,6 +11,7 @@ import {AsyncPipe} from '@angular/common';
 import {NzDatePickerComponent} from 'ng-zorro-antd/date-picker';
 import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
 import {SfUploadComponent} from '../../upload/upload.component';
+import {ArticleStore} from '../../../state/article/article.store';
 
 @Component({
   selector: 'sf-article-form',
@@ -30,22 +31,23 @@ import {SfUploadComponent} from '../../upload/upload.component';
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ArticleStore]
 })
 export class SfArticleFormComponent {
-  //private readonly articleStore = inject(ArticleStore);
+  private readonly articleStore = inject(ArticleStore);
 
-  public readonly __article$$ = [];
+  public readonly __article$$ = this.articleStore.article();
   @Input() public set sfArticle(article: ArticleDTO | null | undefined) {
-    // this.__article$$.set(article ?? undefined);
-    //
-    // if (article) {
-    //   this.__formGroup.patchValue({
-    //     category: article.ArticleCategory,
-    //     title: article.Title,
-    //     content: article.Content,
-    //     country: article.Country
-    //   })
-    // }
+    //this.__article$$.set(article ?? undefined);
+
+    if (article) {
+      this.__formGroup.patchValue({
+        category: article.ArticleCategory,
+        title: article.Title,
+        content: article.Content,
+        country: article.Country
+      })
+    }
   }
 
   //public readonly __trip$$ = signal<TripDTO | undefined>(undefined);
@@ -113,7 +115,7 @@ export class SfArticleFormComponent {
         } as ArticleDTO;
 
         if (articleChanged(currentArticle, updatedArticle)) {
-          //await this.articleStore.setArticle(updatedArticle);
+          await this.articleStore.setArticle(updatedArticle);
           //this.store.dispatch(setTrip({trip: updatedArticle.TripDto}))
         }
 
