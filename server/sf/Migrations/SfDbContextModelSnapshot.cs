@@ -323,7 +323,7 @@ namespace sf.Migrations
                     b.HasOne("sf.Models.SurveyQuestion", "SurveyQuestion")
                         .WithMany("SurveyAnswers")
                         .HasForeignKey("SurveyQuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("sf.Models.SurveyResponse", "SurveyResponse")
@@ -352,7 +352,7 @@ namespace sf.Migrations
                     b.HasOne("sf.Models.Article", "Article")
                         .WithOne("Trip")
                         .HasForeignKey("sf.Models.Trip", "ArticleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Article");
                 });
@@ -362,7 +362,7 @@ namespace sf.Migrations
                     b.HasOne("sf.Models.Trip", "Trip")
                         .WithMany("TripApplications")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Trip");
