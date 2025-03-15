@@ -1,67 +1,76 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, signal} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ArticleCategory, ArticleDTO, Country, DefaultTripTypeValue, TripDTO, TripType,} from '../../../data-types';
+import {ArticleCategory, ArticleDTO, Country, TripDTO, TripType,} from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
-import {SfUploadComponent} from '../../upload/upload.component';
-import {setArticle} from '@sf/sf-shared';
+import {map} from 'rxjs';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzSelectComponent} from 'ng-zorro-antd/select';
-import {NzDatePickerComponent, NzRangePickerComponent} from 'ng-zorro-antd/date-picker';
-import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
 import {NzInputDirective} from 'ng-zorro-antd/input';
+import {AsyncPipe} from '@angular/common';
+import {NzDatePickerComponent} from 'ng-zorro-antd/date-picker';
+import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
+import {SfUploadComponent} from '../../upload/upload.component';
 
 @Component({
   selector: 'sf-article-form',
   imports: [
-    ReactiveFormsModule,
-    SfUploadComponent,
-    NzFormItemComponent,
     NzFormDirective,
+    ReactiveFormsModule,
+    NzFormItemComponent,
     NzFormLabelComponent,
     NzFormControlComponent,
     NzSelectComponent,
+    NzInputDirective,
+    AsyncPipe,
     NzDatePickerComponent,
     NzInputNumberComponent,
-    NzInputDirective,
-    NzRangePickerComponent
+    SfUploadComponent
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfArticleFormComponent {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly store = inject(Store);
+  //private readonly articleStore = inject(ArticleStore);
 
-  public readonly __article$$ = signal<ArticleDTO | undefined>(undefined);
+  public readonly __article$$ = [];
   @Input() public set sfArticle(article: ArticleDTO | null | undefined) {
-    this.__article$$.set(article ?? undefined);
-
-    if (article) {
-      this.__formGroup.patchValue({
-        category: article.ArticleCategory,
-        title: article.Title,
-        content: article.Content,
-        country: article.Country,
-        dates: [article.TripDto?.DateFrom ?? null, article.TripDto?.DateTo ?? null],
-        price: article.TripDto?.Price,
-        tripType: article.TripDto?.Type,
-        participantsCurrent: article.TripDto?.ParticipantsCurrent,
-        participantsTotal: article.TripDto?.ParticipantsTotal
-      })
-    }
-
-    this.cdr.markForCheck();
+    // this.__article$$.set(article ?? undefined);
+    //
+    // if (article) {
+    //   this.__formGroup.patchValue({
+    //     category: article.ArticleCategory,
+    //     title: article.Title,
+    //     content: article.Content,
+    //     country: article.Country
+    //   })
+    // }
   }
+
+  //public readonly __trip$$ = signal<TripDTO | undefined>(undefined);
+  @Input() public set sfTrip(trip: TripDTO | null | undefined) {
+    // this.__trip$$.set(trip ?? undefined);
+    //
+    // if (trip) {
+    //   this.__formGroup.patchValue({
+    //     dates: [trip.DateFrom, trip.DateTo],
+    //     price: trip.Price,
+    //     tripType: trip.Type,
+    //     participantsCurrent: trip.ParticipantsCurrent,
+    //     participantsTotal: trip.ParticipantsTotal
+    //   })
+    // }
+  }
+
+  @Input() public sfLoading: boolean | null | undefined;
 
   public readonly __controls = {
     category: new FormControl<ArticleCategory>(ArticleCategory.Fotorelacje, {nonNullable: true}),
     title: new FormControl<string>('', {nonNullable: true}),
     content: new FormControl<string>('', {nonNullable: true}),
     country: new FormControl<Country>(Country.Polska, {nonNullable: true}),
-    dates: new FormControl<[Date | null, Date | null] | null>(null),
+    dates: new FormControl<[Date, Date]>([new Date(), new Date()], {nonNullable: true}),
     price: new FormControl<number>(0, {nonNullable: true}),
     tripType: new FormControl<TripType>(TripType.Classic, {nonNullable: true}),
     participantsTotal: new FormControl<number>(0, {nonNullable: true}),
@@ -71,7 +80,9 @@ export class SfArticleFormComponent {
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
   public readonly __tripTypes = Object.values(TripType).map(o => ({label: o, value: o}));
   public readonly __formGroup = new FormGroup(this.__controls);
-  public isTripCategorySelected: boolean | undefined;
+  public readonly isTripCategorySelected$ = this.__controls.category.valueChanges
+    .pipe(map(category => category === ArticleCategory.Wyprawy))
+
 
   constructor() {
     this.__formGroup.valueChanges
@@ -79,35 +90,33 @@ export class SfArticleFormComponent {
         takeUntilDestroyed()
       )
       .subscribe(async (fg) => {
-        const currentArticle = this.__article$$() ?? new ArticleDTO();
+        const currentTrip = new TripDTO();
+        const updatedTrip = {
+          ...currentTrip,
+          // Type: fg.tripType,
+          // Price: fg.price,
+          // ParticipantsCurrent: fg.participantsCurrent,
+          // ParticipantsTotal: fg.participantsTotal,
+          // DateFrom: fg.dates![0],
+          // DateTo: fg.dates![1]
+        }
+
+        const currentArticle = new ArticleDTO();
         const updatedArticle = {
           ...currentArticle,
           Title: fg.title,
           Content: fg.content,
           ArticleCategory: fg.category,
-          Country: fg.country
+          Country: fg.country,
+          TripDto: this.isTripCategorySelected$ ? updatedTrip : undefined,
+          TripId: updatedTrip.Id,
         } as ArticleDTO;
 
-        this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
         if (articleChanged(currentArticle, updatedArticle)) {
-          if (this.isTripCategorySelected) {
-            const trip = new TripDTO();
-            trip.Type = fg.tripType ?? DefaultTripTypeValue;
-            trip.Price = fg.price ?? 0;
-            trip.ParticipantsCurrent = fg.participantsCurrent ?? 0;
-            trip.ParticipantsTotal = fg.participantsTotal ?? 0;
-
-            updatedArticle.TripDto = trip;
-
-            //this.store.dispatch(setTrip({trip}))
-          } else {
-            updatedArticle.TripDto = undefined;
-            updatedArticle.TripId = undefined;
-          }
-          this.store.dispatch(setArticle({article: updatedArticle}));
+          //await this.articleStore.setArticle(updatedArticle);
+          //this.store.dispatch(setTrip({trip: updatedArticle.TripDto}))
         }
 
-        this.cdr.markForCheck()
       })
   }
 
@@ -117,11 +126,23 @@ export class SfArticleFormComponent {
 }
 
 export function articleChanged(prev: ArticleDTO, current: ArticleDTO) {
+  const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
+    return arr1.length === arr2.length && new Set(arr1).size === new Set([...arr1, ...arr2]).size;
+  }
+
   if (prev.Title !== current.Title ||
     prev.Content !== current.Content ||
     prev.Country !== current.Country ||
     prev.ArticleCategory !== current.ArticleCategory ||
-    prev.TripId !== current.TripId
+    prev.TripId !== current.TripId ||
+    prev.TripDto?.Type !== current.TripDto?.Type ||
+    prev.TripDto?.ParticipantsCurrent !== current.TripDto?.ParticipantsCurrent ||
+    prev.TripDto?.ParticipantsTotal !== current.TripDto?.ParticipantsTotal ||
+    prev.TripDto?.DateFrom !== current.TripDto?.DateFrom ||
+    prev.TripDto?.DateTo !== current.TripDto?.DateTo ||
+    prev.TripDto?.SurveyId !== current.TripDto?.SurveyId ||
+    prev.TripDto?.Price !== current.TripDto?.Price ||
+    arraysEqualSet(prev.TripDto?.TripApplicationIds ?? [], current.TripDto?.TripApplicationIds ?? [])
   ) {
     return true;
   }

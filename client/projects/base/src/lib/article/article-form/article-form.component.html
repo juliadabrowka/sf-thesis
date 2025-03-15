@@ -1,3 +1,7 @@
+@if (sfLoading) {
+  LOADING
+}
+
 <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
   <nz-form-item>
     <nz-form-label>Kategoria</nz-form-label>
@@ -19,7 +23,14 @@
     </nz-form-control>
   </nz-form-item>
 
-  @if (isTripCategorySelected) {
+  <nz-form-item>
+    <nz-form-label>Tytuł</nz-form-label>
+    <nz-form-control>
+      <input nz-input [formControl]="__controls.title"/>
+    </nz-form-control>
+  </nz-form-item>
+
+  @if (isTripCategorySelected$ | async) {
     <span class="trip-fields-display">
         <nz-form-item>
           <nz-form-label>Rodzaj wyprawy</nz-form-label>
@@ -60,13 +71,6 @@
       </nz-form-item>
     </span>
   }
-
-  <nz-form-item>
-    <nz-form-label>Tytuł</nz-form-label>
-    <nz-form-control>
-      <input nz-input [formControl]="__controls.title"/>
-    </nz-form-control>
-  </nz-form-item>
 
   <nz-form-item>
     <nz-form-label>Wpis</nz-form-label>
