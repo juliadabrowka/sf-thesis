@@ -113,26 +113,51 @@ public class ArticleService : IArticleService
             article.Country = articleDto.Country;
             isUpdated = true;
         }
-        //
-        // if (article.TripId != articleDto.TripId)
-        // {
-        //     if (articleDto.TripId.HasValue)
-        //     { 
-        //         var newTrip = await _tripRepository.GetTripDetails(articleDto.TripId.Value);
-        //         if (newTrip == null)
-        //         {
-        //             throw new ApplicationException($"Trip with ID {articleDto.TripId.Value} not found.");
-        //         }
-        //
-        //         article.TripId = articleDto.TripId.Value;
-        //         article.Trip = newTrip;
-        //     }
-        //     else
-        //     {
-        //         article.TripId = null;
-        //         article.Trip = null;
-        //     }
-        // }
+
+        if (articleDto.TripId != article.TripId) // changes category from/to trip
+        {
+            isUpdated = true;
+            if (articleDto.TripId == null) // new trip is null - category changes
+            {
+                article.Trip = null;
+                article.TripId = null;
+            }
+            else // new trip is not null - data inside of it changes
+            {
+                var currentTrip =
+                    await _tripRepository.GetTripDetails(articleDto.TripId.Value); // current trip data from DB
+
+                if (currentTrip == null)
+                {
+                    throw new ApplicationException(
+                        $"Trip with ID {articleDto.TripId.Value} not found when updating article.");
+                }
+
+                article.Trip = currentTrip;
+                article.TripId = currentTrip.Id;
+            }
+        }
+        
+        // updates details in the same trip article
+        else if (articleDto.TripId != null)
+        {
+            isUpdated = true;
+            var currentTrip = article.Trip;
+            var updatedTrip = _mapper.Map<Trip>(articleDto.TripDto); // maps to new updated trip
+
+            if (updatedTrip == null)
+            {
+                throw new ApplicationException(
+                    $"Trip with ID {articleDto.TripId.Value} not found when updating article.");
+            }
+
+            if (!TripsAreEqual(currentTrip, updatedTrip))
+            {
+                isUpdated = true;
+                article.Trip = updatedTrip;
+                article.TripId = updatedTrip.Id;
+            }
+        }
 
         if (isUpdated)
         {
@@ -140,5 +165,21 @@ public class ArticleService : IArticleService
         }
 
         return _mapper.Map<ArticleDTO>(article);
+    }
+
+    private bool TripsAreEqual(Trip currentTrip, Trip updatedTrip)
+    {
+        var currentTripApplications = new HashSet<int>(currentTrip.TripApplications.Select(t => t.Id));
+        var updatedTripApplications = new HashSet<int>(updatedTrip.TripApplications.Select(t => t.Id));
+
+        return currentTrip.Price == updatedTrip.Price &&
+               currentTrip.Type == updatedTrip.Type &&
+               currentTrip.ArticleId == updatedTrip.ArticleId &&
+               currentTrip.DateFrom == updatedTrip.DateFrom &&
+               currentTrip.DateTo == updatedTrip.DateTo &&
+               currentTrip.SurveyId == updatedTrip.SurveyId &&
+               currentTrip.ParticipantsCurrent == updatedTrip.ParticipantsCurrent &&
+               currentTrip.ParticipantsTotal == updatedTrip.ParticipantsTotal &&
+               currentTripApplications == updatedTripApplications;
     }
 }

@@ -52,7 +52,7 @@ public class SfDbContext : DbContext
             .HasMany(sq => sq.SurveyAnswers)
             .WithOne(sa => sa.SurveyQuestion)
             .HasForeignKey(sa => sa.SurveyQuestionId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Cascade); 
         
         // trip - article
         modelBuilder.Entity<Trip>()
@@ -65,13 +65,13 @@ public class SfDbContext : DbContext
             .HasOne(a => a.Trip)
             .WithOne(t => t.Article)
             .HasForeignKey<Trip>(t => t.ArticleId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Cascade); 
 
         // trip - trip application
         modelBuilder.Entity<Trip>()
             .HasMany<TripApplication>(t => t.TripApplications)
             .WithOne(ta => ta.Trip)
             .HasForeignKey(o => o.TripId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Cascade); 
     }
 }
