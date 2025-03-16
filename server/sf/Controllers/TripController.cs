@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using sf.Models;
 using sf.Services;
@@ -50,5 +51,12 @@ public class TripController: ControllerBase
     {
         var trip = await _tripService.GetTripDetails(tripId);
         return Ok(trip);
+    }
+
+    [HttpDelete("deleteTrips")]
+    public async Task<ActionResult> DeleteTrips(int[] tripIds)
+    {
+        await _tripService.DeleteTrips(tripIds);
+        return Ok();
     }
 }

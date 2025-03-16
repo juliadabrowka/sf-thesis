@@ -26,8 +26,8 @@ export class ArticleService {
       return this.http.post(this.apiUrl + '/updateArticle', articleDto) as Observable<ArticleDTO>;
     }
 
-  public async deleteArticles(ids: number[]) {
-      return this.http.delete(this.apiUrl + `/deleteArticles`, {body: {ids}}) as unknown as Observable<void>
+  public async deleteArticles(articleIds: number[]) {
+    return this.http.post(this.apiUrl + `/deleteArticles`, articleIds);
   }
 }
 

@@ -69,7 +69,7 @@ public class ArticleRepository : IArticleRepository
         
         if (!articles.Any())
         {
-            throw new KeyNotFoundException("No articles found");
+            throw new AggregateException("No articles found to delete");
         }
         
         _sfDbContext.Articles.RemoveRange(articles);

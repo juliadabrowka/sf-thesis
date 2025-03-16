@@ -12,7 +12,7 @@ import {
 } from '../../../data-types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, map} from 'rxjs';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective} from 'ng-zorro-antd/input';
@@ -21,7 +21,7 @@ import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
 import {SfUploadComponent} from '../../upload/upload.component';
 import {ArticleStore} from '../../../state/article/article.store';
 import {TripStore} from '../../../state/trip/trip.store';
-import {isNotNil} from '@w11k/rx-ninja';
+import {isNil, isNotNil} from '@w11k/rx-ninja';
 
 @Component({
   selector: 'sf-article-form',
@@ -103,35 +103,36 @@ export class SfArticleFormComponent {
   constructor() {
     this.__formGroup.valueChanges
       .pipe(
+        map(() => this.__formGroup.getRawValue()),
         takeUntilDestroyed()
       )
       .subscribe(async (fg) => {
         this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
-        const currentTrip = this.__trip$$.value ?? new TripDTO();
-        const updatedTrip = {
-          ...currentTrip,
-          Type: fg.tripType ?? DefaultTripTypeValue,
-          Price: fg.price ?? 0,
-          ParticipantsCurrent: fg.participantsCurrent ?? 0,
-          ParticipantsTotal: fg.participantsTotal ?? 0,
-          DateFrom: fg.dates![0],
-          DateTo: fg.dates![1]
+        const tripState = isNil(this.__trip$$.value) ? new TripDTO() : {...this.__trip$$.value};
+
+        tripState.Type = fg.tripType;
+        tripState.Price = fg.price;
+        tripState.ParticipantsCurrent = fg.participantsCurrent;
+        tripState.ParticipantsTotal = fg.participantsTotal;
+        tripState.DateFrom = fg.dates[0];
+        tripState.DateTo = fg.dates[1]
+
+        const articleState = isNil(this.__article$$.value) ? new ArticleDTO() : this.__article$$.value;
+
+        articleState.Title = fg.title;
+        articleState.Content = fg.content;
+        articleState.ArticleCategory = fg.category;
+        articleState.Country = fg.country;
+        articleState.TripDto = this.isTripCategorySelected ? tripState : undefined;
+        articleState.TripId = tripState.Id || undefined;
+
+        if (tripChanged(this.__trip$$.value, tripState)) {
+          tripState.ArticleId = articleState.Id;
+          this.tripStore.setTrip(tripState)
         }
-
-        const currentArticle = this.__article$$.value ?? new ArticleDTO();
-        const updatedArticle = {
-          ...currentArticle,
-          Title: fg.title,
-          Content: fg.content,
-          ArticleCategory: fg.category,
-          Country: fg.country,
-          TripDto: this.isTripCategorySelected ? updatedTrip : undefined,
-          TripId: updatedTrip.Id,
-        } as ArticleDTO;
-
-        if (articleChanged(currentArticle, updatedArticle)) {
-          this.articleStore.setArticle(updatedArticle);
-          this.tripStore.setTrip(updatedTrip)
+        articleState.TripDto = tripState;
+        if (articleChanged(this.__article$$.value, articleState)) {
+          this.articleStore.setArticle(articleState);
         }
 
       })
@@ -142,31 +143,33 @@ export class SfArticleFormComponent {
   }
 }
 
-export function articleChanged(prev: ArticleDTO, current: ArticleDTO) {
-  const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
-    return arr1.length === arr2.length && new Set(arr1).size === new Set([...arr1, ...arr2]).size;
-  }
-
-  if (prev.Title !== current.Title ||
-    prev.Content !== current.Content ||
-    prev.Country !== current.Country ||
-    prev.ArticleCategory !== current.ArticleCategory
+export function articleChanged(prev: ArticleDTO | undefined, current: ArticleDTO) {
+  if (prev?.Title !== current.Title ||
+    prev?.Content !== current.Content ||
+    prev?.Country !== current.Country ||
+    prev?.ArticleCategory !== current.ArticleCategory ||
+    isNotNil(prev?.TripDto) || isNotNil(current.TripDto)
   ) {
-    if (isNotNil(prev.TripDto) || isNotNil(current.TripDto)) {
-      if (prev.TripId !== current.TripId ||
-        prev.TripDto?.Type !== current.TripDto?.Type ||
-        prev.TripDto?.ParticipantsCurrent !== current.TripDto?.ParticipantsCurrent ||
-        prev.TripDto?.ParticipantsTotal !== current.TripDto?.ParticipantsTotal ||
-        prev.TripDto?.DateFrom !== current.TripDto?.DateFrom ||
-        prev.TripDto?.DateTo !== current.TripDto?.DateTo ||
-        prev.TripDto?.SurveyId !== current.TripDto?.SurveyId ||
-        prev.TripDto?.Price !== current.TripDto?.Price ||
-        arraysEqualSet(prev.TripDto?.TripApplicationIds ?? [], current.TripDto?.TripApplicationIds ?? [])) {
-        return true
-      }
-    }
     return true;
   }
   return false;
 }
 
+export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
+  const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
+    return arr1.length === arr2.length && new Set(arr1).size === new Set([...arr1, ...arr2]).size;
+  }
+
+  if (prev?.Id !== current.Id ||
+    prev?.Type !== current.Type ||
+    prev?.ParticipantsCurrent !== current.ParticipantsCurrent ||
+    prev?.ParticipantsTotal !== current.ParticipantsTotal ||
+    prev?.DateFrom !== current.DateFrom ||
+    prev?.DateTo !== current.DateTo ||
+    prev?.SurveyId !== current.SurveyId ||
+    prev?.Price !== current.Price ||
+    arraysEqualSet(prev?.TripApplicationIds ?? [], current.TripApplicationIds ?? [])) {
+    return true
+  }
+  return false;
+}

@@ -52,10 +52,10 @@ public class ArticleController : ControllerBase
         return Ok(article);
     }
 
-    [HttpDelete("deleteArticles")]
-    public async Task<ActionResult> DeleteArticles(int[] articleId)
+    [HttpPost("deleteArticles")]
+    public async Task<ActionResult> DeleteArticles([FromBody] int[] articleIds)
     {
-        await _articleService.DeleteArticles(articleId);
+        await _articleService.DeleteArticles(articleIds);
         return Ok();
     }
 }

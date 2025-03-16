@@ -11,6 +11,7 @@ public interface ITripService
     Task<TripDTO> GetTripDetails(int tripId);
     Task<TripDTO> CreateTrip(TripDTO tripDto);
     Task<TripDTO> UpdateTrip(TripDTO tripDto);
+    Task DeleteTrips(int[] tripIds);
 }
 public class TripService : ITripService
 {
@@ -43,6 +44,11 @@ public class TripService : ITripService
         
         await _tripRepository.UpdateTrip(t);
         return _mapper.Map<TripDTO>(t);
+    }
+
+    public async Task DeleteTrips(int[] tripIds)
+    {
+        await _tripRepository.DeleteTrips(tripIds);
     }
 
     public async Task<TripDTO[]> GetTrips()

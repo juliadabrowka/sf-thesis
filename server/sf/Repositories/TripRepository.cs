@@ -10,6 +10,7 @@ public interface ITripRepository
     Task<Trip> GetTripDetails(int tripId);
     Task<Trip> CreateTrip(Trip trip);
     Task<Trip> UpdateTrip(Trip trip);
+    Task DeleteTrips(int[] tripIds);
 }
 
 public class TripRepository : ITripRepository
@@ -57,5 +58,20 @@ public class TripRepository : ITripRepository
         _sfDbContext.Trips.Update(trip);
         await _sfDbContext.SaveChangesAsync();
         return trip;
+    }
+
+    public async Task DeleteTrips(int[] tripIds)
+    {
+        var trips = await _sfDbContext.Trips
+            .Where(t => tripIds.Contains(t.Id))
+            .ToListAsync();
+        
+        if (!trips.Any())
+        {
+            throw new AggregateException("No trips found to delete");
+        }
+        
+        _sfDbContext.Trips.RemoveRange(trips);
+        await _sfDbContext.SaveChangesAsync();
     }
 }

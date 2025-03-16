@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent} from 'ng-zorro-antd/layout';
 import {NzMenuDirective, NzSubMenuComponent} from 'ng-zorro-antd/menu';
-import {SfIconAndTextComponent, SfIcons, SfSiderComponent} from '@sf/sf-base';
+import {SfIconAndTextComponent, SfIcons, SfSiderComponent, TripStore} from '@sf/sf-base';
 import {ArticleStore} from '../../../base/src/state/article/article.store';
 
 @Component({
@@ -11,12 +11,12 @@ import {ArticleStore} from '../../../base/src/state/article/article.store';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ArticleStore]
 })
 export class AppComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly store = inject(ArticleStore)
+  private readonly articleStore = inject(ArticleStore)
+  private readonly tripStore = inject(TripStore)
 
   public readonly __icons = SfIcons;
 
@@ -25,7 +25,8 @@ export class AppComponent {
   }
 
   async __createNewArticle() {
-    //await this.store.setArticle(undefined)
+    this.articleStore.setArticle(undefined);
+    this.tripStore.setTrip(undefined);
     await this.router.navigate(['create-article'], {relativeTo: this.activatedRoute});
   }
 

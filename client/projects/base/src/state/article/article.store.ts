@@ -67,9 +67,9 @@ export const ArticleStore = signalStore(
       patchState(store, {loading: false});
       },
 
-      async deleteArticles(ids: number[]) {
+    async deleteArticles(articleIds: number[]) {
         patchState(store, {loading: true});
-        const deleteArticleApiCall$ = await store.articleService.deleteArticles(ids);
+      const deleteArticleApiCall$ = await store.articleService.deleteArticles(articleIds);
         await firstValueFrom(deleteArticleApiCall$);
         patchState(store, {loading: false});
       },

@@ -59,7 +59,8 @@ public class ArticleService : IArticleService
          {
              throw new ApplicationException("Article is null but should not be");
          }
-        if (article.ArticleCategory == ArticleCategory.Wyprawy)
+        
+        if (articleDto.ArticleCategory == ArticleCategory.Wyprawy)
         {
             if (articleDto.TripDto == null)
             {
@@ -68,14 +69,12 @@ public class ArticleService : IArticleService
 
             var t = _mapper.Map<Trip>(articleDto.TripDto);
 
-            var trip = await _tripRepository.CreateTrip(t);
+            var trip = await _tripRepository.CreateTrip(t); // sets id
             article.Trip = trip;
             article.TripId = trip.Id;
-           
+            
             trip.Article = article;
             trip.ArticleId = article.Id;
-
-            await _articleRepository.UpdateArticle(article);
             await _tripRepository.UpdateTrip(trip);
         }
         
@@ -84,7 +83,7 @@ public class ArticleService : IArticleService
 
     public async Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto)
     {
-        if (articleDto.Id == null)
+        if (!articleDto.Id.HasValue)
         {
             throw new ApplicationException("This article does not have an ID but should have.");
         }
@@ -115,56 +114,54 @@ public class ArticleService : IArticleService
             article.Content = articleDto.Content;
             isUpdated = true;
         }
-
         if (article.Country != articleDto.Country)
         {
             article.Country = articleDto.Country;
             isUpdated = true;
         }
 
-        if (articleDto.TripId != article.TripId) // changes category from/to trip
+        if (articleDto.TripDto != null)
         {
             isUpdated = true;
-            if (articleDto.TripId == null) // new trip is null - category changes
-            {
-                article.Trip = null;
-                article.TripId = null;
+            
+            if (article.TripId != null) // if has id - only some data changes - has to be article bc dto cant be passed from ui
+            { 
+                var existingTrip = await _tripRepository.GetTripDetails(article.TripId.Value);
+                
+                existingTrip.Article = article;
+                existingTrip.DateFrom = articleDto.TripDto.DateFrom;
+                existingTrip.DateTo = articleDto.TripDto.DateTo;
+                existingTrip.Price = articleDto.TripDto.Price;
+                existingTrip.Type = articleDto.TripDto.Type;
+                existingTrip.ParticipantsCurrent = articleDto.TripDto.ParticipantsCurrent;
+                existingTrip.ParticipantsTotal = articleDto.TripDto.ParticipantsTotal;
+                
+                //existingTrip.TripApplications = articleDto.TripDto.TripApplicationIds; get from trip application server
+                //existingTrip.Survey = articleDto.TripDto.SurveyId; get from survey server
+            
+                await _tripRepository.UpdateTrip(existingTrip);
+
+                article.Trip = existingTrip;
             }
-            else // new trip is not null - data inside of it changes
+            else // article trip id is null = not existing yet
             {
-                var currentTrip =
-                    await _tripRepository.GetTripDetails(articleDto.TripId.Value); // current trip data from DB
+                Trip newTripEntity = _mapper.Map<Trip>(articleDto.TripDto);
+                var newTrip = await _tripRepository.CreateTrip(newTripEntity); // set id
 
-                if (currentTrip == null)
-                {
-                    throw new ApplicationException(
-                        $"Trip with ID {articleDto.TripId.Value} not found when updating article.");
-                }
-
-                article.Trip = currentTrip;
-                article.TripId = currentTrip.Id;
+                newTrip.ArticleId = article.Id;
+                newTrip.Article = article;
+                var t = await _tripRepository.UpdateTrip(newTrip);
+                
+                article.Trip = t;
+                article.TripId = t.Id; 
             }
         }
-        
-        // updates details in the same trip article
-        else if (articleDto.TripId != null)
+        else if (article.Trip != null)
         {
             isUpdated = true;
-            var currentTrip = article.Trip;
-            var updatedTrip = _mapper.Map<Trip>(articleDto.TripDto); // maps to new updated trip
-
-            if (updatedTrip == null)
-            {
-                throw new ApplicationException(
-                    $"Trip with ID {articleDto.TripId.Value} not found when updating article.");
-            }
-
-            if (!TripsAreEqual(currentTrip, updatedTrip))
-            {
-                isUpdated = true;
-                article.Trip = updatedTrip;
-                article.TripId = updatedTrip.Id;
-            }
+            await _tripRepository.DeleteTrips([article.Trip.Id]);
+            article.TripId = null;
+            article.Trip = null;
         }
 
         if (isUpdated)
