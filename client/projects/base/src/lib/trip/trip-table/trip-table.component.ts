@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  signal
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output} from '@angular/core';
 import {NzTableModule, NzThAddOnComponent} from "ng-zorro-antd/table";
-import {ArticleDTO, ColumnItem, TripDTO} from '@sf/sf-base';
+import {ColumnItem, TripDTO} from '@sf/sf-base';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'sf-trip-table',
@@ -24,14 +16,17 @@ import {ArticleDTO, ColumnItem, TripDTO} from '@sf/sf-base';
 export class SfTripTableComponent {
   private readonly cdr = inject(ChangeDetectorRef)
 
-  public readonly __trips$$ = signal<ArticleDTO[]>([]);
+  public readonly __trips$$ = new BehaviorSubject<TripDTO[]>([]);
 
-  @Input() public set sfTrips(trips: ArticleDTO[] | null | undefined) {
+  @Input() public set sfTrips(trips: TripDTO[] | null | undefined) {
     console.log(trips)
-    this.__trips$$.set(trips ?? []);
+    this.__trips$$.next(trips ?? []);
+    this.cdr.markForCheck()
   }
 
-  @Output() public readonly sfOnTripClick = new EventEmitter<ArticleDTO>();
+  @Input() sfLoading: boolean | null | undefined;
+
+  public readonly sfOnTripClick = output<TripDTO>();
 
   public readonly __columns: ColumnItem<TripDTO>[] = [
     {
@@ -64,7 +59,7 @@ export class SfTripTableComponent {
     },
   ]
 
-  trackByIndex(_: number, data: ArticleDTO): number {
-    return data.Id ?? 0;
+  trackByIndex(_: number, data: TripDTO): number {
+    return data.Id ?? -1;
   }
 }

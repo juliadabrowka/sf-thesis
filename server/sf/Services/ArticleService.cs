@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using sf.Models;
 using sf.Program.Data;
 using sf.Repositories;
@@ -13,6 +15,7 @@ public interface IArticleService
     Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto);
     Task<ArticleDTO[]> GetArticles();
     Task<ArticleDTO> GetArticleDetails(int articleId);
+    Task DeleteArticles(int[] articleIds);
 }
 public class ArticleService : IArticleService
 {
@@ -29,14 +32,19 @@ public class ArticleService : IArticleService
     
     public async Task<ArticleDTO[]> GetArticles()
     {
-        var posts = await _articleRepository.GetArticles();
-        return _mapper.Map<ArticleDTO[]>(posts);
+        var articles = await _articleRepository.GetArticles();
+        return _mapper.Map<ArticleDTO[]>(articles);
     }
 
     public async Task<ArticleDTO> GetArticleDetails(int articleId)
     {
-        var post = await _articleRepository.GetArticleDetails(articleId);
-        return _mapper.Map<ArticleDTO>(post);
+        var articleDetails = await _articleRepository.GetArticleDetails(articleId);
+        return _mapper.Map<ArticleDTO>(articleDetails);
+    }
+
+    public async Task DeleteArticles(int[] articleIds)
+    {
+        await _articleRepository.DeleteArticles(articleIds);
     }
 
     public async Task<ArticleDTO> CreateArticle(ArticleDTO articleDto)
@@ -78,7 +86,7 @@ public class ArticleService : IArticleService
     {
         if (articleDto.Id == null)
         {
-            throw new ApplicationException("This post does not have an ID but should have.");
+            throw new ApplicationException("This article does not have an ID but should have.");
         }
 
         var article = await _articleRepository.GetArticleDetails(articleDto.Id.Value);

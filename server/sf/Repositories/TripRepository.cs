@@ -25,12 +25,14 @@ public class TripRepository : ITripRepository
     {
         return await _sfDbContext.Trips
             .Include(t => t.TripApplications)
+            .Include(t => t.Article)
             .ToArrayAsync();
     }
 
     public async Task<Trip> GetTripDetails(int tripId)
     {
         var t = await _sfDbContext.Trips
+            .Include(t => t.Article)
             .Include(t => t.TripApplications)
             .FirstOrDefaultAsync(t => t.Id == tripId);
         

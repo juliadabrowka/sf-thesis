@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output} from '@angular/core';
 import {ArticleDTO} from '@sf/sf-base';
 import {NzTableModule, NzTableSortFn, NzThAddOnComponent} from 'ng-zorro-antd/table';
+import {BehaviorSubject} from 'rxjs';
 
 export interface ColumnItem<T> {
   name: string;
@@ -20,7 +21,7 @@ export interface ColumnItem<T> {
 export class SfArticleTableComponent {
   private readonly cdr = inject(ChangeDetectorRef);
 
-  public readonly __articles$$ = signal<ArticleDTO[]>([]);
+  public readonly __articles$$ = new BehaviorSubject<ArticleDTO[]>([]);
   public readonly __columns: ColumnItem<ArticleDTO>[] = [
     {
       name: "Tytuł",
@@ -37,9 +38,10 @@ export class SfArticleTableComponent {
   ];
 
   @Input() public set sfArticles(articles: ArticleDTO[] | null | undefined) {
-    this.__articles$$.set(articles ?? []);
+    this.__articles$$.next(articles ?? []);
   }
 
+  @Input() sfLoading: boolean | null | undefined;
   public readonly sfOnArticleClick = output<ArticleDTO>();
 
   trackByIndex(_: number, data: ArticleDTO): number {

@@ -15,7 +15,7 @@ export class ArticleService {
   }
 
   public async getArticleDetails(articleId: number) {
-    return this.http.get<ArticleDTO>(`${this.apiUrl}/articles/${articleId}`);
+    return this.http.get<ArticleDTO>(`${this.apiUrl}/article/${articleId}`);
   }
 
   public async createArticle(articleDto: ArticleDTO) {

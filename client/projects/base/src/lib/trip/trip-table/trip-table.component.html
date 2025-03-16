@@ -1,12 +1,10 @@
 <nz-table
-  #sortTable
-  [nzData]="__trips$$()"
+  #tripTable
+  [nzData]="__trips$$.value"
   [nzBordered]="true"
   [nzOuterBordered]="true"
-  [nzVirtualForTrackBy]="trackByIndex"
   [nzFrontPagination]="false"
-  [nzShowPagination]="false"
-  [nzScroll]="{x: '100%', y: '500px'}"
+  [nzShowPagination]="true"
 >
   <thead>
   <tr>
@@ -21,18 +19,16 @@
   </tr>
   </thead>
   <tbody>
-    @for (data of sortTable.data; track data.Id) {
-      @if (data.TripDto) {
+    @for (data of tripTable.data; track data.Id) {
         <tr (click)="sfOnTripClick.emit(data)">
-          <td>{{ data.Title }}</td>
-          <td>{{ data.Country }}</td>
-          <td>{{ data.TripDto.DateFrom }}</td>
-          <td>{{ data.TripDto.DateTo }}</td>
-          <td>{{ data.TripDto.Price }}</td>
-          <td>{{ data.TripDto.ParticipantsCurrent }}</td>
-          <td>{{ data.TripDto.Type }}</td>
+          <td>{{ data.ArticleDto?.Title }}</td>
+          <td>{{ data.ArticleDto?.Country }}</td>
+          <td>{{ data.DateFrom }}</td>
+          <td>{{ data.DateTo }}</td>
+          <td>{{ data.Price }}</td>
+          <td>{{ data.ParticipantsCurrent }}</td>
+          <td>{{ data.Type }}</td>
         </tr>
-      }
     }
   </tbody>
 </nz-table>

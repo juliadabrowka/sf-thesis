@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sf.Models;
 using sf.Program.Data;
@@ -11,6 +13,7 @@ public interface IArticleRepository
         Task<Article[]> GetArticles();
         Task<Article> GetArticleDetails(int articleId);
         Task<Article> UpdateArticle(Article article);
+        Task DeleteArticles(int[] articleId);
     }
 
 public class ArticleRepository : IArticleRepository
@@ -33,15 +36,15 @@ public class ArticleRepository : IArticleRepository
     public async Task<Article[]> GetArticles()
     {
         return await _sfDbContext.Articles
-            .Include(p => p.Trip)
+            .Include(a => a.Trip)
             .ToArrayAsync();
     }
 
     public async Task<Article> GetArticleDetails(int articleId)
     {
         var p = await _sfDbContext.Articles
-            .Include(p => p.Trip)
-            .FirstOrDefaultAsync(p => p.Id == articleId);
+            .Include(a => a.Trip)
+            .FirstOrDefaultAsync(a => a.Id == articleId);
 
         if (p == null)
         {
@@ -56,5 +59,20 @@ public class ArticleRepository : IArticleRepository
         _sfDbContext.Articles.Update(article);
         await _sfDbContext.SaveChangesAsync();
         return article;
+    }
+
+    public async Task DeleteArticles(int[] articleIds)
+    {
+        var articles = await _sfDbContext.Articles
+            .Where(a => articleIds.Contains(a.Id))
+            .ToListAsync(); 
+        
+        if (!articles.Any())
+        {
+            throw new KeyNotFoundException("No articles found");
+        }
+        
+        _sfDbContext.Articles.RemoveRange(articles);
+        await _sfDbContext.SaveChangesAsync();
     }
 }

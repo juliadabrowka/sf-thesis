@@ -45,10 +45,17 @@ public class ArticleController : ControllerBase
         return Ok(article);
     }
 
-    [HttpGet("articles/{articleId}")]
+    [HttpGet("article/{articleId}")]
     public async Task<ActionResult<ArticleDTO>> ArticleDetails(int articleId)
     {
         var article = await _articleService.GetArticleDetails(articleId);
         return Ok(article);
+    }
+
+    [HttpDelete("deleteArticles")]
+    public async Task<ActionResult> DeleteArticles(int[] articleId)
+    {
+        await _articleService.DeleteArticles(articleId);
+        return Ok();
     }
 }

@@ -1,11 +1,10 @@
 <nz-table
-  [nzData]="__articles$$()"
+  #articleTable
+  [nzData]="__articles$$.value"
   [nzBordered]="true"
   [nzOuterBordered]="true"
-  [nzVirtualForTrackBy]="trackByIndex"
   [nzFrontPagination]="false"
-  [nzShowPagination]="false"
-  [nzScroll]="{x: '100%', y: '500px'}"
+  [nzShowPagination]="true"
 >
   <thead>
   <tr>
@@ -20,12 +19,12 @@
   </tr>
   </thead>
   <tbody>
-  <ng-template nz-virtual-scroll let-data>
-    <tr (click)="sfOnArticleClick.emit(data)">
-      <td>{{ data.Title }}</td>
-      <td>{{ data.Country }}</td>
-      <td>{{ data.ArticleCategory }}</td>
-    </tr>
-  </ng-template>
+    @for (data of articleTable.data; track data.Id) {
+      <tr (click)="sfOnArticleClick.emit(data)">
+        <td>{{ data.Title }}</td>
+        <td>{{ data.Country }}</td>
+        <td>{{ data.ArticleCategory }}</td>
+      </tr>
+    }
   </tbody>
 </nz-table>
