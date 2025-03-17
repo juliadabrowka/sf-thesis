@@ -1,9 +1,5 @@
 @import "../base.css";
 
-:host {
-  display: block;
-}
-
 .action-bar-container {
   display: flex;
   flex-direction: row;
@@ -15,6 +11,7 @@
   text-transform: uppercase;
   font-weight: bold;
   letter-spacing: 2px;
+  z-index: 999;
 
   .logotype {
     height: 65px;
