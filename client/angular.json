@@ -36,7 +36,7 @@
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "assets": [
-              "projects/base/assets",
+              "projects/base/src/assets",
               "projects/base/src/favicon.ico"
             ],
             "stylePreprocessorOptions": {
@@ -73,12 +73,7 @@
               {
                 "glob": "**/*",
                 "input": "projects/base/src/assets",
-                "output": "./assets/sf/"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/monaco-editor/min/vs",
-                "output": "assets/vs"
+                "output": "assets/"
               }
             ],
             "stylePreprocessorOptions": {
@@ -144,8 +139,11 @@
             ],
             "tsConfig": "projects/sf/tsconfig.spec.json",
             "assets": [
-              "projects/sf/src/favicon.ico",
-              "projects/sf/src/assets"
+              {
+                "glob": "**/*",
+                "input": "projects/base/src/assets",
+                "output": "assets/"
+              }
             ],
             "styles": [
               "projects/sf/src/styles.css"
@@ -176,11 +174,10 @@
             ],
             "tsConfig": "projects/backoffice/tsconfig.app.json",
             "assets": [
-              "projects/backoffice/src/assets",
               {
                 "glob": "**/*",
                 "input": "projects/base/src/assets",
-                "output": "./assets/backoffice/"
+                "output": "assets/"
               }
             ],
             "stylePreprocessorOptions": {

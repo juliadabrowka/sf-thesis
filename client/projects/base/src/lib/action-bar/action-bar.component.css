@@ -25,7 +25,7 @@
 }
 
 .action-bar-default-page {
-  background-image: url("../../../../sf/src/assets/strona-main-illustration.png");
+  background-image: url("../../assets/strona-main-illustration.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position-x: 50%;
