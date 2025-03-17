@@ -14,15 +14,17 @@ export class SfFilterTripsByTypePipe implements PipeTransform {
   private getFlagByTripCountry(country: Country | undefined) {
     switch (country) {
       case Country.Japonia:
-        return "/assets/japan-flag.png";
+        return "/assets/japan-flag.jpg";
       case Country.Kuba:
-        return "/assets/cuba-flag.png";
+        return "/assets/cuba-flag.jpg";
       case Country.Portugalia:
-        return "/assets/portugal-flag.png";
+        return "/assets/portugal-flag.jpg";
       case Country.Polska:
-        return "/assets/poland-flag.png";
+        return "/assets/poland-flag.jpg";
+      case Country.Norwegia:
+        return "/assets/norge-flag.png";
       default:
-        return "/assets/poland-flag.png";
+        return "/assets/poland-flag.jpg";
     }
   }
 }
