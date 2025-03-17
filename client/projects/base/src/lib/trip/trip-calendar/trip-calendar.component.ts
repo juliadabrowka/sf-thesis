@@ -3,6 +3,7 @@ import {SfTripGridComponent} from '../trip-grid/trip-grid.component';
 import {PageTitleFramedComponent} from '../../page-title-framed/page-title-framed.component';
 import {TripDTO, TripStore, TripType} from '@sf/sf-base';
 import {SfFilterTripsByTypePipe} from './filter-trips-by-type.pipe';
+import {NzDividerComponent} from 'ng-zorro-antd/divider';
 
 export interface TripFlag {
   trip: TripDTO,
@@ -13,7 +14,8 @@ export interface TripFlag {
   imports: [
     SfTripGridComponent,
     PageTitleFramedComponent,
-    SfFilterTripsByTypePipe
+    SfFilterTripsByTypePipe,
+    NzDividerComponent
   ],
   templateUrl: './trip-calendar.component.html',
   styleUrl: './trip-calendar.component.css',

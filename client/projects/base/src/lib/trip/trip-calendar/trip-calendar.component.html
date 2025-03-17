@@ -10,5 +10,10 @@
       [sfTrips]="__trips$$() | sfFilterTripsByType : tripType.value"
       [sfIcon]="tripType.icon"
     ></sf-trip-grid>
+    @if (!$last) {
+      <span class="divider">
+        <nz-divider></nz-divider>
+      </span>
+    }
   }
 </div>
