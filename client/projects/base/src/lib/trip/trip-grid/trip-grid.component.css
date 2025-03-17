@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 32px 0;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 32px;
+}
+
+.trips-inline {
+  width: 50vw;
+}

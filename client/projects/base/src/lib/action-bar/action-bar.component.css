@@ -1,11 +1,23 @@
 @import "../base.css";
 
+:host {
+  display: block;
+}
+
+.inner-container {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .action-bar-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 110px;
   text-transform: uppercase;
@@ -35,8 +47,8 @@
 .actions-default, .actions-bw {
   display: flex;
   cursor: pointer;
-  width: 40vw;
-  justify-content: space-evenly;
+  width: 50%;
+  justify-content: space-around;
 }
 
 .actions-default {

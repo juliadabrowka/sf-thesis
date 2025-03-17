@@ -13,5 +13,7 @@ import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 })
 export class SfIconAndTextComponent {
   @Input() public sfIcon: IconDefinition | null | undefined;
+  @Input() public sfIconSrc: string | null | undefined;
   @Input() public sfText: string | null | undefined;
+  @Input() public sfReverse: boolean | null | undefined;
 }

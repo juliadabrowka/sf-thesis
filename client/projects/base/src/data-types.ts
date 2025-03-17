@@ -29,9 +29,9 @@ export enum Status {
 }
 
 export enum TripType {
-  Classic = 'Classic',
-  Weekend = 'Weekend',
-  Bike = 'Bike',
+  Classic = 'Wyprawy Classic',
+  Weekend = 'Weekendowe wojaże',
+  Bike = 'Wyprawy Rowerowe',
 }
 
 export const DefaultArticleCategoryValue = ArticleCategory.Fotorelacje;
@@ -105,6 +105,7 @@ export const DefaultTripTypeValue = TripType.Classic
 export class TripDTO {
   Id: number | undefined
   Price: number = 0;
+  Name: string = '';
   DateFrom: Date = new Date();
   DateTo: Date = new Date();
   ParticipantsCurrent: number = 0;

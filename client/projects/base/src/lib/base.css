@@ -1,13 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap');
+
+:root {
+  --focus-color: #73d58e; /* light green */
+  --primary-color: #8ed8a3; /* light green */
+  --secondary-color: #fcf6fd; /* very light violet */
+  --background-color: #f2eef4; /* very light grey */
+  --danger-color: #9a2424; /* Red */
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
 
 body {
   font-family: "Dosis", sans-serif;
   font-weight: 300;
   font-style: normal;
   font-size: 13px;
+}
+
+.title {
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 5px;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.titles {
+  text-transform: uppercase;
+
+  .title {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #999;
+  }
+}
+
+.title-framed {
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 5px 10px;
+  font-size: 34px;
+  margin: 80px auto auto auto;
+  font-weight: 700;
+  width: fit-content;
+  letter-spacing: 2px;
 }
 
 .table {

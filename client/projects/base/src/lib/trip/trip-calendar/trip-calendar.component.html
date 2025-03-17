@@ -1,4 +1,14 @@
 <div class="content">
-  <div class="title">KALENDARIUM WYPRAW 2024/2025</div>
+  <sf-page-title-framed
+    [sfTitle]="titleFramed"
+  ></sf-page-title-framed>
 </div>
-<sf-trip-grid></sf-trip-grid>
+<div class="trip-grid">
+  @for (tripType of __tripTypes; track tripType) {
+    <sf-trip-grid
+      [sfTitle]="tripType.label"
+      [sfTrips]="__trips$$() | sfFilterTripsByType : tripType.value"
+      [sfIcon]="tripType.icon"
+    ></sf-trip-grid>
+  }
+</div>

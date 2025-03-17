@@ -1,7 +1,7 @@
 import {TripDTO, TripService} from '@sf/sf-base';
-import {inject} from '@angular/core';
+import {computed, inject} from '@angular/core';
 import {SelectEntityId, updateEntity, withEntities} from '@ngrx/signals/entities';
-import {patchState, signalStore, withMethods, withProps, withState} from '@ngrx/signals';
+import {patchState, signalStore, withComputed, withMethods, withProps, withState} from '@ngrx/signals';
 import {firstValueFrom} from 'rxjs';
 
 export interface SfTripState {
@@ -26,6 +26,9 @@ export const TripStore = signalStore(
   withEntities<TripDTO>(),
   withState(tripState),
   withProps(() => ({tripService: inject(TripService)})),
+  withComputed((store) => ({
+    tripList: computed(() => store.trips)
+  })),
   withMethods((store) => ({
     // async createTrip(trip: TripDTO) {
     //   patchState(store, {loading: true});

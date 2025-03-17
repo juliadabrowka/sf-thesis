@@ -132,6 +132,7 @@ public class ArticleService : IArticleService
                 existingTrip.DateFrom = articleDto.TripDto.DateFrom;
                 existingTrip.DateTo = articleDto.TripDto.DateTo;
                 existingTrip.Price = articleDto.TripDto.Price;
+                existingTrip.Name = articleDto.TripDto.Name;
                 existingTrip.Type = articleDto.TripDto.Type;
                 existingTrip.ParticipantsCurrent = articleDto.TripDto.ParticipantsCurrent;
                 existingTrip.ParticipantsTotal = articleDto.TripDto.ParticipantsTotal;
@@ -177,7 +178,8 @@ public class ArticleService : IArticleService
         var currentTripApplications = new HashSet<int>(currentTrip.TripApplications.Select(t => t.Id));
         var updatedTripApplications = new HashSet<int>(updatedTrip.TripApplications.Select(t => t.Id));
 
-        return currentTrip.Price == updatedTrip.Price &&
+        return currentTrip.Name == updatedTrip.Name && 
+               currentTrip.Price == updatedTrip.Price &&
                currentTrip.Type == updatedTrip.Type &&
                currentTrip.ArticleId == updatedTrip.ArticleId &&
                currentTrip.DateFrom == updatedTrip.DateFrom &&

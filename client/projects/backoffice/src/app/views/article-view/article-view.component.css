@@ -5,8 +5,8 @@
   cursor: pointer;
 
   &:hover {
-    color: #9a2424;
-    border-color: #9a2424;
+    color: var(--danger-color);
+    border-color: var(--danger-color)
   }
 }
 
