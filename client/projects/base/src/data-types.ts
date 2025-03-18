@@ -40,6 +40,7 @@ export const DefaultCountryValue = Country.Polska;
 export class ArticleDTO {
   Id: number | undefined;
   Title: string = '';
+  Url: string = '';
   Content: string = '';
   Country: Country = DefaultCountryValue;
   ArticleCategory = DefaultArticleCategoryValue;

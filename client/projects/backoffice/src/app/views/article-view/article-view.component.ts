@@ -1,12 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject} from '@angular/core';
-import {
-  ArticleStore,
-  SfArticleFormComponent,
-  SfButtonComponent,
-  SfIconAndTextComponent,
-  SfIcons,
-  TripStore
-} from '@sf/sf-base';
+import {ArticleStore, SfArticleFormComponent, SfButtonComponent, SfIconAndTextComponent, SfIcons} from '@sf/sf-base';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -34,13 +27,11 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 export class SfBackofficeArticleViewComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly articleStore = inject(ArticleStore);
-  private readonly tripStore = inject(TripStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly message = inject(NzMessageService)
 
   public readonly __article$$ = computed(() => this.articleStore.article());
-  public readonly __trip$$ = computed(() => this.tripStore.trip());
   public readonly __loading$$ = computed(() => this.articleStore.loading());
   public readonly __icons = SfIcons;
 

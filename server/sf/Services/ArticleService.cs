@@ -103,6 +103,12 @@ public class ArticleService : IArticleService
             isUpdated = true;
         }
 
+        if (article.Url != articleDto.Url)
+        {
+            article.Url = articleDto.Url;
+            isUpdated = true;
+        }
+
         if (article.ArticleCategory != articleDto.ArticleCategory)
         {
             article.ArticleCategory = articleDto.ArticleCategory;

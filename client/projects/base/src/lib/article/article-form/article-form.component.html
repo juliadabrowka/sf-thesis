@@ -1,3 +1,5 @@
+<pre> {{ __article$$.value | json }}</pre>
+
 <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
   <nz-form-item>
     <nz-form-label>Kategoria</nz-form-label>
@@ -25,9 +27,23 @@
       <input nz-input [formControl]="__controls.title"/>
     </nz-form-control>
   </nz-form-item>
+  <pre> {{ __controls.articleUrl.value | json }}</pre>
+  <nz-form-item>
+    <nz-form-label>Link</nz-form-label>
+    <nz-form-control>
+      <input nz-input [formControl]="__controls.articleUrl"/>
+    </nz-form-control>
+  </nz-form-item>
 
   @if (isTripCategorySelected) {
     <span class="trip-fields-display">
+        <nz-form-item>
+          <nz-form-label>Nazwa</nz-form-label>
+          <nz-form-control>
+            <input nz-input [formControl]="__controls.tripName"/>
+          </nz-form-control>
+        </nz-form-item>
+
         <nz-form-item>
           <nz-form-label>Rodzaj wyprawy</nz-form-label>
           <nz-form-control>

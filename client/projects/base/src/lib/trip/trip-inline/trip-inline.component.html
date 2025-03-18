@@ -1,6 +1,6 @@
 @if (__trip$$.value) {
   <div class="trip-container">
-    <div class="left">
+    <div class="left" (click)="__navigateToTrip(__trip$$.value.trip)">
       @if (__trip$$.value.flagSrc) {
         <div class="flag">
           <img [src]="__trip$$.value.flagSrc" alt="flaga">
@@ -8,25 +8,38 @@
       }
       <div class="trip-title"> {{ __trip$$.value.trip.Name }}</div>
     </div>
-    <div class="trip-info">
-      <div class="trip-date">
-        {{ __trip$$.value.trip.DateFrom | date:'yyyy | dd.MM' }} - {{ __trip$$.value.trip.DateTo | date:'dd.MM' }}
-      </div>
-      <div class="right">
-        <div class="middle">
-          <div class="trip-price">
-            <span class="price">cena</span>
-            {{ __trip$$.value.trip.Price | sfFormatPrice }}
+    <div class="trip-data">
+      <div class="trip-info">
+        <div class="trip-inline-data">
+          <div class="trip-date">
+            {{ __trip$$.value.trip.DateFrom | date:'yyyy | dd.MM' }} - {{ __trip$$.value.trip.DateTo | date:'dd.MM' }}
           </div>
-          <div class="trip-availability">
-            <span class="availability">wolnych miejsc</span>
-            {{ __trip$$.value.trip.ParticipantsTotal - __trip$$.value.trip.ParticipantsCurrent }}
+          <div class="right">
+            <div class="middle">
+              <div class="trip-price">
+                <span class="price">cena</span>
+                {{ __trip$$.value.trip.Price | sfFormatPrice }}
+              </div>
+              <div class="trip-availability">
+                <span class="availability">wolnych miejsc</span>
+                {{ __trip$$.value.trip.ParticipantsTotal - __trip$$.value.trip.ParticipantsCurrent }}
+              </div>
+            </div>
+            <sf-button
+              [sfButtonText]="'ZAPISZ SIĘ'"
+              (sfOnButtonClicked)="__onShowSlider()"
+            ></sf-button>
           </div>
         </div>
-        <div class="trip-button">
-          <button>ZAPISZ SIĘ</button>
-        </div>
       </div>
+      @if (__showSlider) {
+        <div class="application-form">
+          <sf-application-form></sf-application-form>
+          <sf-button
+            [sfButtonText]="'REZERWUJ'"
+          ></sf-button>
+        </div>
+      }
     </div>
   </div>
 }

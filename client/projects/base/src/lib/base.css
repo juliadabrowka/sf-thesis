@@ -6,11 +6,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap');
 
 :root {
-  --focus-color: #73d58e; /* light green */
+  --focus-color: #61b879; /* light green */
+  --focus-dark-color: #59a86f; /* light green */
   --primary-color: #8ed8a3; /* light green */
   --secondary-color: #fcf6fd; /* very light violet */
   --background-color: #f2eef4; /* very light grey */
-  --danger-color: #9a2424; /* Red */
+  --background-lighter-color: #faf6fb; /* very light grey */
+  --danger-color: #d53838; /* Red */
+  --danger-hover-color: #c53838; /* Red */
 }
 
 ::selection {
@@ -60,6 +63,25 @@ body {
   letter-spacing: 2px;
 }
 
+.remove-button {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+  padding: 4px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ant-btn-dangerous.ant-btn-primary {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+
+  &:hover {
+    background: var(--danger-hover-color);
+    border-color: var(--danger-hover-color);
+  }
+}
+
 .table {
   .th {
     background-color: rgba(147, 84, 137, 0.61);
@@ -74,4 +96,36 @@ body {
   }
 }
 
+.button {
+  background-color: var(--primary-color);
+  transition: all 0.3s ease-in-out;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  width: 100%;
+  height: auto;
+  justify-content: center;
 
+  &:hover:enabled {
+    background: var(--focus-dark-color);
+  }
+}
+
+nz-form-item {
+  display: flex;
+
+  nz-form-label {
+    width: 70px;
+
+    label {
+      white-space: break-spaces;
+    }
+  }
+}
+
+.ant-form-item-label > label::after {
+  content: '';
+}

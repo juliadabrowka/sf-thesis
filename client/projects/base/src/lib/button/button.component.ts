@@ -8,13 +8,10 @@ import {
   Output,
   signal
 } from '@angular/core';
-import {NzButtonComponent} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'sf-button',
-  imports: [
-    NzButtonComponent
-  ],
+  imports: [],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

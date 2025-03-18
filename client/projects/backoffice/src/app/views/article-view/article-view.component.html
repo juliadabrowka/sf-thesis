@@ -7,7 +7,6 @@
   } @else {
     <sf-article-form
       [sfArticle]="__article$$()"
-      [sfTrip]="__trip$$()"
       [sfLoading]="__loading$$()"
     ></sf-article-form>
 
@@ -24,6 +23,7 @@
        [nzTooltipColor]="'white'"
        [nzTooltipTrigger]="'click'"
        [nzTooltipTitle]="removeConfirmation"
+       [nzTooltipPlacement]="'left'"
   >
     <sf-icon-and-text
       [sfText]="'Usuń'"

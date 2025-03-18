@@ -1,8 +1,27 @@
-.trip-container, .trip-info, .left {
+.trip-container,
+.trip-info,
+.left,
+.middle,
+.trip-inline-data,
+.right,
+.trip-title,
+.trip-price,
+.trip-availability,
+.trip-date, img {
   display: flex;
-  flex-direction: row;
   align-items: center;
+}
+
+.trip-container, .trip-info, .left {
   justify-content: space-between;
+}
+
+.middle, .trip-inline-data {
+  justify-content: space-around;
+}
+
+.trip-inline-data, .left, .trip-container {
+  flex-direction: row;
 }
 
 .trip-container {
@@ -12,23 +31,18 @@
 .left {
   width: 35%;
   justify-content: flex-start;
+  cursor: pointer;
 }
 
 .right {
-  display: flex;
-  align-items: center;
   width: 65%;
   justify-content: flex-end;
 }
 
-.middle, .trip-info {
+.middle, .trip-info, .trip-inline-data, .trip-data {
   width: 100%
 }
 
-.middle {
-  display: flex;
-  justify-content: space-around;
-}
 
 .price, .availability {
   margin-bottom: 3px;
@@ -41,15 +55,9 @@
   color: black;
   font-weight: 400;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-family: "Noto Sans", sans-serif;
-}
-
-.trip-title, .trip-price, .trip-availability, .trip-date, img {
-  align-items: center;
-}
-
-.trip-date {
+  flex-direction: column;
 }
 
 .trip-title {
@@ -69,9 +77,14 @@ img {
   font-size: 14px;
 }
 
-button {
+.flag {
+  margin-right: 8px;
+}
+
+sf-button .button {
   padding: 6px 60px;
   background-color: var(--background-color);
+  color: black;
   border: 2px solid black;
   border-radius: 2px;
   transition: background-color 0.3s ease, border 0.3s ease;
@@ -83,8 +96,16 @@ button {
   font-size: 13px;
 }
 
-button:hover {
+sf-button .button:hover:enabled {
   background-color: var(--primary-color);
   border: 2px solid var(--primary-color);
   color: white;
+}
+
+.application-form {
+  padding: 20px;
+  transition: all 4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: var(--background-lighter-color);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
