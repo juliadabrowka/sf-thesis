@@ -19,7 +19,6 @@ export class SfTripTableComponent {
   public readonly __trips$$ = new BehaviorSubject<TripDTO[]>([]);
 
   @Input() public set sfTrips(trips: TripDTO[] | null | undefined) {
-    console.log(trips)
     this.__trips$$.next(trips ?? []);
     this.cdr.markForCheck()
   }

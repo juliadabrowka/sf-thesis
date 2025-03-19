@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject, Input} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input,} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   ArticleCategory,
@@ -10,9 +10,9 @@ import {
   TripDTO,
   TripType,
 } from '../../../data-types';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
-import {BehaviorSubject, map, tap} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, map} from 'rxjs';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective} from 'ng-zorro-antd/input';
@@ -22,7 +22,6 @@ import {SfUploadComponent} from '../../upload/upload.component';
 import {ArticleStore} from '../../../state/article/article.store';
 import {TripStore} from '../../../state/trip/trip.store';
 import {isNil, isNotNil} from '@w11k/rx-ninja';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'sf-article-form',
@@ -37,8 +36,7 @@ import {JsonPipe} from '@angular/common';
     NzDatePickerComponent,
     NzInputNumberComponent,
     SfUploadComponent,
-    NzDatePickerModule,
-    JsonPipe
+    NzDatePickerModule
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -49,21 +47,17 @@ export class SfArticleFormComponent {
   private readonly articleStore = inject(ArticleStore);
   private readonly tripStore = inject(TripStore);
 
-  public readonly __article$$ = new BehaviorSubject<ArticleDTO | undefined>(undefined);
   public readonly __trip$$ = new BehaviorSubject<TripDTO | undefined>(undefined);
   public readonly __loading$$ = new BehaviorSubject<boolean>(false);
-  public readonly __currentArticle$$ = computed(() => this.articleStore.currentArticle());
-  private userEditedUrl = false;
 
-  @Input() public set sfArticle(article: ArticleDTO | null | undefined) {
-    console.log(article)
-    this.__article$$.next(article ?? undefined);
-  }
+  public sfArticle = input<ArticleDTO | undefined>(undefined);
+  private readonly __article$ = toObservable(this.sfArticle);
 
-  @Input() public set sfLoading(loading: boolean | null | undefined) {
-    this.__loading$$.next(loading ?? false)
-    this.cdr.markForCheck();
-  }
+  public sfTrip = input<TripDTO | undefined>(undefined);
+  private readonly __trip$ = toObservable(this.sfTrip)
+
+  public sfLoading = input<boolean>(false);
+  private readonly __loading$ = toObservable(this.sfLoading)
 
   public readonly __controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {nonNullable: true}),
@@ -72,11 +66,11 @@ export class SfArticleFormComponent {
     content: new FormControl<string>('', {nonNullable: true}),
     country: new FormControl<Country>(DefaultCountryValue, {nonNullable: true}),
     dates: new FormControl<[Date, Date]>([new Date(), new Date()]),
-    price: new FormControl<number>(0),
-    tripType: new FormControl<TripType>(DefaultTripTypeValue),
-    participantsTotal: new FormControl<number>(0),
-    participantsCurrent: new FormControl<number>(0),
-    tripName: new FormControl<string>('')
+    price: new FormControl<number>(0, {nonNullable: true}),
+    tripType: new FormControl<TripType>(DefaultTripTypeValue, {nonNullable: true}),
+    participantsTotal: new FormControl<number>(0, {nonNullable: true}),
+    participantsCurrent: new FormControl<number>(0, {nonNullable: true}),
+    tripName: new FormControl<string>('', {nonNullable: true})
   };
   public readonly __categories = Object.values(ArticleCategory).map(o => ({label: o, value: o}));
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
@@ -85,10 +79,9 @@ export class SfArticleFormComponent {
   public isTripCategorySelected = false;
 
   constructor() {
-    this.__article$$.pipe(
+    this.__article$.pipe(
       takeUntilDestroyed()
     ).subscribe(article => {
-      console.log(article)
       if (article) {
         this.__formGroup.patchValue({
           category: article.ArticleCategory,
@@ -109,20 +102,6 @@ export class SfArticleFormComponent {
             participantsTotal: article.TripDto.ParticipantsTotal
           })
         }
-      } else {
-        this.__formGroup.patchValue({
-          category: DefaultArticleCategoryValue,
-          title: "",
-          content: "",
-          country: DefaultCountryValue,
-          articleUrl: "",
-          dates: null,
-          participantsCurrent: null,
-          participantsTotal: null,
-          price: null,
-          tripName: null,
-          tripType: null,
-        })
       }
       this.cdr.markForCheck();
     });
@@ -130,29 +109,20 @@ export class SfArticleFormComponent {
     this.__formGroup.valueChanges
       .pipe(
         map(() => this.__formGroup.getRawValue()),
-        map((fg) => ({
-          ...fg,
-          articleUrl: this.shouldAutoUpdateUrl(
-            this.isTripCategorySelected
-              ? fg.tripName ?? ""
-              : fg.title
-          )
-        })),
-        tap((x) => console.log(x)),
         takeUntilDestroyed()
       )
       .subscribe(async (fg) => {
-
         this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
         const tripState = isNil(this.__trip$$.value) ? new TripDTO() : {...this.__trip$$.value};
-        const articleState = isNil(this.__article$$.value) ? new ArticleDTO() : this.__article$$.value;
+        const a = await firstValueFrom(this.__article$);
+        const articleState = isNil(a) ? new ArticleDTO() : a;
 
         articleState.Title = fg.title;
         articleState.Content = fg.content;
         articleState.ArticleCategory = fg.category;
         articleState.Country = fg.country;
         articleState.Url = fg.articleUrl;
-        console.log(fg.articleUrl)
+
         if (this.isTripCategorySelected && tripState) {
           tripState.Type = fg.tripType ?? DefaultTripTypeValue;
           tripState.Name = fg.tripName ?? "";
@@ -164,15 +134,15 @@ export class SfArticleFormComponent {
         }
 
         if (tripState && tripChanged(this.__trip$$.value, tripState)) {
-          tripState.ArticleId = articleState.Id;
+          tripState.ArticleId = articleState?.Id;
           this.tripStore.setTrip(tripState)
         }
-        articleState.TripId = tripState ? tripState.Id : undefined;
-        articleState.TripDto = this.isTripCategorySelected ? tripState : undefined;
-        this.articleStore.setArticle(articleState);
-        if (articleChanged(this.__article$$.value, articleState)) {
 
-        }
+        articleState.TripId = tripState.Id;
+        articleState.TripDto = this.isTripCategorySelected ? tripState : undefined;
+
+        this.articleStore.setArticle(articleState);
+
         this.cdr.markForCheck()
       })
   }
@@ -181,19 +151,21 @@ export class SfArticleFormComponent {
     console.log(files)
   }
 
-  private shouldAutoUpdateUrl(title: string): string {
+  public shouldAutoUpdateUrl(title: string): string {
     const urlControl = this.__controls.articleUrl;
 
     if (urlControl?.pristine) {
-      return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      const t = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      this.__controls.articleUrl.patchValue(t);
+      return t;
     } else {
+      this.__controls.articleUrl.patchValue(urlControl?.value);
       return urlControl?.value
     }
   }
 }
 
 export function articleChanged(prev: ArticleDTO | undefined, current: ArticleDTO) {
-  //console.log(prev, current)
   if (prev?.Title !== current.Title ||
     prev?.Content !== current.Content ||
     prev?.Country !== current.Country ||
@@ -201,7 +173,6 @@ export function articleChanged(prev: ArticleDTO | undefined, current: ArticleDTO
     prev?.Url !== current.Url ||
     isNotNil(prev?.TripDto) || isNotNil(current.TripDto)
   ) {
-    console.log("TRUE")
     return true;
   }
   return false;
