@@ -108,4 +108,8 @@ sf-button .button:hover:enabled {
   background-color: var(--background-lighter-color);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+
+  button {
+    margin-top: 8px
+  }
 }

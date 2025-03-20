@@ -1,4 +1,4 @@
-<nz-card [nzTitle]="'Post'" [nzExtra]="extraTemplate">
+<nz-card [nzTitle]="postTemplate" [nzExtra]="__article$$()?.Id ? extraTemplate : undefined" [nzBordered]="false">
   @if (__loading$$()) {
     <div class="loading-container">
       loading
@@ -17,6 +17,13 @@
     ></sf-button>
   }
 </nz-card>
+
+<ng-template #postTemplate>
+  <sf-icon-and-text
+    [sfText]="'Post'"
+    [sfIcon]="__icons.post"
+  ></sf-icon-and-text>
+</ng-template>
 
 <ng-template #extraTemplate>
   <div class="remove-button"

@@ -22,7 +22,11 @@ export * from './lib/login-form/login-form.component';
 export * from './lib/main-page/main-page.component';
 export * from './lib/main-page/main-page-routes';
 
+export * from './lib/page-title/page-title.component';
+
 export * from './lib/sider/sider.component';
+
+export * from './lib/tiles/tiles.component';
 
 export * from './lib/trip/trip-calendar/trip-calendar-routes';
 export * from './lib/trip/trip-table/trip-table.component';

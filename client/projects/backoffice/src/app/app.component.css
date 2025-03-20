@@ -1,6 +1,5 @@
 .container {
   width: 100%;
-  background: #fff;
 }
 
 nz-header {
@@ -39,6 +38,7 @@ nz-content {
   display: flex;
   flex-direction: row;
   min-height: 100vh;
+  background: var(--background-lighter-color);
 }
 
 sf-sider {

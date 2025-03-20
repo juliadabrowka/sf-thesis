@@ -1,40 +1,56 @@
-<form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
-  <nz-form-item>
-    <nz-form-label>Kategoria</nz-form-label>
-    <nz-form-control>
-      <nz-select
-        [formControl]="__controls.category"
-        [nzOptions]="__categories">
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
+<div class="cockpit-container">
+  <div class="main-form">
+    <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
+      <nz-form-item>
+        <nz-form-control>
+          <input nz-input [formControl]="__controls.title" [placeholder]="'Dodaj tytuł'"/>
+        </nz-form-control>
+      </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-label>Kraj</nz-form-label>
-    <nz-form-control>
-      <nz-select
-        [formControl]="__controls.country"
-        [nzOptions]="__countries">
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
+      <div id="editorContainer">
+        <div #editor></div>
+      </div>
 
-  <nz-form-item>
-    <nz-form-label>Tytuł</nz-form-label>
-    <nz-form-control>
-      <input nz-input [formControl]="__controls.title"/>
-    </nz-form-control>
-  </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-label>Link</nz-form-label>
-    <nz-form-control>
-      <input nz-input [formControl]="__controls.articleUrl"/>
-    </nz-form-control>
-  </nz-form-item>
+    </form>
+  </div>
+
+  <div class="side-panel">
+    <div class="category-section">
+      <h3>
+        <sf-icon-and-text
+          [sfIcon]="__icons.postOptions"
+          [sfText]="'Opcje artykułu'"
+        ></sf-icon-and-text>
+      </h3>
+
+      <nz-form-item>
+        <nz-form-label>Kategoria</nz-form-label>
+        <nz-form-control>
+          <nz-select [formControl]="__controls.category" [nzOptions]="__categories"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Kraj</nz-form-label>
+        <nz-form-control>
+          <nz-select [formControl]="__controls.country" [nzOptions]="__countries"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Link</nz-form-label>
+        <nz-form-control>
+          <input nz-input [formControl]="__controls.articleUrl"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
 
   @if (isTripCategorySelected) {
-    <span class="trip-fields-display">
+    <div class="side-panel">
+      <div class="trip-section">
+        <h3>🧳 Szczegóły Wyprawy</h3>
+
         <nz-form-item>
           <nz-form-label>Nazwa</nz-form-label>
           <nz-form-control>
@@ -43,63 +59,48 @@
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label>Rodzaj wyprawy</nz-form-label>
+          <nz-form-label>Rodzaj</nz-form-label>
           <nz-form-control>
-            <nz-select
-              [formControl]="__controls.tripType"
-              [nzOptions]="__tripTypes">
-            </nz-select>
+            <nz-select [formControl]="__controls.tripType" [nzOptions]="__tripTypes"></nz-select>
           </nz-form-control>
         </nz-form-item>
 
-      <nz-form-item>
+        <nz-form-item>
           <nz-form-label>Daty</nz-form-label>
           <nz-form-control>
             <nz-range-picker [formControl]="__controls.dates"></nz-range-picker>
-        </nz-form-control>
-      </nz-form-item>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
+        <nz-form-item>
           <nz-form-label>Cena</nz-form-label>
           <nz-form-control>
-            <nz-input-number
-              [formControl]="__controls.price"
-            ></nz-input-number>
-        </nz-form-control>
-      </nz-form-item>
+            <nz-input-number [formControl]="__controls.price"></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label>Całkowita liczba uczestników</nz-form-label>
+        <nz-form-item>
+          <nz-form-label>Ilość uczestniczek</nz-form-label>
           <nz-form-control>
             <nz-input-number [formControl]="__controls.participantsTotal"></nz-input-number>
-        </nz-form-control>
-      </nz-form-item>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label>Aktualna liczba uczestników</nz-form-label>
+        <nz-form-item>
+          <nz-form-label>Aktualna liczba uczestników</nz-form-label>
           <nz-form-control>
             <nz-input-number [formControl]="__controls.participantsCurrent"></nz-input-number>
-        </nz-form-control>
-      </nz-form-item>
-    </span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <!-- Media Upload Section -->
+      <div class="media-section">
+        <h3>📸 Media</h3>
+        <sf-upload (sfUploadedFiles)="__onFilesUpload($event)"></sf-upload>
+      </div>
+    </div>
   }
 
-  <nz-form-item>
-    <nz-form-label>Wpis</nz-form-label>
-    <nz-form-control>
-        <textarea
-          rows="20"
-          nz-input
-          [formControl]="__controls.content"></textarea>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <sf-upload
-      (sfUploadedFiles)="__onFilesUpload($event)"
-    ></sf-upload>
-    <nz-form-label>Media</nz-form-label>
-    <nz-form-control>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+  </div>
+</div>

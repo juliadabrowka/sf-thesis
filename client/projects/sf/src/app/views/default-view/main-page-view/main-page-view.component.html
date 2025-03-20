@@ -1,1 +1,21 @@
-<router-outlet></router-outlet>
+<div class="background">
+  <div class="images">
+    <img class="main-img" src="/assets/autorskie-wyjazdy-dla-kobiet.png" alt="">
+    <img class="arrow" src="/assets/superfemka-down-bt.png" alt="">
+  </div>
+</div>
+
+<div class="main-page-content">
+  @for (section of __sections; track section) {
+    <sf-page-title
+      [sfSubTitle]="section.subtitle"
+      [sfTitle]="section.title"
+    ></sf-page-title>
+    <span class="divider">
+        <nz-divider></nz-divider>
+  </span>
+    <sf-tiles
+      [sfArticles]="__articles$$() | sfFilterArticlesByType : section.articleType"
+    ></sf-tiles>
+  }
+</div>

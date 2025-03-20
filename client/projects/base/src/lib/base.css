@@ -12,6 +12,7 @@
   --secondary-color: #fcf6fd; /* very light violet */
   --background-color: #f2eef4; /* very light grey */
   --background-lighter-color: #faf6fb; /* very light grey */
+  --card-header-color: #c9b1da; /* very light grey */
   --danger-color: #d53838; /* Red */
   --danger-hover-color: #c53838; /* Red */
 }
@@ -26,6 +27,7 @@ body {
   font-weight: 300;
   font-style: normal;
   font-size: 13px;
+  background: var(--background-lighter-color);
 }
 
 .title {
@@ -38,6 +40,10 @@ body {
 
 .titles {
   text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   .title {
     font-size: 30px;
@@ -49,6 +55,7 @@ body {
     font-size: 11px;
     letter-spacing: 2px;
     color: #999;
+    margin-top: 6px;
   }
 }
 
@@ -64,6 +71,7 @@ body {
 }
 
 .remove-button {
+  background: white;
   color: var(--danger-color);
   border-color: var(--danger-color);
   border: 1px solid var(--danger-color);
@@ -114,18 +122,28 @@ body {
   }
 }
 
-nz-form-item {
-  display: flex;
-
-  nz-form-label {
-    width: 70px;
-
-    label {
-      white-space: break-spaces;
-    }
-  }
+.ant-form-item {
+  margin-bottom: 8px;
 }
 
 .ant-form-item-label > label::after {
   content: '';
+}
+
+.ant-card-body {
+  background: var(--background-lighter-color);
+}
+
+.ant-card-head-wrapper, .ant-card-body {
+  padding: 0;
+}
+
+.ant-card-head {
+  background: var(--background-lighter-color);
+  line-height: 0.5;
+  padding: 0;
+}
+
+.divider {
+  width: 60%;
 }

@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {TripService} from '@sf/sf-base';
-import {ArticleStore} from '../../../base/src/state/article/article.store';
+import {ArticleStore, TripService} from '@sf/sf-base';
 
 @Component({
   selector: 'sf-root',

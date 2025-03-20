@@ -33,6 +33,8 @@
     "@ngrx/signals": "^19.0.1",
     "@w11k/rx-ninja": "^5.0.0",
     "ng-zorro-antd": "^19.1.0",
+    "ngx-quill": "^27.0.1",
+    "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

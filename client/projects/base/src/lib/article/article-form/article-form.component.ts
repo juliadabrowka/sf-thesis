@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input,} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  ViewChild,
+} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   ArticleCategory,
@@ -22,6 +31,9 @@ import {SfUploadComponent} from '../../upload/upload.component';
 import {ArticleStore} from '../../../state/article/article.store';
 import {TripStore} from '../../../state/trip/trip.store';
 import {isNil, isNotNil} from '@w11k/rx-ninja';
+import Quill from 'quill';
+import {SfIconAndTextComponent} from '../../icon-and-text/icon-and-text.component';
+import {SfIcons} from '../../icons';
 
 @Component({
   selector: 'sf-article-form',
@@ -36,17 +48,20 @@ import {isNil, isNotNil} from '@w11k/rx-ninja';
     NzDatePickerComponent,
     NzInputNumberComponent,
     SfUploadComponent,
-    NzDatePickerModule
+    NzDatePickerModule,
+    SfIconAndTextComponent,
+
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SfArticleFormComponent {
+export class SfArticleFormComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly articleStore = inject(ArticleStore);
   private readonly tripStore = inject(TripStore);
 
+  public readonly __icons = SfIcons;
   public readonly __trip$$ = new BehaviorSubject<TripDTO | undefined>(undefined);
   public readonly __loading$$ = new BehaviorSubject<boolean>(false);
 
@@ -74,9 +89,14 @@ export class SfArticleFormComponent {
   };
   public readonly __categories = Object.values(ArticleCategory).map(o => ({label: o, value: o}));
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
-  public readonly __tripTypes = Object.keys(TripType).map(o => ({label: o, value: o}));
+  public readonly __tripTypes = Object.keys(TripType).map(k => ({
+    label: TripType[k as keyof typeof TripType],
+    value: k as TripType,
+  }));
   public readonly __formGroup = new FormGroup(this.__controls);
   public isTripCategorySelected = false;
+
+  @ViewChild("editor") private editorContainerRef: ElementRef<HTMLElement> | undefined;
 
   constructor() {
     this.__article$.pipe(
@@ -84,12 +104,12 @@ export class SfArticleFormComponent {
     ).subscribe(article => {
       if (article) {
         this.__formGroup.patchValue({
-          category: article.ArticleCategory,
-          title: article.Title,
-          content: article.Content,
-          country: article.Country,
-          articleUrl: article.Url
-        })
+          category: article.ArticleCategory ?? DefaultArticleCategoryValue,
+          title: article.Title ?? '',
+          content: article.Content ?? '',
+          country: article.Country ?? DefaultCountryValue,
+          articleUrl: article.Url ?? ''
+        });
 
         if (article.TripDto) {
           this.__trip$$.next(article.TripDto);
@@ -141,12 +161,36 @@ export class SfArticleFormComponent {
         articleState.TripId = tripState.Id;
         articleState.TripDto = this.isTripCategorySelected ? tripState : undefined;
 
+        if (articleChanged(a, articleState))
         this.articleStore.setArticle(articleState);
 
         this.cdr.markForCheck()
       })
   }
 
+  ngAfterViewInit() {
+    if (this.editorContainerRef)
+      new Quill(this.editorContainerRef.nativeElement, {
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+
+            [{'header': 1}, {'header': 2}, {'header': 3}],
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            [{'script': 'sub'}, {'script': 'super'}],
+
+            [{'size': ['small', false, 'large', 'huge']}],
+            [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+            [{'font': []}],
+            [{'align': []}],
+
+            ['link', 'image', 'video']
+          ]
+        },
+        theme: 'snow',
+      })
+  }
   __onFilesUpload(files: NzUploadFile[]) {
     console.log(files)
   }
