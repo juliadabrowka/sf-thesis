@@ -1,9 +1,11 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {SfTripGridComponent} from '../trip-grid/trip-grid.component';
 import {PageTitleFramedComponent} from '../../page-title-framed/page-title-framed.component';
 import {TripDTO, TripStore, TripType} from '@sf/sf-base';
 import {SfFilterTripsByTypePipe} from './filter-trips-by-type.pipe';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
+import {toObservable} from '@angular/core/rxjs-interop';
+import {AsyncPipe} from '@angular/common';
 
 export interface TripFlag {
   trip: TripDTO,
@@ -15,7 +17,8 @@ export interface TripFlag {
     SfTripGridComponent,
     PageTitleFramedComponent,
     SfFilterTripsByTypePipe,
-    NzDividerComponent
+    NzDividerComponent,
+    AsyncPipe
   ],
   templateUrl: './trip-calendar.component.html',
   styleUrl: './trip-calendar.component.css',
@@ -31,7 +34,7 @@ export class SfTripCalendarComponent {
     icon: this.getDataForTripType(TripType[k as keyof typeof TripType]),
   }))
 
-  public readonly __trips$$ = computed(() => this.tripStore.trips());
+  public readonly __trips$ = toObservable(this.tripStore.trips);
 
   private getDataForTripType(tripTypeElement: TripType) {
     switch (tripTypeElement) {

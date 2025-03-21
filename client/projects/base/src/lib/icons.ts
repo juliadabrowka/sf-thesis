@@ -19,7 +19,8 @@ import {
   faSliders,
   faSquarePlus,
   faThumbsUp,
-  faTrashCan
+  faTrashCan,
+  faUpRightFromSquare
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SfIcons = {
@@ -34,6 +35,7 @@ export const SfIcons = {
   forms: faFolderTree,
   media: faPhotoFilm,
   mediaLibrary: faIcons,
+  linkTo: faUpRightFromSquare,
   photoRel: faCameraRetro,
   post: faPenToSquare,
   postOptions: faSliders,

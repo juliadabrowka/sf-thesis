@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
-import {ArticleStore} from '../../../../../../base/src/state/article/article.store';
-import {ArticleCategory, PageTitleComponent, SfTilesComponent} from '@sf/sf-base';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ArticleCategory, ArticleStore, PageTitleComponent, SfTilesComponent} from '@sf/sf-base';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
 import {SfFilterArticlesByTypePipe} from './filter-articles-by-type.pipe';
+import {AsyncPipe} from '@angular/common';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'sf-main-page-view',
@@ -11,6 +12,8 @@ import {SfFilterArticlesByTypePipe} from './filter-articles-by-type.pipe';
     NzDividerComponent,
     SfTilesComponent,
     SfFilterArticlesByTypePipe,
+    AsyncPipe,
+
   ],
   templateUrl: './main-page-view.component.html',
   styleUrl: './main-page-view.component.css',
@@ -20,7 +23,7 @@ import {SfFilterArticlesByTypePipe} from './filter-articles-by-type.pipe';
 export class SfBackofficeMainPageViewComponent {
   private readonly articleStore = inject(ArticleStore);
 
-  public readonly __articles$$ = computed(() => this.articleStore.articles())
+  public readonly __articles$ = toObservable(this.articleStore.articles)
 
   public readonly __sections = [
     {
@@ -44,8 +47,4 @@ export class SfBackofficeMainPageViewComponent {
       articleType: ArticleCategory.Rekomendacje
     }
   ];
-
-  // constructor() {
-  //   this.articleStore.loadArticleList();
-  // }
 }

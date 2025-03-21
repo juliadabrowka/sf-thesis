@@ -1,13 +1,14 @@
 import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {ArticleDTO} from '@sf/sf-base';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
+import {TileComponent} from '../tile/tile.component';
 
 @Component({
   selector: 'sf-tiles',
   imports: [
     AsyncPipe,
-    JsonPipe
+    TileComponent
   ],
   templateUrl: './tiles.component.html',
   styleUrl: './tiles.component.css',

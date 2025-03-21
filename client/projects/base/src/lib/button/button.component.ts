@@ -1,34 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  signal
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
+import {toObservable} from '@angular/core/rxjs-interop';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'sf-button',
-  imports: [],
+  imports: [
+    AsyncPipe
+  ],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfButtonComponent {
-  private readonly cdr = inject(ChangeDetectorRef);
+  public sfButtonText = input<string | null | undefined>('');
+  public __text$ = toObservable(this.sfButtonText);
 
-  public readonly __text$$ = signal<string | undefined>(undefined);
-  public readonly __disabled$$ = signal<boolean>(false)
+  public sfDisabled = input<boolean | null | undefined>(false);
+  public __disabled$ = toObservable(this.sfDisabled);
 
-  @Input() public set sfButtonText(text: string | null | undefined) {
-    this.__text$$.set(text ?? undefined);
-  }
-
-  @Input() public set sfDisabled(disabled: boolean | null | undefined) {
-    this.__disabled$$.set(disabled ?? false);
-  }
-
-  @Output() public readonly sfOnButtonClicked = new EventEmitter<void>();
+  public readonly sfOnButtonClicked = output();
 }

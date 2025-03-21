@@ -7,10 +7,10 @@
   @for (tripType of __tripTypes; track tripType) {
     <sf-trip-grid
       [sfTitle]="tripType.label"
-      [sfTrips]="__trips$$() | sfFilterTripsByType : tripType.value"
+      [sfTrips]="(__trips$ | async) ?? [] | sfFilterTripsByType : tripType.value"
       [sfIcon]="tripType.icon"
     ></sf-trip-grid>
-    @if (!$last) {
+    @if (!$last && !$first) {
       <span class="divider">
         <nz-divider></nz-divider>
       </span>

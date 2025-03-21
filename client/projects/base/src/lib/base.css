@@ -12,7 +12,7 @@
   --secondary-color: #fcf6fd; /* very light violet */
   --background-color: #f2eef4; /* very light grey */
   --background-lighter-color: #faf6fb; /* very light grey */
-  --card-header-color: #c9b1da; /* very light grey */
+  --button-grey-color: #939393; /* very light grey */
   --danger-color: #d53838; /* Red */
   --danger-hover-color: #c53838; /* Red */
 }
@@ -46,9 +46,7 @@ body {
   justify-content: center;
 
   .title {
-    font-size: 30px;
-    font-weight: 500;
-    letter-spacing: 0px;
+    letter-spacing: 0;
   }
 
   .subtitle {

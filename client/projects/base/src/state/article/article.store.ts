@@ -1,6 +1,6 @@
-import {computed, inject} from '@angular/core';
+import {inject} from '@angular/core';
 import {ArticleCategory, ArticleDTO, ArticleService} from '@sf/sf-base';
-import {patchState, signalStore, withComputed, withMethods, withProps, withState} from '@ngrx/signals';
+import {patchState, signalStore, withHooks, withMethods, withProps, withState} from '@ngrx/signals';
 import {firstValueFrom} from 'rxjs';
 import {addEntity, SelectEntityId, updateEntity, withEntities} from '@ngrx/signals/entities';
 
@@ -27,9 +27,6 @@ export const ArticleStore = signalStore(
   withState(initialState),
   withEntities<ArticleDTO>(),
   withProps(() => ({articleService: inject(ArticleService)})),
-  withComputed((store) => ({
-    currentArticle: computed(() => store.article())
-  })),
   withMethods((store) => ({
       async createArticle(article: ArticleDTO) {
         patchState(store, {loading: true});
@@ -86,5 +83,10 @@ export const ArticleStore = signalStore(
       patchState(store, {loading: false});
     },
     })
-  )
+  ),
+  withHooks({
+    async onInit(store) {
+      await store.loadArticleList();
+    }
+  })
 )

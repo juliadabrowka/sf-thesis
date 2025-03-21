@@ -1,0 +1,67 @@
+.tile-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px dotted #e1e1e1;
+  align-items: center;
+  overflow: hidden;
+  width: 312px
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 126px;
+
+  img {
+    width: 100%;
+    height: 126px;
+    object-fit: cover;
+  }
+
+  &:hover {
+    img {
+      transition: all 0.3s ease;
+      height: 126px;
+      filter: brightness(0.7);
+      transform: scale(1.1);
+    }
+
+    fa-icon {
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
+}
+
+fa-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-color: var(--primary-color);
+  padding: 15px;
+  border-radius: 100%;
+  z-index: 999;
+}
+
+.button, img, .title, .media {
+  margin-bottom: 8px;
+}
+
+.button {
+  font-size: 13px;
+  border-radius: 20px;
+  padding: 6px 10px;
+  width: auto;
+  cursor: pointer;
+  background-color: var(--button-grey-color);
+}
+
+.title {
+  text-transform: none;
+  font-size: 19px;
+}
+

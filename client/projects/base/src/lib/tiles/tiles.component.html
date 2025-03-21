@@ -1,1 +1,10 @@
-<pre> {{ (__articles$ | async) | json }}</pre>
+<div class="tiles-container">
+  @if (__articles$ | async; as articles) {
+    @for (article of articles; track article.Id) {
+      <sf-tile
+        [sfArticle]="article"
+      ></sf-tile>
+    }
+  }
+</div>
+
