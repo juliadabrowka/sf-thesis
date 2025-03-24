@@ -39,6 +39,11 @@
           <input nz-input [formControl]="__controls.articleUrl"/>
         </nz-form-control>
       </nz-form-item>
+
+      <div class="media-section">
+        <h3>📸 Zdjęcie w tle</h3>
+        <sf-upload (sfUploadedFiles)="__onFilesUpload($event)"></sf-upload>
+      </div>
     </div>
 
   @if (isTripCategorySelected) {
@@ -91,4 +96,6 @@
     </div>
   }
   </div>
+
+  <div>{{ __controls.backgroundImage.value }}</div>
 </div>

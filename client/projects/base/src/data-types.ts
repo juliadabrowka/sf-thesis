@@ -42,6 +42,7 @@ export class ArticleDTO {
   Title: string = '';
   Url: string = '';
   Content: string = '';
+  BackgroundImageUrl: string = '';
   Country: Country = DefaultCountryValue;
   ArticleCategory = DefaultArticleCategoryValue;
   TripId: number | undefined;

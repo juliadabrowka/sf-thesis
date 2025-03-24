@@ -48,6 +48,10 @@ namespace sf.Migrations
                     b.Property<int>("ArticleCategory")
                         .HasColumnType("integer");
 
+                    b.Property<string>("BackgroundImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");

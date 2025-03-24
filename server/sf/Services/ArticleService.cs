@@ -105,6 +105,12 @@ public class ArticleService : IArticleService
             isUpdated = true;
         }
 
+        if (article.BackgroundImageUrl != articleDto.BackgroundImageUrl)
+        {
+            article.BackgroundImageUrl = articleDto.BackgroundImageUrl;
+            isUpdated = true;
+        }
+
         if (article.ArticleCategory != articleDto.ArticleCategory)
         {
             article.ArticleCategory = articleDto.ArticleCategory;

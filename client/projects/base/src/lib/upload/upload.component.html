@@ -1,10 +1,10 @@
 <nz-upload
   nzName="file"
+  [nzCustomRequest]="uploadCustom"
+  [nzMultiple]="false"
+  [nzListType]="'picture'"
   [(nzFileList)]="fileList"
-  [nzTransformFile]="transformFile"
-  [nzData]="getExtraData"
-  [nzAction]="mockOSSData.host"
-  (nzChange)="onChange($event)"
+  (nzChange)="onUploadChange($event)"
 >
   <button nz-button>
     <sf-icon-and-text
@@ -13,3 +13,4 @@
     ></sf-icon-and-text>
   </button>
 </nz-upload>
+

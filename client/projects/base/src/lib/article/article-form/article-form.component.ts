@@ -24,6 +24,7 @@ import {isNil, isNotNil} from '@w11k/rx-ninja';
 import {SfIconAndTextComponent} from '../../icon-and-text/icon-and-text.component';
 import {SfIcons} from '../../icons';
 import {QuillEditorComponent} from 'ngx-quill';
+import {SfUploadComponent} from '../../upload/upload.component';
 
 @Component({
   selector: 'sf-article-form',
@@ -39,7 +40,8 @@ import {QuillEditorComponent} from 'ngx-quill';
     NzInputNumberComponent,
     NzDatePickerModule,
     SfIconAndTextComponent,
-    QuillEditorComponent
+    QuillEditorComponent,
+    SfUploadComponent
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -74,7 +76,8 @@ export class SfArticleFormComponent {
     tripType: new FormControl<TripType>(DefaultTripTypeValue, {nonNullable: true}),
     participantsTotal: new FormControl<number>(0, {nonNullable: true}),
     participantsCurrent: new FormControl<number>(0, {nonNullable: true}),
-    tripName: new FormControl<string>('', {nonNullable: true})
+    tripName: new FormControl<string>('', {nonNullable: true}),
+    backgroundImage: new FormControl<string>('', {nonNullable: true})
   };
   public readonly __categories = Object.values(ArticleCategory).map(o => ({label: o, value: o}));
   public readonly __countries = Object.values(Country).map(o => ({label: o, value: o}));
@@ -156,8 +159,9 @@ export class SfArticleFormComponent {
         this.cdr.markForCheck()
       })
   }
-  __onFilesUpload(files: NzUploadFile[]) {
-    console.log(files)
+
+  __onFilesUpload(file: NzUploadFile) {
+    console.log(file)
   }
 
   public shouldAutoUpdateUrl(title: string): string {
