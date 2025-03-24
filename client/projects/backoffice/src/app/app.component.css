@@ -29,10 +29,6 @@ img {
   cursor: pointer;
 }
 
-nz-content {
-  padding: 6px 24px;
-  width: 100%;
-}
 
 .main-layout {
   display: flex;
@@ -53,5 +49,5 @@ sf-sider {
 }
 
 nz-footer {
-  background-color: #008f71;
+  background-color: var(--primary-color);
 }

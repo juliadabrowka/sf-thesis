@@ -12,6 +12,7 @@ export * from './lib/action-bar/action-bar.component';
 
 export * from './lib/article/article-form/article-form.component';
 export * from './lib/article/article-table/article-table.component';
+export * from './lib/article/article-details/article-details.component';
 
 export * from './lib/button/button.component';
 
@@ -30,6 +31,5 @@ export * from './lib/tiles/tiles.component';
 
 export * from './lib/trip/trip-calendar/trip-calendar-routes';
 export * from './lib/trip/trip-table/trip-table.component';
-export * from './lib/trip/trip-details/trip-details.routes';
 
 export * from './lib/upload/upload.component';

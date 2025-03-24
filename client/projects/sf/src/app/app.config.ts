@@ -5,6 +5,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideHttpClient} from '@angular/common/http';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {en_US, provideNzI18n} from 'ng-zorro-antd/i18n';
+import {provideQuillConfig} from 'ngx-quill';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,26 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideAnimationsAsync(),
-    provideRouter(sfAppRoutes)
+    provideRouter(sfAppRoutes),
+    provideQuillConfig({
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+
+          [{'header': 1}, {'header': 2}, {'header': 3}],
+          [{'list': 'ordered'}, {'list': 'bullet'}],
+          [{'script': 'sub'}, {'script': 'super'}],
+
+          [{'size': ['small', false, 'large', 'huge']}],
+          [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+          [{'font': []}],
+          [{'align': []}],
+
+          ['link', 'image', 'video']
+        ],
+      },
+      theme: 'snow'
+    })
   ],
 };

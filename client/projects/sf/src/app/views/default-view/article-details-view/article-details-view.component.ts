@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
 @Component({
-  selector: 'sf-trip-details-view',
+  selector: 'sf-article-details-view',
   imports: [
     RouterOutlet
   ],
-  templateUrl: './trip-details-view.component.html',
-  styleUrl: './trip-details-view.component.css',
+  templateUrl: './article-details-view.component.html',
+  styleUrl: './article-details-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfTripDetailsViewComponent {

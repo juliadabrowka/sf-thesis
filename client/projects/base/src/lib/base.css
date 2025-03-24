@@ -102,6 +102,10 @@ body {
   }
 }
 
+nz-card {
+  height: 100%;
+}
+
 .button {
   background-color: var(--primary-color);
   transition: all 0.3s ease-in-out;
@@ -118,6 +122,12 @@ body {
   &:hover:enabled {
     background: var(--focus-dark-color);
   }
+}
+
+nz-content {
+  padding: 6px 24px;
+  width: 100%;
+  height: 100%;
 }
 
 .ant-form-item {

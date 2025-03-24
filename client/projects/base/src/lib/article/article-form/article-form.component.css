@@ -1,35 +1,45 @@
 .cockpit-container {
   display: flex;
   gap: 20px;
-}
+  height: 100vh;
 
-.main-form {
-  flex: 2;
-}
+  .main-form {
+    flex: 2;
+    height: 100%;
 
-.side-panel {
-  flex: 1;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+    form {
+      height: 100%;
 
-h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 5px;
-}
+      > quill-editor {
+        display: block;
+      }
+    }
+  }
 
-.category-section,
-.trip-section,
-.media-section {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-}
+  .side-panel {
+    flex: 1;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-#editorContainer {
-  margin-top: 8px
+  h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+
+  .category-section,
+  .trip-section,
+  .media-section {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  #editorContainer {
+    margin-top: 8px
+  }
 }

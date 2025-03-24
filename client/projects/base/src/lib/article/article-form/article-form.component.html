@@ -6,12 +6,7 @@
           <input nz-input [formControl]="__controls.title" [placeholder]="'Dodaj tytuł'"/>
         </nz-form-control>
       </nz-form-item>
-
-      <div id="editorContainer">
-        <div #editor></div>
-      </div>
-
-
+      <quill-editor #editor [formControl]="__controls.content"></quill-editor>
     </form>
   </div>
 
@@ -93,14 +88,7 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-
-      <!-- Media Upload Section -->
-      <div class="media-section">
-        <h3>📸 Media</h3>
-        <sf-upload (sfUploadedFiles)="__onFilesUpload($event)"></sf-upload>
-      </div>
     </div>
   }
-
   </div>
 </div>

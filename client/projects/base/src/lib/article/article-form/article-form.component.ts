@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  inject,
-  input,
-  ViewChild,
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, ViewChild,} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   ArticleCategory,
@@ -27,13 +18,12 @@ import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective} from 'ng-zorro-antd/input';
 import {NzDatePickerComponent, NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
-import {SfUploadComponent} from '../../upload/upload.component';
 import {ArticleStore} from '../../../state/article/article.store';
 import {TripStore} from '../../../state/trip/trip.store';
 import {isNil, isNotNil} from '@w11k/rx-ninja';
-import Quill from 'quill';
 import {SfIconAndTextComponent} from '../../icon-and-text/icon-and-text.component';
 import {SfIcons} from '../../icons';
+import {QuillEditorComponent} from 'ngx-quill';
 
 @Component({
   selector: 'sf-article-form',
@@ -47,16 +37,15 @@ import {SfIcons} from '../../icons';
     NzInputDirective,
     NzDatePickerComponent,
     NzInputNumberComponent,
-    SfUploadComponent,
     NzDatePickerModule,
     SfIconAndTextComponent,
-
+    QuillEditorComponent
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SfArticleFormComponent implements AfterViewInit {
+export class SfArticleFormComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly articleStore = inject(ArticleStore);
   private readonly tripStore = inject(TripStore);
@@ -96,7 +85,7 @@ export class SfArticleFormComponent implements AfterViewInit {
   public readonly __formGroup = new FormGroup(this.__controls);
   public isTripCategorySelected = false;
 
-  @ViewChild("editor") private editorContainerRef: ElementRef<HTMLElement> | undefined;
+  @ViewChild("editor") private editorContainerRef: QuillEditorComponent | undefined;
 
   constructor() {
     this.__article$.pipe(
@@ -165,30 +154,6 @@ export class SfArticleFormComponent implements AfterViewInit {
         this.articleStore.setArticle(articleState);
 
         this.cdr.markForCheck()
-      })
-  }
-
-  ngAfterViewInit() {
-    if (this.editorContainerRef)
-      new Quill(this.editorContainerRef.nativeElement, {
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-
-            [{'header': 1}, {'header': 2}, {'header': 3}],
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{'script': 'sub'}, {'script': 'super'}],
-
-            [{'size': ['small', false, 'large', 'huge']}],
-            [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-            [{'font': []}],
-            [{'align': []}],
-
-            ['link', 'image', 'video']
-          ]
-        },
-        theme: 'snow',
       })
   }
   __onFilesUpload(files: NzUploadFile[]) {

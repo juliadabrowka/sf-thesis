@@ -56,7 +56,7 @@ export const ArticleStore = signalStore(
         patchState(store, {loading: true});
         const loadArticleDetailsApiCall$ = await store.articleService.getArticleDetails(id);
         const articleDetails = await firstValueFrom(loadArticleDetailsApiCall$);
-        patchState(store, {article: articleDetails, loading: false});
+        this.setArticle(articleDetails);
       },
 
     setArticle(article: ArticleDTO | undefined) {
