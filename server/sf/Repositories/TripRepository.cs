@@ -47,19 +47,27 @@ public class TripRepository : ITripRepository
 
     public async Task<Trip> CreateTrip(Trip trip)
     {
-        await _sfDbContext.Trips.AddAsync(trip);
-        await _sfDbContext.SaveChangesAsync();
+        _sfDbContext.Trips.Add(trip);
+    
+        Console.WriteLine($"Saving trip: {trip.Id}"); // Debugging
 
+        await _sfDbContext.SaveChangesAsync();
         return trip;
     }
 
     public async Task<Trip> UpdateTrip(Trip trip)
     {
-        _sfDbContext.Trips.Update(trip);
-        await _sfDbContext.SaveChangesAsync();
-        return trip;
-    }
+        var existingTrip = await _sfDbContext.Trips.FindAsync(trip.Id);
+        if (existingTrip == null)
+        {
+            throw new ApplicationException($"Trip with ID {trip.Id} not found.");
+        }
 
+        _sfDbContext.Entry(existingTrip).CurrentValues.SetValues(trip);
+        await _sfDbContext.SaveChangesAsync();
+        return existingTrip;
+    }
+    
     public async Task DeleteTrips(int[] tripIds)
     {
         var trips = await _sfDbContext.Trips

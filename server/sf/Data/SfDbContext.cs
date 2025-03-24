@@ -55,12 +55,6 @@ public class SfDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade); 
         
         // trip - article
-        modelBuilder.Entity<Trip>()
-            .HasOne<Article>(t => t.Article)
-            .WithOne(p => p.Trip)
-            .HasForeignKey<Trip>(o => o.ArticleId)
-            .OnDelete(DeleteBehavior.Restrict); 
-
         modelBuilder.Entity<Article>()
             .HasOne(a => a.Trip)
             .WithOne(t => t.Article)

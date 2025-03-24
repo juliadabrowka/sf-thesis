@@ -22,12 +22,14 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
     private readonly ITripRepository _tripRepository;
+    private readonly SfDbContext _sfDbContext;
 
-    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository)
+    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository, SfDbContext sfDbContext)
     {
         _articleRepository = articleRepository;
         _mapper = mapper;
         _tripRepository = tripRepository;
+        _sfDbContext = sfDbContext;
     }
     
     public async Task<ArticleDTO[]> GetArticles()
@@ -54,31 +56,25 @@ public class ArticleService : IArticleService
             throw new ArgumentNullException(nameof(articleDto), "ArticleDTO cannot be null");
         }
         var articleEntity = _mapper.Map<Article>(articleDto);
-        var article = await _articleRepository.CreateArticle(articleEntity);
-         if (article == null)
-         {
-             throw new ApplicationException("Article is null but should not be");
-         }
+        var newArticle = await _articleRepository.CreateArticle(articleEntity);
         
         if (articleDto.ArticleCategory == ArticleCategory.Wyprawy)
         {
             if (articleDto.TripDto == null)
             {
-                throw new ApplicationException("Trip given in the article is null but should bot be");
+                throw new ApplicationException("Trip given in the article is null but should not be");
             }
 
-            var t = _mapper.Map<Trip>(articleDto.TripDto);
-
-            var trip = await _tripRepository.CreateTrip(t); // sets id
-            article.Trip = trip;
-            article.TripId = trip.Id;
+            if (newArticle.Trip == null)
+            {
+                throw new ApplicationException("Trip in article is null but should not be");
+            }
             
-            trip.Article = article;
-            trip.ArticleId = article.Id;
-            await _tripRepository.UpdateTrip(trip);
+            newArticle.TripId = newArticle.Trip.Id;
+            await _articleRepository.UpdateArticle(newArticle);
         }
-        
-        return _mapper.Map<ArticleDTO>(article);
+
+        return _mapper.Map<ArticleDTO>(newArticle);
     }
 
     public async Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto)
