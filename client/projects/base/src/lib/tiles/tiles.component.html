@@ -1,5 +1,5 @@
 <div class="tiles-container">
-  @if (__articles$ | async; as articles) {
+  @if (sfArticles(); as articles) {
     @for (article of articles; track article.Id) {
       <sf-tile
         [sfArticle]="article"

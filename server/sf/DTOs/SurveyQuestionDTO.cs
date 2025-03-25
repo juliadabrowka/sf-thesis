@@ -6,6 +6,6 @@ public class SurveyQuestionDTO
     public string QuestionText { get; set; }
     public bool isCommon { get; set; }
     
-    public List<int> SurveyIds { get; set; }
-    public List<int> SurveyAnswerIds { get; set; }
+    public ICollection<int> SurveyIds { get; set; }
+    public ICollection<int> SurveyAnswerIds { get; set; }
 }

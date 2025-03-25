@@ -15,7 +15,7 @@
         <nz-divider></nz-divider>
   </span>
     <sf-tiles
-      [sfArticles]="(__articles$ | async) ?? [] | sfFilterArticlesByType : section.articleType"
+      [sfArticles]="__articles() | sfFilterArticlesByType : section.articleType"
     ></sf-tiles>
   }
 </div>

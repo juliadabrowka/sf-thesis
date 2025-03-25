@@ -7,5 +7,5 @@ public class SurveyDTO
     public Country Country { get; set; }
     
     public int? TripId { get; set; }
-    public List<int> SurveyQuestionIds { get; set; }
+    public ICollection<int> SurveyQuestionIds { get; set; }
 }

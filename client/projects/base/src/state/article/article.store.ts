@@ -57,19 +57,20 @@ export const ArticleStore = signalStore(
         const loadArticleDetailsApiCall$ = await store.articleService.getArticleDetails(id);
         const articleDetails = await firstValueFrom(loadArticleDetailsApiCall$);
         this.setArticle(articleDetails);
+        return articleDetails
       },
 
     setArticle(article: ArticleDTO | undefined) {
       patchState(store, {article, loading: true});
       patchState(store, {loading: false});
-      },
+    },
 
     async deleteArticles(articleIds: number[]) {
-        patchState(store, {loading: true});
+      patchState(store, {loading: true});
       const deleteArticleApiCall$ = await store.articleService.deleteArticles(articleIds);
-        await firstValueFrom(deleteArticleApiCall$);
-        patchState(store, {loading: false});
-      },
+      await firstValueFrom(deleteArticleApiCall$);
+      patchState(store, {loading: false});
+    },
 
       async loadArticleList() {
         patchState(store, {loading: true});

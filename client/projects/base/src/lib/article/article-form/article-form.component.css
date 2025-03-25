@@ -1,7 +1,9 @@
 .cockpit-container {
   display: flex;
   gap: 20px;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
+  margin-bottom: 8px;
 
   .main-form {
     flex: 2;

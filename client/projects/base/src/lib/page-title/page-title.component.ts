@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 
 @Component({
   selector: 'sf-page-title',
@@ -7,7 +7,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './page-title.component.css'
 })
 export class PageTitleComponent {
-  @Input() public sfTitle: string | null | undefined;
-  @Input() public sfSubTitle: string | null | undefined;
+  public readonly sfTitle = input<string | null>();
+  public readonly sfSubTitle = input<string | null>();
 
 }

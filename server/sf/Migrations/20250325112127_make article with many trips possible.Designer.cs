@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using sf.Program.Data;
@@ -11,9 +12,11 @@ using sf.Program.Data;
 namespace sf.Migrations
 {
     [DbContext(typeof(SfDbContext))]
-    partial class SfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325112127_make article with many trips possible")]
+    partial class makearticlewithmanytripspossible
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +66,9 @@ namespace sf.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("TripId")
-                        .HasColumnType("integer");
+                    b.Property<int[]>("TripIds")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -209,9 +213,24 @@ namespace sf.Migrations
                     b.Property<int?>("ArticleId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("ParticipantsCurrent")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ParticipantsTotal")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<int?>("SurveyId")
                         .HasColumnType("integer");
@@ -221,8 +240,7 @@ namespace sf.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId")
-                        .IsUnique();
+                    b.HasIndex("ArticleId");
 
                     b.ToTable("Trips");
                 });
@@ -268,39 +286,6 @@ namespace sf.Migrations
                     b.HasIndex("TripId");
 
                     b.ToTable("TripApplications");
-                });
-
-            modelBuilder.Entity("sf.Models.TripTerm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateFrom")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateTo")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ParticipantsCurrent")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ParticipantsTotal")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TripId");
-
-                    b.ToTable("TripTerm");
                 });
 
             modelBuilder.Entity("sf.Models.User", b =>
@@ -380,8 +365,8 @@ namespace sf.Migrations
             modelBuilder.Entity("sf.Models.Trip", b =>
                 {
                     b.HasOne("sf.Models.Article", "Article")
-                        .WithOne("Trip")
-                        .HasForeignKey("sf.Models.Trip", "ArticleId")
+                        .WithMany("Trips")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Article");
@@ -398,20 +383,9 @@ namespace sf.Migrations
                     b.Navigation("Trip");
                 });
 
-            modelBuilder.Entity("sf.Models.TripTerm", b =>
-                {
-                    b.HasOne("sf.Models.Trip", "Trip")
-                        .WithMany("TripTerms")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
-                });
-
             modelBuilder.Entity("sf.Models.Article", b =>
                 {
-                    b.Navigation("Trip");
+                    b.Navigation("Trips");
                 });
 
             modelBuilder.Entity("sf.Models.SurveyQuestion", b =>
@@ -429,8 +403,6 @@ namespace sf.Migrations
                     b.Navigation("Survey");
 
                     b.Navigation("TripApplications");
-
-                    b.Navigation("TripTerms");
                 });
 
             modelBuilder.Entity("sf.Models.TripApplication", b =>

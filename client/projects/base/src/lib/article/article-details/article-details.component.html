@@ -1,2 +1,12 @@
-<p>article-details works!</p>
-<quill-view [content]=""></quill-view>
+@if (_article(); as article) {
+  <div class="content">
+    <img src="assets/kalendarz-wyjazdow.png" alt="">
+    <sf-page-title-framed
+      [sfTitle]="article.Title"
+    ></sf-page-title-framed>
+    <quill-view [content]=""></quill-view>
+  </div>
+} @else {
+  <p>Loading...</p>
+}
+

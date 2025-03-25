@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, output} from '@angular/core';
 import {ArticleDTO} from '@sf/sf-base';
 import {NzTableModule, NzTableSortFn, NzThAddOnComponent} from 'ng-zorro-antd/table';
 import {BehaviorSubject} from 'rxjs';
@@ -41,7 +41,7 @@ export class SfArticleTableComponent {
     this.__articles$$.next(articles ?? []);
   }
 
-  @Input() sfLoading: boolean | null | undefined;
+  readonly sfLoading = input<boolean | null>();
   public readonly sfOnArticleClick = output<ArticleDTO>();
 
   trackByIndex(_: number, data: ArticleDTO): number {

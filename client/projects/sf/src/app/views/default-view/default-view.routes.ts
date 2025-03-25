@@ -7,15 +7,15 @@ export const defaultViewRoutes: Routes = [
     component: SfBackofficeDefaultViewComponent,
     children: [
       {
+        path: 'kalendarium-wypraw',
+        loadChildren: () =>
+          import('../../views/default-view/trip-calendar-view/trip-calendar-view.routes').then(m => m.tripCalendarViewRoutes)
+      },
+      {
         path: '',
         loadChildren: () =>
           import('../../views/default-view/main-page-view/main-page-view.routes').then(m => m.mainPageViewRoutes)
       },
-      {
-        path: 'kalendarium-wypraw',
-        loadChildren: () =>
-          import('../../views/default-view/trip-calendar-view/trip-calendar-view.routes').then(m => m.tripCalendarViewRoutes)
-      }
     ]
   },
 ]

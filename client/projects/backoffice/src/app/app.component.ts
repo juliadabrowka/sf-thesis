@@ -1,13 +1,12 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent} from 'ng-zorro-antd/layout';
+import {NzContentComponent, NzHeaderComponent, NzLayoutComponent} from 'ng-zorro-antd/layout';
 import {NzMenuDirective, NzSubMenuComponent} from 'ng-zorro-antd/menu';
-import {SfIconAndTextComponent, SfIcons, SfSiderComponent, TripStore} from '@sf/sf-base';
-import {ArticleStore} from '../../../base/src/state/article/article.store';
+import {ArticleStore, SfIconAndTextComponent, SfIcons, SfSiderComponent, TripStore} from '@sf/sf-base';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent, NzMenuDirective, NzSubMenuComponent, SfIconAndTextComponent, SfSiderComponent, RouterLink],
+  imports: [RouterOutlet, NzContentComponent, NzHeaderComponent, NzLayoutComponent, NzMenuDirective, NzSubMenuComponent, SfIconAndTextComponent, SfSiderComponent, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

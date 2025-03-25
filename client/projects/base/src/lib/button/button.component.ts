@@ -1,22 +1,15 @@
 import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {toObservable} from '@angular/core/rxjs-interop';
-import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'sf-button',
-  imports: [
-    AsyncPipe
-  ],
+  imports: [],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfButtonComponent {
-  public sfButtonText = input<string | null | undefined>('');
-  public __text$ = toObservable(this.sfButtonText);
-
-  public sfDisabled = input<boolean | null | undefined>(false);
-  public __disabled$ = toObservable(this.sfDisabled);
+  public readonly sfButtonText = input<string | null>('');
+  public readonly sfDisabled = input<boolean | null>(false);
 
   public readonly sfOnButtonClicked = output();
 }

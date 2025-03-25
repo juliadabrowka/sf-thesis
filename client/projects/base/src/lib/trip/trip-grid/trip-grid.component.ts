@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input} from '@angular/core';
 import {SfIconAndTextComponent, SfIcons} from '@sf/sf-base';
 import {BehaviorSubject} from 'rxjs';
 import {SfTripInlineComponent} from '../trip-inline/trip-inline.component';
@@ -32,5 +32,5 @@ export class SfTripGridComponent {
     this.cdr.markForCheck();
   }
 
-  @Input() public sfIcon: string | null | undefined;
+  public readonly sfIcon = input<string | null>();
 }

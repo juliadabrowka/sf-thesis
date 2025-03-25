@@ -19,15 +19,19 @@
   </tr>
   </thead>
   <tbody>
-    @for (data of tripTable.data; track data.Id) {
+    @for (data of tripTable.data; track data.Id; ) {
         <tr (click)="sfOnTripClick.emit(data)">
-          <td>{{ data.ArticleDto?.Title }}</td>
-          <td>{{ data.ArticleDto?.Country }}</td>
-          <td>{{ data.DateFrom }}</td>
-          <td>{{ data.DateTo }}</td>
-          <td>{{ data.Price }}</td>
-          <td>{{ data.ParticipantsCurrent }}</td>
-          <td>{{ data.Type }}</td>
+          @for (tripTerm of data.TripTermDtos; track tripTerm.Id) {
+            <ng-container>
+              <td>{{ data.ArticleDto?.Title }}</td>
+              <td>{{ data.ArticleDto?.Country }}</td>
+              <td>{{ tripTerm.DateFrom }}</td>
+              <td>{{ tripTerm.DateTo }}</td>
+              <td>{{ tripTerm.Price }}</td>
+              <td>{{ tripTerm.ParticipantsCurrent }}</td>
+              <td>{{ data.Type }}</td>
+            </ng-container>
+          }
         </tr>
     }
   </tbody>

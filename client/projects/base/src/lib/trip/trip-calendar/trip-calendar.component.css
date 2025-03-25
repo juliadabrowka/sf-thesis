@@ -1,15 +1,6 @@
-
-.trip-grid, .content {
+.trip-grid {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-.content {
-  background-image: url("../../../assets/kalendarz-wyjazdow.png");
-  height: 350px;
-  width: 100vw;
-  background-repeat: no-repeat;
-  background-size: cover;
 }

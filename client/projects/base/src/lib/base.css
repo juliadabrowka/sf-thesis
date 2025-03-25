@@ -28,6 +28,7 @@ body {
   font-style: normal;
   font-size: 13px;
   background: var(--background-lighter-color);
+  height: auto;
 }
 
 .title {
@@ -64,8 +65,9 @@ body {
   font-size: 34px;
   margin: 80px auto auto auto;
   font-weight: 700;
-  width: fit-content;
+  max-width: 1000px;
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .remove-button {
@@ -154,4 +156,20 @@ nz-content {
 
 .divider {
   width: 60%;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 350px;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  img {
+    position: absolute;
+    z-index: -1;
+  }
 }

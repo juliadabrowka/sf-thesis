@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, input} from '@angular/core';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
@@ -14,6 +14,6 @@ import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 export class SfIconAndTextComponent {
   @Input() public sfIcon: IconDefinition | null | undefined;
   @Input() public sfIconSrc: string | null | undefined;
-  @Input() public sfText: string | null | undefined;
-  @Input() public sfReverse: boolean | null | undefined;
+  public readonly sfText = input<string | null>();
+  public readonly sfReverse = input<boolean | null>();
 }

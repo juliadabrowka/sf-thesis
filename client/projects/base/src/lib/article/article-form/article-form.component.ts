@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, ViewChild,} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input,} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   ArticleCategory,
@@ -8,16 +8,15 @@ import {
   DefaultCountryValue,
   DefaultTripTypeValue,
   TripDTO,
+  TripTermDTO,
   TripType,
 } from '../../../data-types';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
-import {BehaviorSubject, firstValueFrom, map} from 'rxjs';
+import {map} from 'rxjs';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzInputDirective} from 'ng-zorro-antd/input';
-import {NzDatePickerComponent, NzDatePickerModule} from 'ng-zorro-antd/date-picker';
-import {NzInputNumberComponent} from 'ng-zorro-antd/input-number';
 import {ArticleStore} from '../../../state/article/article.store';
 import {TripStore} from '../../../state/trip/trip.store';
 import {isNil, isNotNil} from '@w11k/rx-ninja';
@@ -25,6 +24,8 @@ import {SfIconAndTextComponent} from '../../icon-and-text/icon-and-text.componen
 import {SfIcons} from '../../icons';
 import {QuillEditorComponent} from 'ngx-quill';
 import {SfUploadComponent} from '../../upload/upload.component';
+import {TripTermListComponent} from '../../trip/trip-term-list/trip-term-list.component';
+import {TripTermDetailsComponent} from '../../trip/trip-term-details/trip-term-details.component';
 
 @Component({
   selector: 'sf-article-form',
@@ -36,12 +37,11 @@ import {SfUploadComponent} from '../../upload/upload.component';
     NzFormControlComponent,
     NzSelectComponent,
     NzInputDirective,
-    NzDatePickerComponent,
-    NzInputNumberComponent,
-    NzDatePickerModule,
     SfIconAndTextComponent,
     QuillEditorComponent,
-    SfUploadComponent
+    SfUploadComponent,
+    TripTermListComponent,
+    TripTermDetailsComponent
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -52,30 +52,18 @@ export class SfArticleFormComponent {
   private readonly articleStore = inject(ArticleStore);
   private readonly tripStore = inject(TripStore);
 
+  public readonly sfArticle = input<ArticleDTO | undefined>(undefined);
+  public readonly sfTrip = input<TripDTO | undefined>(undefined);
+  public readonly sfLoading = input<boolean>(false);
+
   public readonly __icons = SfIcons;
-  public readonly __trip$$ = new BehaviorSubject<TripDTO | undefined>(undefined);
-  public readonly __loading$$ = new BehaviorSubject<boolean>(false);
-
-  public sfArticle = input<ArticleDTO | undefined>(undefined);
-  private readonly __article$ = toObservable(this.sfArticle);
-
-  public sfTrip = input<TripDTO | undefined>(undefined);
-  private readonly __trip$ = toObservable(this.sfTrip)
-
-  public sfLoading = input<boolean>(false);
-  private readonly __loading$ = toObservable(this.sfLoading)
-
   public readonly __controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {nonNullable: true}),
     title: new FormControl<string>('', {nonNullable: true}),
     articleUrl: new FormControl<string>('', {nonNullable: true}),
     content: new FormControl<string>('', {nonNullable: true}),
     country: new FormControl<Country>(DefaultCountryValue, {nonNullable: true}),
-    dates: new FormControl<[Date, Date]>([new Date(), new Date()]),
-    price: new FormControl<number>(0, {nonNullable: true}),
     tripType: new FormControl<TripType>(DefaultTripTypeValue, {nonNullable: true}),
-    participantsTotal: new FormControl<number>(0, {nonNullable: true}),
-    participantsCurrent: new FormControl<number>(0, {nonNullable: true}),
     tripName: new FormControl<string>('', {nonNullable: true}),
     backgroundImage: new FormControl<string>('', {nonNullable: true})
   };
@@ -88,12 +76,10 @@ export class SfArticleFormComponent {
   public readonly __formGroup = new FormGroup(this.__controls);
   public isTripCategorySelected = false;
 
-  @ViewChild("editor") private editorContainerRef: QuillEditorComponent | undefined;
-
   constructor() {
-    this.__article$.pipe(
+    toObservable(this.sfArticle).pipe(
       takeUntilDestroyed()
-    ).subscribe(article => {
+    ).subscribe(async (article) => {
       if (article) {
         this.__formGroup.patchValue({
           category: article.ArticleCategory ?? DefaultArticleCategoryValue,
@@ -104,19 +90,31 @@ export class SfArticleFormComponent {
         });
 
         if (article.TripDto) {
-          this.__trip$$.next(article.TripDto);
-          this.__formGroup.patchValue({
-            tripName: article.TripDto.Name,
-            dates: [article.TripDto.DateFrom, article.TripDto.DateTo],
-            price: article.TripDto.Price,
-            tripType: article.TripDto.Type,
-            participantsCurrent: article.TripDto.ParticipantsCurrent,
-            participantsTotal: article.TripDto.ParticipantsTotal
-          })
+          const trip = this.sfTrip();
+          if (trip) {
+            this.__formGroup.patchValue({
+              tripName: trip.Name,
+              tripType: trip.Type,
+            })
+          }
         }
       }
       this.cdr.markForCheck();
     });
+
+    this.__controls.title.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        if (value) {
+          const formattedValue = value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-');
+          this.__controls.articleUrl.setValue(formattedValue, {emitEvent: false});
+        }
+      });
 
     this.__formGroup.valueChanges
       .pipe(
@@ -125,9 +123,11 @@ export class SfArticleFormComponent {
       )
       .subscribe(async (fg) => {
         this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
-        const tripState = isNil(this.__trip$$.value) ? new TripDTO() : {...this.__trip$$.value};
-        const a = await firstValueFrom(this.__article$);
+        const t = this.sfTrip();
+        const tripState = isNil(t) ? new TripDTO() : t;
+        const a = this.sfArticle();
         const articleState = isNil(a) ? new ArticleDTO() : a;
+        console.log(articleState)
 
         articleState.Title = fg.title;
         articleState.Content = fg.content;
@@ -138,72 +138,62 @@ export class SfArticleFormComponent {
         if (this.isTripCategorySelected && tripState) {
           tripState.Type = fg.tripType ?? DefaultTripTypeValue;
           tripState.Name = fg.tripName ?? "";
-          tripState.Price = fg.price ?? 0;
-          tripState.ParticipantsCurrent = fg.participantsCurrent ?? 0;
-          tripState.ParticipantsTotal = fg.participantsTotal ?? 0;
-          tripState.DateFrom = fg.dates ? fg.dates[0] : new Date();
-          tripState.DateTo = fg.dates ? fg.dates[1] : new Date()
         }
 
-        if (tripState && tripChanged(this.__trip$$.value, tripState)) {
-          tripState.ArticleId = articleState?.Id;
-          this.tripStore.setTrip(tripState)
-        }
+        tripState.ArticleId = articleState?.Id;
+        this.tripStore.setTrip(tripState)
 
         articleState.TripId = tripState.Id;
         articleState.TripDto = this.isTripCategorySelected ? tripState : undefined;
 
-        if (articleChanged(a, articleState))
-        this.articleStore.setArticle(articleState);
+        if (articleChanged(a, articleState)) this.articleStore.setArticle(articleState);
 
-        this.cdr.markForCheck()
+        this.cdr.detectChanges()
       })
   }
 
   __onFilesUpload(file: NzUploadFile) {
     console.log(file)
   }
-
-  public shouldAutoUpdateUrl(title: string): string {
-    const urlControl = this.__controls.articleUrl;
-
-    if (urlControl?.pristine) {
-      const t = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-      this.__controls.articleUrl.patchValue(t);
-      return t;
-    } else {
-      this.__controls.articleUrl.patchValue(urlControl?.value);
-      return urlControl?.value
-    }
-  }
 }
 
 export function articleChanged(prev: ArticleDTO | undefined, current: ArticleDTO) {
-  if (prev?.Title !== current.Title ||
+  if (prev?.Id !== current.Id ||
+    prev?.Title !== current.Title ||
     prev?.Content !== current.Content ||
     prev?.Country !== current.Country ||
     prev?.ArticleCategory !== current.ArticleCategory ||
     prev?.Url !== current.Url ||
     isNotNil(prev?.TripDto) || isNotNil(current.TripDto)
   ) {
+    console.log("changed")
     return true;
   }
   return false;
 }
-
 export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
   const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
     return arr1.length === arr2.length && new Set(arr1).size === new Set([...arr1, ...arr2]).size;
   }
 
+  const compareTripTerms = (arr1: TripTermDTO[], arr2: TripTermDTO[]) => {
+    if (arr1.length !== arr2.length) return true;
+
+    return arr1.some((term, index) => {
+      const otherTerm = arr2[index];
+      return term.Id !== otherTerm.Id ||
+        term.DateFrom !== otherTerm.DateFrom ||
+        term.DateTo !== otherTerm.DateTo ||
+        term.ParticipantsCurrent !== otherTerm.ParticipantsCurrent ||
+        term.ParticipantsTotal !== otherTerm.ParticipantsTotal ||
+        term.Price !== otherTerm.Price;
+    });
+  }
+
   if (prev?.Id !== current.Id ||
     prev?.Type !== current.Type ||
-    prev?.ParticipantsCurrent !== current.ParticipantsCurrent ||
-    prev?.ParticipantsTotal !== current.ParticipantsTotal ||
-    prev?.DateFrom !== current.DateFrom ||
-    prev?.DateTo !== current.DateTo ||
     prev?.SurveyId !== current.SurveyId ||
-    prev?.Price !== current.Price ||
+    compareTripTerms(prev?.TripTermDtos, current.TripTermDtos) ||
     arraysEqualSet(prev?.TripApplicationIds ?? [], current.TripApplicationIds ?? [])) {
     return true
   }

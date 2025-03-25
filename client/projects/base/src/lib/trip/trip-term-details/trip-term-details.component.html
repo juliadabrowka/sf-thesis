@@ -1,0 +1,28 @@
+<p>trip-term-details works!</p>
+<nz-form-item>
+  <nz-form-label>Daty</nz-form-label>
+  <nz-form-control>
+    <nz-range-picker [formControl]="__controls.dates"></nz-range-picker>
+  </nz-form-control>
+</nz-form-item>
+
+<nz-form-item>
+  <nz-form-label>Cena</nz-form-label>
+  <nz-form-control>
+    <nz-input-number [formControl]="__controls.price"></nz-input-number>
+  </nz-form-control>
+</nz-form-item>
+
+<nz-form-item>
+  <nz-form-label>Ilość uczestniczek</nz-form-label>
+  <nz-form-control>
+    <nz-input-number [formControl]="__controls.participantsTotal"></nz-input-number>
+  </nz-form-control>
+</nz-form-item>
+
+<nz-form-item>
+  <nz-form-label>Aktualna liczba uczestników</nz-form-label>
+  <nz-form-control>
+    <nz-input-number [formControl]="__controls.participantsCurrent"></nz-input-number>
+  </nz-form-control>
+</nz-form-item>

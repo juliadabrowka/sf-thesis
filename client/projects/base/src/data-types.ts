@@ -104,14 +104,21 @@ export class TripApplicationDTO {
 
 export const DefaultTripTypeValue = TripType.Classic
 
-export class TripDTO {
-  Id: number | undefined
+export class TripTermDTO {
+  Id: number | undefined;
   Price: number = 0;
-  Name: string = '';
   DateFrom: Date = new Date();
   DateTo: Date = new Date();
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
+  TripId: number | undefined;
+  TripDto: TripDTO | undefined;
+}
+
+export class TripDTO {
+  Id: number | undefined;
+  Name: string = '';
+  TripTermDtos: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
   SurveyId: number | undefined
   ArticleId: number | undefined;

@@ -1,4 +1,5 @@
 <div class="content">
+  <img src="assets/kalendarz-wyjazdow.png" alt="">
   <sf-page-title-framed
     [sfTitle]="titleFramed"
   ></sf-page-title-framed>
@@ -7,7 +8,7 @@
   @for (tripType of __tripTypes; track tripType) {
     <sf-trip-grid
       [sfTitle]="tripType.label"
-      [sfTrips]="(__trips$ | async) ?? [] | sfFilterTripsByType : tripType.value"
+      [sfTrips]="__trips() | sfFilterTripsByType : tripType.value"
       [sfIcon]="tripType.icon"
     ></sf-trip-grid>
     @if (!$last && !$first) {

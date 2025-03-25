@@ -1,17 +1,14 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {AsyncPipe} from '@angular/common';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
 import {PageTitleComponent} from '../page-title/page-title.component';
 import {SfFilterArticlesByTypePipe} from './filter-articles-by-type.pipe';
 import {SfTilesComponent} from '../tiles/tiles.component';
 import {ArticleStore} from '../../state/article/article.store';
-import {toObservable} from '@angular/core/rxjs-interop';
 import {ArticleCategory} from '../../data-types';
 
 @Component({
   selector: 'sf-main-page',
   imports: [
-    AsyncPipe,
     NzDividerComponent,
     PageTitleComponent,
     SfFilterArticlesByTypePipe,
@@ -24,8 +21,7 @@ import {ArticleCategory} from '../../data-types';
 export class SfMainPageComponent {
   private readonly articleStore = inject(ArticleStore);
 
-  public readonly __articles$ = toObservable(this.articleStore.articles)
-
+  public readonly __articles = this.articleStore.articles;
   public readonly __sections = [
     {
       title: "superfemka to wyprawy rowerowe, wyjazdy i warsztaty dla kobiet",

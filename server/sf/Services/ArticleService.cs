@@ -136,14 +136,15 @@ public class ArticleService : IArticleService
             { 
                 var existingTrip = await _tripRepository.GetTripDetails(article.TripId.Value);
                 
+                
                 existingTrip.Article = article;
-                existingTrip.DateFrom = articleDto.TripDto.DateFrom;
-                existingTrip.DateTo = articleDto.TripDto.DateTo;
-                existingTrip.Price = articleDto.TripDto.Price;
                 existingTrip.Name = articleDto.TripDto.Name;
                 existingTrip.Type = articleDto.TripDto.Type;
-                existingTrip.ParticipantsCurrent = articleDto.TripDto.ParticipantsCurrent;
-                existingTrip.ParticipantsTotal = articleDto.TripDto.ParticipantsTotal;
+
+                var ttd = _mapper.Map<ICollection<TripTerm>>(articleDto.TripDto.TripTermDtos);
+                existingTrip.TripTerms = ttd;
+                    
+                await _tripRepository.UpdateTrip(existingTrip);
                 
                 //existingTrip.TripApplications = articleDto.TripDto.TripApplicationIds; get from trip application server
                 //existingTrip.Survey = articleDto.TripDto.SurveyId; get from survey server
@@ -179,22 +180,5 @@ public class ArticleService : IArticleService
         }
 
         return _mapper.Map<ArticleDTO>(article);
-    }
-
-    private bool TripsAreEqual(Trip currentTrip, Trip updatedTrip)
-    {
-        var currentTripApplications = new HashSet<int>(currentTrip.TripApplications.Select(t => t.Id));
-        var updatedTripApplications = new HashSet<int>(updatedTrip.TripApplications.Select(t => t.Id));
-
-        return currentTrip.Name == updatedTrip.Name && 
-               currentTrip.Price == updatedTrip.Price &&
-               currentTrip.Type == updatedTrip.Type &&
-               currentTrip.ArticleId == updatedTrip.ArticleId &&
-               currentTrip.DateFrom == updatedTrip.DateFrom &&
-               currentTrip.DateTo == updatedTrip.DateTo &&
-               currentTrip.SurveyId == updatedTrip.SurveyId &&
-               currentTrip.ParticipantsCurrent == updatedTrip.ParticipantsCurrent &&
-               currentTrip.ParticipantsTotal == updatedTrip.ParticipantsTotal &&
-               currentTripApplications == updatedTripApplications;
     }
 }

@@ -5,7 +5,7 @@
 }
 
 .inner-container {
-  width: 60%;
+  width: 1000px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,8 +27,7 @@
 
   .logotype {
     height: 65px;
-    width: 250px;
-    margin-left: 10%;
+    width: 202px;
     cursor: pointer;
   }
 }
@@ -47,15 +46,15 @@
 .actions-default, .actions-bw {
   display: flex;
   cursor: pointer;
-  width: 50%;
-  justify-content: space-around;
+  width: 560px;
+  justify-content: space-between;
 }
 
 .actions-default {
   color: white;
 
   .logotype {
-    filter: none;
+    filter: invert();
   }
 }
 

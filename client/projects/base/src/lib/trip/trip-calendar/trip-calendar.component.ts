@@ -4,8 +4,6 @@ import {PageTitleFramedComponent} from '../../page-title-framed/page-title-frame
 import {TripDTO, TripStore, TripType} from '@sf/sf-base';
 import {SfFilterTripsByTypePipe} from './filter-trips-by-type.pipe';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
-import {toObservable} from '@angular/core/rxjs-interop';
-import {AsyncPipe} from '@angular/common';
 
 export interface TripFlag {
   trip: TripDTO,
@@ -17,8 +15,7 @@ export interface TripFlag {
     SfTripGridComponent,
     PageTitleFramedComponent,
     SfFilterTripsByTypePipe,
-    NzDividerComponent,
-    AsyncPipe
+    NzDividerComponent
   ],
   templateUrl: './trip-calendar.component.html',
   styleUrl: './trip-calendar.component.css',
@@ -34,7 +31,7 @@ export class SfTripCalendarComponent {
     icon: this.getDataForTripType(TripType[k as keyof typeof TripType]),
   }))
 
-  public readonly __trips$ = toObservable(this.tripStore.trips);
+  public readonly __trips = this.tripStore.trips;
 
   private getDataForTripType(tripTypeElement: TripType) {
     switch (tripTypeElement) {

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 
 @Component({
   selector: 'sf-page-title-framed',
@@ -7,6 +7,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './page-title-framed.component.css'
 })
 export class PageTitleFramedComponent {
-  @Input() public sfTitle: string | null | undefined;
+  public readonly sfTitle = input<string | null>();
+  public readonly sfToUpperCase = input<boolean>(false);
 
 }

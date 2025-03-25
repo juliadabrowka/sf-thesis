@@ -6,5 +6,5 @@ public class SurveyResponseDTO
     public DateTime RepliedOn { get; set; }
     
     public int TripApplicationId { get; set; }
-    public List<int> SurveyAnswerIds { get; set; }
+    public ICollection<int> SurveyAnswerIds { get; set; }
 }

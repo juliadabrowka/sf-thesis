@@ -1,6 +1,6 @@
 <button
   class="button"
-  [disabled]="__disabled$ | async"
+  [disabled]="sfDisabled()"
   (click)="sfOnButtonClicked.emit()"
->{{ __text$ | async }}
+>{{ sfButtonText() }}
 </button>

@@ -1,6 +1,5 @@
 nz-sider {
-  height: 100vh;
-
+  height: 100%;
   > div > nz-collapse:nth-child(1) > nz-collapse-panel > div.ant-collapse-content > div > nz-collapse > nz-collapse-panel > div.ant-collapse-header {
     padding: 0;
   }

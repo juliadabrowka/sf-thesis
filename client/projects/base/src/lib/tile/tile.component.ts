@@ -1,8 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
-import {ArticleDTO, SfIcons} from '@sf/sf-base';
-import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
+import {ArticleDTO, ArticleStore, SfIcons} from '@sf/sf-base';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {BehaviorSubject} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -16,23 +14,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class TileComponent {
   private readonly router = inject(Router);
-  private readonly activatedAroute = inject(ActivatedRoute);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly articleStore = inject(ArticleStore);
 
-  public sfArticle = input<ArticleDTO | null | undefined>();
-  private __article$ = toObservable(this.sfArticle);
-  public __article$$ = new BehaviorSubject<ArticleDTO | undefined>(undefined);
+  public readonly sfArticle = input<ArticleDTO | null | undefined>();
 
   public readonly __icons = SfIcons;
 
-  constructor() {
-    this.__article$
-      .pipe(takeUntilDestroyed())
-      .subscribe(article => this.__article$$.next(article ?? undefined))
-  }
-
   async __goToArticle(value: ArticleDTO | undefined) {
     if (!value) throw Error('No article but should be');
-    await this.router.navigate([value.Url], {relativeTo: this.activatedAroute})
-    console.log(value);
+    await this.router.navigate([value.Url], {relativeTo: this.activatedRoute});
+    this.articleStore.setArticle(value);
   }
 }

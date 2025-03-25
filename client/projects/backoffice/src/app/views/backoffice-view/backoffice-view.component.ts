@@ -28,7 +28,6 @@ import {NzCardComponent} from 'ng-zorro-antd/card';
 })
 export class SfBackofficeComponent {
   private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly route = inject(ActivatedRoute);
   private readonly articleStore = inject(ArticleStore);
   private readonly tripStore = inject(TripStore);
@@ -38,10 +37,10 @@ export class SfBackofficeComponent {
   public readonly __trips$$ = computed(() => this.tripStore.trips());
   public readonly __loading$$ = computed(() => this.articleStore.loading());
 
-  constructor() {
-    this.articleStore.loadArticleList();
-    this.tripStore.loadTripList();
-  }
+  // constructor() {
+  //   this.articleStore.loadArticleList();
+  //   this.tripStore.loadTripList();
+  // }
 
   async __onArticleClicked(article: ArticleDTO) {
     await this.router.navigate([`articles/${article.Id}`], {relativeTo: this.route});

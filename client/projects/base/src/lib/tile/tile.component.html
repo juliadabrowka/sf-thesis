@@ -1,12 +1,12 @@
-@if (__article$$.value) {
+@if (sfArticle(); as article) {
   <div class="tile-container">
     <div class="media">
       <img src="assets/outdoor.jpg" alt="">
       <fa-icon [icon]="__icons.linkTo" [size]="'lg'"></fa-icon>
     </div>
 
-    <div class="title">{{ __article$$.value.Title }}</div>
-    <div class="button" (click)="__goToArticle(__article$$.value)">
+    <div class="title">{{ article.Title }}</div>
+    <div class="button" (click)="__goToArticle(article)">
       Czytaj więcej
     </div>
   </div>

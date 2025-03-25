@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, output} from '@angular/core';
 import {NzTableModule, NzThAddOnComponent} from "ng-zorro-antd/table";
 import {ColumnItem, TripDTO} from '@sf/sf-base';
 import {BehaviorSubject} from 'rxjs';
@@ -23,7 +23,7 @@ export class SfTripTableComponent {
     this.cdr.markForCheck()
   }
 
-  @Input() sfLoading: boolean | null | undefined;
+  readonly sfLoading = input<boolean | null>();
 
   public readonly sfOnTripClick = output<TripDTO>();
 
@@ -46,11 +46,11 @@ export class SfTripTableComponent {
     },
     {
       name: 'Cena',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Price - b.Price,
+      sortFn: null,
     },
     {
       name: 'Ilość uczestniczek',
-      sortFn: (a: TripDTO, b: TripDTO) => a.ParticipantsCurrent - b.ParticipantsCurrent,
+      sortFn: null,
     },
     {
       name: 'Rodzaj wyprawy',

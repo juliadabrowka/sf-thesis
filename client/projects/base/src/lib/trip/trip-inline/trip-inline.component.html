@@ -1,35 +1,39 @@
-@if (__trip$$.value) {
+@if (__trip$$.value; as trip) {
   <div class="trip-container">
-    <div class="left" (click)="__navigateToTrip(__trip$$.value.trip)">
-      @if (__trip$$.value.flagSrc) {
+    <div class="left" (click)="__navigateToTrip(trip.trip)">
+      @if (trip.flagSrc) {
         <div class="flag">
-          <img [src]="__trip$$.value.flagSrc" alt="flaga">
+          <img [src]="trip.flagSrc" alt="flaga">
         </div>
       }
-      <div class="trip-title"> {{ __trip$$.value.trip.Name }}</div>
+      <div class="trip-title"> {{ trip.trip.Name }}</div>
     </div>
     <div class="trip-data">
       <div class="trip-info">
         <div class="trip-inline-data">
-          <div class="trip-date">
-            {{ __trip$$.value.trip.DateFrom | date:'yyyy | dd.MM' }} - {{ __trip$$.value.trip.DateTo | date:'dd.MM' }}
-          </div>
-          <div class="right">
-            <div class="middle">
-              <div class="trip-price">
-                <span class="price">cena</span>
-                {{ __trip$$.value.trip.Price | sfFormatPrice }}
+          @for (tripTerm of trip.trip.TripTermDtos; track tripTerm.Id) {
+            <ng-container>
+              <div class="trip-date">
+                {{ tripTerm.DateFrom | date:'yyyy | dd.MM' }} - {{ tripTerm.DateTo | date:'dd.MM' }}
               </div>
-              <div class="trip-availability">
-                <span class="availability">wolnych miejsc</span>
-                {{ __trip$$.value.trip.ParticipantsTotal - __trip$$.value.trip.ParticipantsCurrent }}
+              <div class="right">
+                <div class="middle">
+                  <div class="trip-price">
+                    <span class="price">cena</span>
+                    {{ tripTerm.Price | sfFormatPrice }}
+                  </div>
+                  <div class="trip-availability">
+                    <span class="availability">wolnych miejsc</span>
+                    {{ tripTerm.ParticipantsTotal - tripTerm.ParticipantsCurrent }}
+                  </div>
+                </div>
+                <sf-button
+                  [sfButtonText]="'ZAPISZ SIĘ'"
+                  (sfOnButtonClicked)="__onShowSlider()"
+                ></sf-button>
               </div>
-            </div>
-            <sf-button
-              [sfButtonText]="'ZAPISZ SIĘ'"
-              (sfOnButtonClicked)="__onShowSlider()"
-            ></sf-button>
-          </div>
+            </ng-container>
+          }
         </div>
       </div>
       @if (__showSlider) {

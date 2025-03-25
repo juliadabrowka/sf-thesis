@@ -1,9 +1,9 @@
-<span class="icon-text-container" [class.reversed]="sfReverse">
+<span class="icon-text-container" [class.reversed]="sfReverse()">
   @if (sfIcon) {
     <fa-icon [icon]="sfIcon"></fa-icon>
   }
   @if (sfIconSrc) {
     <img [src]="sfIconSrc" alt="">
   }
-  <span> {{ sfText }}</span>
+  <span> {{ sfText() }}</span>
 </span>
