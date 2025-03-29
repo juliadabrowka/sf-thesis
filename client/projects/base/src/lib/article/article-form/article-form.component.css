@@ -41,7 +41,7 @@
     border-radius: 8px;
   }
 
-  #editorContainer {
+  #editorContainer, img {
     margin-top: 8px
   }
 }

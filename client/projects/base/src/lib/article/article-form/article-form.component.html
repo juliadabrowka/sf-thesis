@@ -42,7 +42,14 @@
 
       <div class="media-section">
         <h3>📸 Zdjęcie w tle</h3>
-        <sf-upload (sfUploadedFiles)="__onFilesUpload($event)"></sf-upload>
+        <div>
+          <sf-upload
+            (sfUploadedImgUrl)="__onFilesUpload($event)"
+          ></sf-upload>
+        </div>
+        @if (__controls.backgroundImage.value) {
+          <img [src]="__controls.backgroundImage.value" height="250" alt="">
+        }
       </div>
     </div>
 
@@ -73,6 +80,4 @@
     </div>
   }
   </div>
-
-  <div>{{ __controls.backgroundImage.value }}</div>
 </div>

@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 
 namespace sf.Models;
 
-public class ArticleDTO
+public class  ArticleDTO
 {
     public int? Id { get; set; }
     public string Title { get; set;}

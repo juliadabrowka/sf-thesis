@@ -1,67 +1,60 @@
-import {ChangeDetectionStrategy, Component, DestroyRef, inject, output} from '@angular/core';
-import {NzUploadChangeParam, NzUploadComponent, NzUploadFile, NzUploadXHRArgs} from 'ng-zorro-antd/upload';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {SfIconAndTextComponent} from '../icon-and-text/icon-and-text.component';
+import {ChangeDetectionStrategy, Component, inject, output} from '@angular/core';
 import {SfIcons} from '../icons';
+import {NzUploadChangeParam, NzUploadComponent, NzUploadFile} from 'ng-zorro-antd/upload';
+import {SfIconAndTextComponent} from '../icon-and-text/icon-and-text.component';
+import {NzButtonComponent} from 'ng-zorro-antd/button';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 import {UploadService} from '../../services/upload-service.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'sf-upload',
   imports: [
     NzUploadComponent,
+    SfIconAndTextComponent,
     NzButtonComponent,
-    SfIconAndTextComponent
+    NzIconModule
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SfUploadComponent {
-  private readonly uploadService = inject(UploadService);
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly uploadService = inject(UploadService)
+  private readonly msg = inject(NzMessageService);
 
   public readonly __icons = SfIcons;
-
   public fileList: NzUploadFile[] = [];
-  public readonly sfUploadedFiles = output<NzUploadFile>();
+  public readonly sfUploadedImgUrl = output<string>();
 
-  uploadCustom = (item: NzUploadXHRArgs) => {
-    const file = item.file as NzUploadFile;
-    console.log('Uploading:', file);
-
-    return this.uploadService.uploadFile(file)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((f) => {
-        console.log(f)
-        //       this.sfUploadedFiles.emit(event.body.url);
-      })
-
-    // {
-    //   next: (event) => {
-    //     if (event.type === HttpEventType.UploadProgress) {
-    //       const percent = Math.round((100 * event.loaded) / (event.total || 1));
-    //       item.onProgress({ percent });
-    //     } else if (event.type === HttpEventType.Response) {
-    //       item.onSuccess(event.body, file, event);
-
-    //       console.log('File uploaded:', event.body.url);
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.error('Upload error:', err);
-    //     item.onError(err, file);
-    //   },
-    // });
-  };
-
-  onUploadChange(e: NzUploadChangeParam): void {
-    const file = e.file;
-    console.log(e)
-    if (file.status === 'done') {
-      const imageUrl = file.response.url;
-      this.sfUploadedFiles.emit(imageUrl);
-      console.log(imageUrl)
+  onUploadChange(info: NzUploadChangeParam) {
+    if (info.file.status === 'uploading') {
+      console.log('Uploading...', info.file);
+    }
+    if (info.file.status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === "done") {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      this.msg.error(`${info.file.name} file upload failed.`);
     }
   }
+
+  customUpload = (item: any) => {
+    const file = item.file as File;
+
+    return this.uploadService.uploadFile(file).subscribe({
+      next: (res) => {
+        item.onSuccess!(res, item.file, {});
+        console.log(item.file)
+        this.sfUploadedImgUrl.emit(res.imageUrl)
+        this.msg.success('Upload successful');
+      },
+      error: (err) => {
+        item.onError!(err);
+        this.msg.error('Upload failed');
+      }
+    });
+  };
 }

@@ -6,24 +6,31 @@ namespace sf.Controllers;
 [Route("api/")]
 public class UploadController : ControllerBase
 {
-    private readonly string __uploadPath = "wwwroot/uploads";
+    private readonly string _uploadPath = "wwwroot/uploads";
 
     [HttpPost("uploadImage")]
-    public async Task<IActionResult> UploadImage([FromBody] IFormFile file)
+    public async Task<IActionResult> UploadImage()
     {
-        if (file == null || file.Length == 0) return BadRequest("No file uploaded");
-
-        string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        string filePath = Path.Combine(__uploadPath, fileName);
-
-        if (!Directory.Exists(__uploadPath)) Directory.CreateDirectory(__uploadPath);
-
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        try
         {
-            await file.CopyToAsync(stream);
-        }
+            using var memoryStream = new MemoryStream();
+            await Request.Body.CopyToAsync(memoryStream);
 
-        string fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-        return Ok(new { url = fileUrl });
+            if (memoryStream.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            var fileName = $"{Guid.NewGuid()}.jpg"; // You can also determine file type dynamically
+            var filePath = Path.Combine(_uploadPath, fileName);
+
+            await System.IO.File.WriteAllBytesAsync(filePath, memoryStream.ToArray());
+
+            var fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+
+            return Ok(new { imageUrl = fileUrl });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+        }
     }
 }

@@ -5,6 +5,7 @@ using sf.Repositories;
 using sf.Services;
 using WebApplicationBuilder = Microsoft.AspNetCore.Builder.WebApplicationBuilder;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using sf.Program.Data;
 
@@ -62,6 +63,12 @@ class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
+        
+        builder.Services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 209715200;
+        });
+        
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
@@ -134,6 +141,7 @@ class Program
         }
 
         app.UseCors("AllowAngularApp");
+        app.UseStaticFiles();
         app.UseRouting();
         
         app.UseAuthentication(); 
