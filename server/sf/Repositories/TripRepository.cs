@@ -26,15 +26,16 @@ public class TripRepository : ITripRepository
     {
         return await _sfDbContext.Trips
             .Include(t => t.TripApplications)
-            .Include(t => t.Article)
+            .Include(t => t.TripTerms)
+            .Include(t => t.Survey)
             .ToArrayAsync();
     }
 
     public async Task<Trip> GetTripDetails(int tripId)
     {
         var t = await _sfDbContext.Trips
-            .Include(t => t.Article)
             .Include(t => t.TripApplications)
+            .Include(t => t.TripTerms)
             .FirstOrDefaultAsync(t => t.Id == tripId);
         
         if (t == null)
@@ -49,8 +50,6 @@ public class TripRepository : ITripRepository
     {
         _sfDbContext.Trips.Add(trip);
     
-        Console.WriteLine($"Saving trip: {trip.Id}"); // Debugging
-
         await _sfDbContext.SaveChangesAsync();
         return trip;
     }

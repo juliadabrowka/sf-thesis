@@ -37,6 +37,7 @@ public class ArticleRepository : IArticleRepository
     {
         return await _sfDbContext.Articles
             .Include(a => a.Trip)
+            .ThenInclude(t => t.TripTerms)
             .ToArrayAsync();
     }
 

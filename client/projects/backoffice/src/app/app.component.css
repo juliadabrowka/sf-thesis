@@ -45,3 +45,8 @@ sf-sider {
 nz-footer {
   background-color: var(--primary-color);
 }
+
+.logo {
+  margin: 15px;
+  height: 95%;
+}

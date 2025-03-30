@@ -114,9 +114,7 @@ nz-card {
   color: white;
   font-weight: bold;
   border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 18px;
+  border-radius: 7px;
   width: 100%;
   height: auto;
   justify-content: center;
@@ -172,4 +170,10 @@ nz-content {
     position: absolute;
     z-index: -1;
   }
+}
+
+.logo {
+  width: 175px;
+  height: 45px;
+  filter: invert();
 }

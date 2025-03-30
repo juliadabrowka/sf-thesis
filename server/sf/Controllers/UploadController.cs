@@ -19,7 +19,7 @@ public class UploadController : ControllerBase
             if (memoryStream.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var fileName = $"{Guid.NewGuid()}.jpg"; // You can also determine file type dynamically
+            var fileName = $"{Guid.NewGuid()}.jpg";
             var filePath = Path.Combine(_uploadPath, fileName);
 
             await System.IO.File.WriteAllBytesAsync(filePath, memoryStream.ToArray());

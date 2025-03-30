@@ -8,6 +8,7 @@ public class TripTerm
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    public string Name { get; set; }
     public decimal Price { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
@@ -15,5 +16,4 @@ public class TripTerm
     public int ParticipantsTotal { get; set; }
     
     public int TripId { get; set; }
-    public Trip Trip { get; set; }
 }

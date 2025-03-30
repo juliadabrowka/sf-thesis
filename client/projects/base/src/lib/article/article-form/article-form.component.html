@@ -71,11 +71,11 @@
             <nz-select [formControl]="__controls.tripType" [nzOptions]="__tripTypes"></nz-select>
           </nz-form-control>
         </nz-form-item>
+        <sf-trip-term-details
+          [sfTripTerms]="sfArticle()?.TripDto?.TripTermDtos ?? []"
+          (sfTripTermsUpdated)="__onTripTermAdded($event)"
+        ></sf-trip-term-details>
 
-        <sf-trip-term-details></sf-trip-term-details>
-        @if (sfTrip(); as tripDto) {
-          <sf-trip-term-list [sfTripTerms]="tripDto.TripTermDtos"></sf-trip-term-list>
-        }
       </div>
     </div>
   }

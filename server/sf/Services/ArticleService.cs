@@ -56,6 +56,14 @@ public class ArticleService : IArticleService
             throw new ArgumentNullException(nameof(articleDto), "ArticleDTO cannot be null");
         }
         var articleEntity = _mapper.Map<Article>(articleDto);
+
+        
+        if (articleDto.TripDto != null)
+        {
+            var t = articleDto.TripDto;
+            var tripEntity = _mapper.Map<Trip>(t);
+            await _tripRepository.CreateTrip(tripEntity);
+        }
         var newArticle = await _articleRepository.CreateArticle(articleEntity);
         
         if (articleDto.ArticleCategory == ArticleCategory.Wyprawy)
@@ -137,7 +145,6 @@ public class ArticleService : IArticleService
                 var existingTrip = await _tripRepository.GetTripDetails(article.TripId.Value);
                 
                 
-                existingTrip.Article = article;
                 existingTrip.Name = articleDto.TripDto.Name;
                 existingTrip.Type = articleDto.TripDto.Type;
 
@@ -159,7 +166,7 @@ public class ArticleService : IArticleService
                 var newTrip = await _tripRepository.CreateTrip(newTripEntity); // set id
 
                 newTrip.ArticleId = article.Id;
-                newTrip.Article = article;
+                //newTrip.TripTerms = article.Trip != null ? article.Trip.TripTerms : new List<TripTerm>();
                 var t = await _tripRepository.UpdateTrip(newTrip);
                 
                 article.Trip = t;

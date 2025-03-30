@@ -1,48 +1,45 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, output} from '@angular/core';
-import {NzTableModule, NzThAddOnComponent} from "ng-zorro-antd/table";
-import {ColumnItem, TripDTO} from '@sf/sf-base';
-import {BehaviorSubject} from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  output,
+} from '@angular/core';
+import { NzTableModule, NzThAddOnComponent } from 'ng-zorro-antd/table';
+import { ArticleDTO, ArticleService, ColumnItem } from '@sf/sf-base';
 
 @Component({
   selector: 'sf-trip-table',
-  imports: [
-    NzThAddOnComponent,
-    NzTableModule
-  ],
+  imports: [NzThAddOnComponent, NzTableModule],
   templateUrl: './trip-table.component.html',
   styleUrl: './trip-table.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfTripTableComponent {
-  private readonly cdr = inject(ChangeDetectorRef)
+  public readonly sfArticles = input<ArticleDTO[]>([]);
+  public readonly sfLoading = input<boolean | null>();
 
-  public readonly __trips$$ = new BehaviorSubject<TripDTO[]>([]);
+  public readonly sfOnTripClick = output<ArticleDTO>();
 
-  @Input() public set sfTrips(trips: TripDTO[] | null | undefined) {
-    this.__trips$$.next(trips ?? []);
-    this.cdr.markForCheck()
-  }
+  private readonly articleService = inject(ArticleService);
 
-  readonly sfLoading = input<boolean | null>();
-
-  public readonly sfOnTripClick = output<TripDTO>();
-
-  public readonly __columns: ColumnItem<TripDTO>[] = [
+  public readonly __columns: ColumnItem<ArticleDTO>[] = [
     {
       name: 'Nazwa',
-      sortFn: (a: TripDTO, b: TripDTO) => (a.ArticleDto?.Title ?? "").localeCompare(b.ArticleDto?.Title ?? ""),
+      sortFn: (a: ArticleDTO, b: ArticleDTO) => a.Title.localeCompare(b.Title),
     },
     {
       name: 'Kraj',
-      sortFn: (a: TripDTO, b: TripDTO) => (a.ArticleDto?.Country ?? "").localeCompare(b.ArticleDto?.Country ?? ""),
+      sortFn: (a: ArticleDTO, b: ArticleDTO) =>
+        a.Country.localeCompare(b.Country),
     },
     {
       name: 'Data rozpoczęcia',
-      sortFn: null
+      sortFn: null,
     },
     {
       name: 'Data zakończenia',
-      sortFn: null
+      sortFn: null,
     },
     {
       name: 'Cena',
@@ -54,11 +51,12 @@ export class SfTripTableComponent {
     },
     {
       name: 'Rodzaj wyprawy',
-      sortFn: (a: TripDTO, b: TripDTO) => a.Type.localeCompare(b.Type),
+      sortFn: null,
+      //sortFn: (a: ArticleDTO, b: ArticleDTO) => a.TripDto?.Type.localeCompare(b.TripDto?.Type ?? ''),
     },
-  ]
+  ];
 
-  trackByIndex(_: number, data: TripDTO): number {
+  trackByIndex(_: number, data: ArticleDTO): number {
     return data.Id ?? -1;
   }
 }

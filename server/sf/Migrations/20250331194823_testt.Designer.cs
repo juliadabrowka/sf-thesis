@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using sf.Program.Data;
@@ -11,9 +12,11 @@ using sf.Program.Data;
 namespace sf.Migrations
 {
     [DbContext(typeof(SfDbContext))]
-    partial class SfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331194823_testt")]
+    partial class testt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,10 +386,12 @@ namespace sf.Migrations
 
             modelBuilder.Entity("sf.Models.Trip", b =>
                 {
-                    b.HasOne("sf.Models.Article", null)
+                    b.HasOne("sf.Models.Article", "Article")
                         .WithOne("Trip")
                         .HasForeignKey("sf.Models.Trip", "ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Article");
                 });
 
             modelBuilder.Entity("sf.Models.TripApplication", b =>
@@ -402,11 +407,13 @@ namespace sf.Migrations
 
             modelBuilder.Entity("sf.Models.TripTerm", b =>
                 {
-                    b.HasOne("sf.Models.Trip", null)
+                    b.HasOne("sf.Models.Trip", "Trip")
                         .WithMany("TripTerms")
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Trip");
                 });
 
             modelBuilder.Entity("sf.Models.Article", b =>

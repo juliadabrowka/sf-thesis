@@ -1,6 +1,6 @@
 <nz-table
   #tripTable
-  [nzData]="__trips$$.value"
+  [nzData]="sfArticles()"
   [nzBordered]="true"
   [nzOuterBordered]="true"
   [nzFrontPagination]="false"
@@ -21,15 +21,15 @@
   <tbody>
     @for (data of tripTable.data; track data.Id; ) {
         <tr (click)="sfOnTripClick.emit(data)">
-          @for (tripTerm of data.TripTermDtos; track tripTerm.Id) {
+          @for (tripTerm of data.TripDto?.TripTermDtos; track tripTerm.Id) {
             <ng-container>
-              <td>{{ data.ArticleDto?.Title }}</td>
-              <td>{{ data.ArticleDto?.Country }}</td>
+              <td>{{ data.Title }}</td>
+              <td>{{ data.Country }}</td>
               <td>{{ tripTerm.DateFrom }}</td>
               <td>{{ tripTerm.DateTo }}</td>
               <td>{{ tripTerm.Price }}</td>
               <td>{{ tripTerm.ParticipantsCurrent }}</td>
-              <td>{{ data.Type }}</td>
+              <td>{{ data.TripDto?.Type }}</td>
             </ng-container>
           }
         </tr>

@@ -1,21 +1,21 @@
-<div class="container">
-  <div>Terminy</div>
-  @if (sfTripTerms(); as tripTerms) {
-    @if (tripTerms.length > 0) {
-      @for (term of tripTerms; track term.Id) {
-        <sf-trip-term-details [sfTripTerm]="term"></sf-trip-term-details>
-      }
-    } @else {
-      <nz-empty
-        [nzNotFoundContent]="contentTpl"
-      >
-        <ng-template #contentTpl>
-        <span>
-          Brak dodanych terminów
-        </span>
-        </ng-template>
-      </nz-empty>
-    }
-  }
-</div>
+<!--<div class="container">-->
+<!--  <div>Terminy</div>-->
+<!--  @if (sfTripTerms(); as tripTerms) {-->
+<!--    @if (tripTerms.length > 0) {-->
+<!--      @for (term of tripTerms; track term.Id) {-->
+<!--        <sf-trip-term-details [sfTripTerm]="term"></sf-trip-term-details>-->
+<!--      }-->
+<!--    } @else {-->
+<!--      <nz-empty-->
+<!--        [nzNotFoundContent]="contentTpl"-->
+<!--      >-->
+<!--        <ng-template #contentTpl>-->
+<!--        <span>-->
+<!--          Brak dodanych terminów-->
+<!--        </span>-->
+<!--        </ng-template>-->
+<!--      </nz-empty>-->
+<!--    }-->
+<!--  }-->
+<!--</div>-->
 

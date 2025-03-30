@@ -16,6 +16,7 @@ public class SfDbContext : DbContext
     public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
     public DbSet<SurveyResponse> SurveyResponses { get; set; }
     public DbSet<Trip> Trips { get; set; }
+    public DbSet<TripTerm> TripTerms { get; set; }
     public DbSet<TripApplication> TripApplications { get; set; }
     public DbSet<User> Users { get; set; }
     
@@ -57,7 +58,7 @@ public class SfDbContext : DbContext
         // trip - article
         modelBuilder.Entity<Article>()
             .HasOne(a => a.Trip)
-            .WithOne(t => t.Article)
+            .WithOne()
             .HasForeignKey<Trip>(t => t.ArticleId)
             .OnDelete(DeleteBehavior.Cascade); 
 
@@ -67,5 +68,12 @@ public class SfDbContext : DbContext
             .WithOne(ta => ta.Trip)
             .HasForeignKey(o => o.TripId)
             .OnDelete(DeleteBehavior.Cascade); 
+        
+        // trip - trip term
+        modelBuilder.Entity<Trip>()
+            .HasMany<TripTerm>(t => t.TripTerms)
+            .WithOne()
+            .HasForeignKey(tt => tt.TripId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

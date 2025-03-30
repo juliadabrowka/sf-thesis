@@ -1,5 +1,6 @@
 <button
   class="button"
+  [style]="{'font-size': sfFontSize()}"
   [disabled]="sfDisabled()"
   (click)="sfOnButtonClicked.emit()"
 >{{ sfButtonText() }}

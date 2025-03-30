@@ -49,7 +49,7 @@ export class ArticleDTO {
   TripDto: TripDTO | undefined;
 }
 
-export const DefaultRatingValue = Rating.Good
+export const DefaultRatingValue = Rating.Good;
 
 export class OpinionDTO {
   Id: number | undefined;
@@ -60,10 +60,10 @@ export class OpinionDTO {
 }
 
 export class SurveyAnswerDTO {
-  Id: number | undefined
+  Id: number | undefined;
   Answer: string = '';
-  SurveyQuestionId: number | undefined
-  SurveyResponseId: number | undefined
+  SurveyQuestionId: number | undefined;
+  SurveyResponseId: number | undefined;
 }
 
 export class SurveyDTO {
@@ -83,45 +83,44 @@ export class SurveyQuestionDTO {
 }
 
 export class SurveyResponseDTO {
-  Id: number | undefined
+  Id: number | undefined;
   RepliedOn: Date = new Date();
-  TripApplicationId: number | undefined
+  TripApplicationId: number | undefined;
   SurveyAnswerIds: number[] = [];
 }
 
 export const DefaultStatusValue = Status.Created;
 
 export class TripApplicationDTO {
-  Id: number | undefined
+  Id: number | undefined;
   Name: string = '';
   Email: string = '';
   PhoneNumber: string = '';
   ExtraInfo: string = '';
   Status: Status = DefaultStatusValue;
-  TripId: number | undefined
-  SurveyResponseId: number | undefined
+  TripId: number | undefined;
+  SurveyResponseId: number | undefined;
 }
 
-export const DefaultTripTypeValue = TripType.Classic
+export const DefaultTripTypeValue = TripType.Classic;
 
 export class TripTermDTO {
   Id: number | undefined;
+  Name: string = '';
   Price: number = 0;
-  DateFrom: Date = new Date();
-  DateTo: Date = new Date();
+  DateFrom: Date | null | undefined;
+  DateTo: Date | null | undefined;
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   TripId: number | undefined;
-  TripDto: TripDTO | undefined;
 }
 
 export class TripDTO {
-  Id: number | undefined;
+  Id?: number | undefined;
   Name: string = '';
   TripTermDtos: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
-  SurveyId: number | undefined
+  SurveyId: number | undefined;
   ArticleId: number | undefined;
-  ArticleDto: ArticleDTO | undefined;
   TripApplicationIds: number[] = [];
 }

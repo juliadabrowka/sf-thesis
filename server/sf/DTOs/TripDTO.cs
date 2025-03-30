@@ -10,6 +10,5 @@ public class TripDTO
     public ICollection<TripTermDTO> TripTermDtos { get; set; }
     public int? SurveyId { get; set; }
     public int? ArticleId { get; set; }
-    public ArticleDTO? ArticleDto { get; set; }
     public ICollection<int> TripApplicationIds { get; set; }
 }

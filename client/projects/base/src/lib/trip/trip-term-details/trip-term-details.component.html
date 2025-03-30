@@ -1,28 +1,111 @@
-<p>trip-term-details works!</p>
-<nz-form-item>
-  <nz-form-label>Daty</nz-form-label>
-  <nz-form-control>
-    <nz-range-picker [formControl]="__controls.dates"></nz-range-picker>
-  </nz-form-control>
-</nz-form-item>
+<nz-table #tripTermTable [nzData]="sfTripTerms()">
+  <thead>
+  <tr>
+    @for (column of __columns; track column) {
+      <th class="th">{{ column }}</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+  <td>
+    <input
+      nz-input
+      [formControl]="__controls.name"
+    />
+  </td>
+  <td>
+    <nz-date-picker
+      [formControl]="__controls.dateFrom"
+    ></nz-date-picker>
+    <nz-date-picker
+      [formControl]="__controls.dateTo"
+    ></nz-date-picker>
+  </td>
+  <td>
+    <nz-input-number
+      [formControl]="__controls.price"
+    ></nz-input-number>
+  </td>
+  <td>
+    <nz-input-number
+      [formControl]="__controls.participantsCurrent"
+    ></nz-input-number>
+  </td>
+    @for (data of tripTermTable.data; track data.Id) {
+      <div
+        class="editable-cell"
+        [hidden]="__editId === data.Id"
+        (click)="startEdit(data.Id ?? 0)"
+      >
+        <td>{{ data.Name }}</td>
+        <input
+          nz-input
+          [formControl]="__controls.name"
+          [hidden]="__editId !== data.Id"
+          (blur)="stopEdit()"
+        />
+      </div>
 
-<nz-form-item>
-  <nz-form-label>Cena</nz-form-label>
-  <nz-form-control>
-    <nz-input-number [formControl]="__controls.price"></nz-input-number>
-  </nz-form-control>
-</nz-form-item>
+      <div
+        class="editable-cell"
+        [hidden]="__editId === data.Id"
+        (click)="startEdit(data.Id ?? 0)"
+      >
+        <td>{{ data.DateFrom }}</td>
+        <nz-date-picker
+          [formControl]="__controls.dateFrom"
+          [hidden]="__editId !== data.Id"
+          (blur)="stopEdit()"
+        ></nz-date-picker>
+      </div>
 
-<nz-form-item>
-  <nz-form-label>Ilość uczestniczek</nz-form-label>
-  <nz-form-control>
-    <nz-input-number [formControl]="__controls.participantsTotal"></nz-input-number>
-  </nz-form-control>
-</nz-form-item>
+      <div
+        class="editable-cell"
+        [hidden]="__editId === data.Id"
+        (click)="startEdit(data.Id ?? 0)"
+      >
+        <td>{{ data.DateTo }}</td>
+        <nz-date-picker
+          [formControl]="__controls.dateTo"
+          [hidden]="__editId !== data.Id"
+          (blur)="stopEdit()"
+        ></nz-date-picker>
+      </div>
 
-<nz-form-item>
-  <nz-form-label>Aktualna liczba uczestników</nz-form-label>
-  <nz-form-control>
-    <nz-input-number [formControl]="__controls.participantsCurrent"></nz-input-number>
-  </nz-form-control>
-</nz-form-item>
+      <div
+        class="editable-cell"
+        [hidden]="__editId === data.Id"
+        (click)="startEdit(data.Id ?? 0)"
+      >
+        <td>{{ data.Price }}</td>
+        <nz-input-number
+          [formControl]="__controls.price"
+          [hidden]="__editId !== data.Id"
+          (blur)="stopEdit()"
+        ></nz-input-number>
+      </div>
+
+      <div
+        class="editable-cell"
+        [hidden]="__editId === data.Id"
+        (click)="startEdit(data.Id ?? 0)"
+      >
+        <td>{{ data.ParticipantsTotal }}</td>
+        <nz-input-number
+          [formControl]="__controls.participantsCurrent"
+          [hidden]="__editId !== data.Id"
+          (blur)="stopEdit()"
+        ></nz-input-number>
+      </div>
+
+      <td>
+        <sf-button [sfButtonText]="'Zapisz'" [sfFontSize]="'12px'"></sf-button>
+      </td>
+    }
+  </tbody>
+</nz-table>
+<sf-button
+  [sfFontSize]="'12px'"
+  [sfButtonText]="'Dodaj'"
+  (sfOnButtonClicked)="__addTripTerm()"
+></sf-button>

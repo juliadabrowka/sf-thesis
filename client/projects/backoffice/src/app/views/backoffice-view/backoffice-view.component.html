@@ -8,9 +8,9 @@
 
 <nz-card [nzTitle]="tripsTemplate">
   <sf-trip-table
-    [sfTrips]="__trips$$()"
+    [sfArticles]="__articles$$()"
     [sfLoading]="__loading$$()"
-    (sfOnTripClick)="__onTripClicked($event)"
+    (sfOnTripClick)="__onArticleClicked($event)"
   ></sf-trip-table>
 </nz-card>
 

@@ -12,6 +12,13 @@ public class ArticleMappingProfile : Profile
                 dest => dest.TripDto,
                 opt => opt.MapFrom(
                     src => src.Trip))
+            .ReverseMap(); 
+        
+        CreateMap<ArticleDTO, Article>()
+            .ForMember(dest => dest.Trip, 
+                opt => 
+                opt.MapFrom(src => src.TripDto))
             .ReverseMap();
+
     }
 }
