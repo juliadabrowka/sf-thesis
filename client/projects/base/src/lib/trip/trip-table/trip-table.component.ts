@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 import { NzTableModule, NzThAddOnComponent } from 'ng-zorro-antd/table';
 import { ArticleDTO, ArticleService, ColumnItem } from '@sf/sf-base';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'sf-trip-table',
-  imports: [NzThAddOnComponent, NzTableModule],
+  imports: [NzThAddOnComponent, NzTableModule, DatePipe],
   templateUrl: './trip-table.component.html',
   styleUrl: './trip-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

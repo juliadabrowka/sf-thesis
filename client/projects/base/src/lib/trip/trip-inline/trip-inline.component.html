@@ -1,4 +1,4 @@
-@if (__trip$$.value; as trip) {
+@if (sfTripInfo(); as trip) {
   <div class="trip-container">
     <div class="left" (click)="__navigateToTrip(trip.trip)">
       @if (trip.flagSrc) {

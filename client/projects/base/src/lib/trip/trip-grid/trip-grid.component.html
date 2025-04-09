@@ -1,18 +1,18 @@
-@if (__trips$$.value.length) {
+@if (sfTrips(); as trips) {
+  @for (trip of trips; track trip.trip.Id) {
   <div class="container">
     <div class="title">
       <sf-icon-and-text
-        [sfText]="__title$$.value"
+        [sfText]="sfTitle()"
         [sfIconSrc]="sfIcon()"
         [sfReverse]="true"
       ></sf-icon-and-text>
     </div>
     <div class="trips-inline">
-      @for (trip of __trips$$.value; track trip.trip.Id) {
         <sf-trip-inline
           [sfTripInfo]="trip"
         ></sf-trip-inline>
-      }
     </div>
   </div>
+}
 }

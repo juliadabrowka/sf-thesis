@@ -18,9 +18,10 @@ import {
   faRectangleList,
   faSliders,
   faSquarePlus,
+  faSuitcaseRolling,
   faThumbsUp,
   faTrashCan,
-  faUpRightFromSquare
+  faUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SfIcons = {
@@ -28,6 +29,7 @@ export const SfIcons = {
   addForm: faFolderPlus,
   addMedia: faSquarePlus,
   allForms: faRectangleList,
+  backgroundImage: faCameraRetro,
   bikeTrip: faPersonBiking,
   classicTrip: faPersonHiking,
   delete: faTrashCan,
@@ -43,7 +45,8 @@ export const SfIcons = {
   recommendations: faHeart,
   search: faMagnifyingGlass,
   tips: faThumbsUp,
+  tripDetails: faSuitcaseRolling,
   trips: faPlaneDeparture,
   upload: faFileUpload,
   weekendTrip: faCalendarCheck,
-}
+};

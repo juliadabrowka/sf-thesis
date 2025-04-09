@@ -53,8 +53,7 @@ export const ArticleStore = signalStore(
   withMethods((store) => ({
     async createArticle(article: ArticleDTO) {
       patchState(store, { loading: true });
-      const createArticleApiCall$ =
-        await store.articleService.createArticle(article);
+      const createArticleApiCall$ = store.articleService.createArticle(article);
       const createdArticle = await firstValueFrom(createArticleApiCall$);
       patchState(store, addEntity(createdArticle, { selectId }));
       patchState(store, { loading: false });
@@ -62,8 +61,7 @@ export const ArticleStore = signalStore(
 
     async updateArticle(article: ArticleDTO) {
       patchState(store, { loading: true });
-      const updateArticleApiCall$ =
-        await store.articleService.updateArticle(article);
+      const updateArticleApiCall$ = store.articleService.updateArticle(article);
       const updatedArticle = await firstValueFrom(updateArticleApiCall$);
       patchState(
         store,
@@ -86,28 +84,27 @@ export const ArticleStore = signalStore(
     async loadArticleDetails(id: number) {
       patchState(store, { loading: true });
       const loadArticleDetailsApiCall$ =
-        await store.articleService.getArticleDetails(id);
+        store.articleService.getArticleDetails(id);
       const articleDetails = await firstValueFrom(loadArticleDetailsApiCall$);
       this.setArticle(articleDetails);
     },
 
     setArticle(article: ArticleDTO | undefined) {
       patchState(store, { article, loading: true });
-      console.log(article);
       patchState(store, { loading: false });
     },
 
     async deleteArticles(articleIds: number[]) {
       patchState(store, { loading: true });
       const deleteArticleApiCall$ =
-        await store.articleService.deleteArticles(articleIds);
+        store.articleService.deleteArticles(articleIds);
       await firstValueFrom(deleteArticleApiCall$);
       patchState(store, { loading: false });
     },
 
     async loadArticleList() {
       patchState(store, { loading: true });
-      const getArticleListApiCall$ = await store.articleService.getArticles();
+      const getArticleListApiCall$ = store.articleService.getArticles();
       const articles = await firstValueFrom(getArticleListApiCall$);
       patchState(store, { articles, loading: false });
     },

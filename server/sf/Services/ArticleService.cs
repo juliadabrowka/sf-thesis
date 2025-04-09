@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using sf.Models;
 using sf.Program.Data;
 using sf.Repositories;
@@ -22,14 +23,14 @@ public class ArticleService : IArticleService
     private readonly IArticleRepository _articleRepository;
     private readonly IMapper _mapper;
     private readonly ITripRepository _tripRepository;
-    private readonly SfDbContext _sfDbContext;
+    private readonly ITripApplicationRepository _applicationRepository;
 
-    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository, SfDbContext sfDbContext)
+    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository, ITripApplicationRepository applicationRepository)
     {
         _articleRepository = articleRepository;
         _mapper = mapper;
         _tripRepository = tripRepository;
-        _sfDbContext = sfDbContext;
+        _applicationRepository = applicationRepository;
     }
     
     public async Task<ArticleDTO[]> GetArticles()
@@ -150,10 +151,8 @@ public class ArticleService : IArticleService
 
                 var ttd = _mapper.Map<ICollection<TripTerm>>(articleDto.TripDto.TripTermDtos);
                 existingTrip.TripTerms = ttd;
-                    
-                await _tripRepository.UpdateTrip(existingTrip);
                 
-                //existingTrip.TripApplications = articleDto.TripDto.TripApplicationIds; get from trip application server
+                existingTrip.TripApplications = await _applicationRepository.GetByIds(articleDto.TripDto.TripApplicationIds);
                 //existingTrip.Survey = articleDto.TripDto.SurveyId; get from survey server
             
                 await _tripRepository.UpdateTrip(existingTrip);

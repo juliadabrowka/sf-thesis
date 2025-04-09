@@ -115,6 +115,8 @@ class Program
         builder.Services.AddScoped<IArticleService, ArticleService>();
         builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
+        builder.Services.AddScoped<ITripApplicationRepository, TripApplicationRepository>();
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAngularApp", policy =>

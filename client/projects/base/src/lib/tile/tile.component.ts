@@ -1,16 +1,29 @@
-import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
-import {ArticleDTO, ArticleStore, SfIcons} from '@sf/sf-base';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {ActivatedRoute, Router} from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
+import {
+  ArticleDTO,
+  ArticleStore,
+  SfButtonComponent,
+  SfIcons,
+  TripTermDTO,
+} from '@sf/sf-base';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  getTripLength,
+  getTripMonth,
+} from '../trip/trip-details-short/trip-details-short.component';
 
 @Component({
   selector: 'sf-tile',
-  imports: [
-    FaIconComponent
-  ],
+  imports: [FaIconComponent, SfButtonComponent],
   templateUrl: './tile.component.html',
   styleUrl: './tile.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TileComponent {
   private readonly router = inject(Router);
@@ -21,9 +34,18 @@ export class TileComponent {
 
   public readonly __icons = SfIcons;
 
+  public __getTripMonth(tripTerms: TripTermDTO[]) {
+    return getTripMonth(tripTerms);
+  }
+
+  __getTripLength(tripTerms: TripTermDTO[]): string {
+    return getTripLength(tripTerms);
+  }
   async __goToArticle(value: ArticleDTO | undefined) {
     if (!value) throw Error('No article but should be');
-    await this.router.navigate([value.Url], {relativeTo: this.activatedRoute});
+    await this.router.navigate([value.Url], {
+      relativeTo: this.activatedRoute,
+    });
     this.articleStore.setArticle(value);
   }
 }

@@ -1,0 +1,28 @@
+.sider-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  width: 1000px;
+  margin: auto;
+  height: 100vh;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: row;
+  width: 64%;
+}
+
+.ant-divider-vertical {
+  margin-top: 12px;
+  height: 100%;
+  border-color: var(--divider-grey-color);
+  margin-left: 64px;
+}

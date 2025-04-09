@@ -153,14 +153,10 @@ export class SfArticleFormComponent {
 
           articleState.TripId = articleState.TripDto?.Id;
           articleState.TripDto = trip;
-
-          console.log(trip);
-          console.log(articleState);
         }
 
         if (articleChanged(a, articleState))
           this.articleStore.setArticle(articleState);
-        //console.log(articleState);
 
         this.cdr.markForCheck();
       });
@@ -181,8 +177,6 @@ export class SfArticleFormComponent {
     }
     t.TripTermDtos = tripTerms;
     const updatedArticle = { ...a, TripDto: t };
-    console.log(t);
-    console.log(updatedArticle);
     this.articleStore.setArticle(updatedArticle);
   }
 }

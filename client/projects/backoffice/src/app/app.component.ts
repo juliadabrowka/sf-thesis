@@ -54,7 +54,7 @@ export class AppComponent {
   }
 
   async __createNewTrip() {
-    await this.router.navigate(['create-trip'], {
+    await this.router.navigate(['create-survey'], {
       relativeTo: this.activatedRoute,
     });
   }

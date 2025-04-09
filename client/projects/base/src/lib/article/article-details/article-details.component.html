@@ -1,9 +1,14 @@
 @if (_article(); as article) {
   <div class="content">
-    <img src="assets/kalendarz-wyjazdow.png" alt="">
+    <img [src]="article.BackgroundImageUrl" alt="">
     <sf-page-title-framed
       [sfTitle]="article.Title"
     ></sf-page-title-framed>
+  </div>
+  <div>
+    <sf-article-details-inner
+      [sfArticle]="article"
+    ></sf-article-details-inner>
     <quill-view [content]=""></quill-view>
   </div>
 } @else {

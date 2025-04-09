@@ -25,8 +25,8 @@
             <ng-container>
               <td>{{ data.Title }}</td>
               <td>{{ data.Country }}</td>
-              <td>{{ tripTerm.DateFrom }}</td>
-              <td>{{ tripTerm.DateTo }}</td>
+              <td>{{ tripTerm.DateFrom | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ tripTerm.DateTo | date: 'dd/MM/yyyy' }}</td>
               <td>{{ tripTerm.Price }}</td>
               <td>{{ tripTerm.ParticipantsCurrent }}</td>
               <td>{{ data.TripDto?.Type }}</td>

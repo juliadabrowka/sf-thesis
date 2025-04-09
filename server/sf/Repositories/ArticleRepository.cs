@@ -45,6 +45,7 @@ public class ArticleRepository : IArticleRepository
     {
         var p = await _sfDbContext.Articles
             .Include(a => a.Trip)
+            .ThenInclude(t => t.TripTerms)
             .FirstOrDefaultAsync(a => a.Id == articleId);
 
         if (p == null)
@@ -76,4 +77,6 @@ public class ArticleRepository : IArticleRepository
         _sfDbContext.Articles.RemoveRange(articles);
         await _sfDbContext.SaveChangesAsync();
     }
+    
+
 }

@@ -41,7 +41,13 @@
       </nz-form-item>
 
       <div class="media-section">
-        <h3>📸 Zdjęcie w tle</h3>
+        <h3>
+          <sf-icon-and-text
+            [sfIcon]="__icons.backgroundImage"
+            [sfText]="'Zdjęcie w tle'"
+          ></sf-icon-and-text>
+        </h3>
+
         <div>
           <sf-upload
             (sfUploadedImgUrl)="__onFilesUpload($event)"
@@ -56,7 +62,12 @@
   @if (isTripCategorySelected) {
     <div class="side-panel">
       <div class="trip-section">
-        <h3>🧳 Szczegóły Wyprawy</h3>
+        <h3>
+          <sf-icon-and-text
+            [sfIcon]="__icons.tripDetails"
+            [sfText]="'Szczegóły wyprawy'"
+          ></sf-icon-and-text>
+        </h3>
 
         <nz-form-item>
           <nz-form-label>Nazwa</nz-form-label>
@@ -73,6 +84,7 @@
         </nz-form-item>
         <sf-trip-term-details
           [sfTripTerms]="sfArticle()?.TripDto?.TripTermDtos ?? []"
+          [sfTripId]="sfArticle()?.TripDto?.Id"
           (sfTripTermsUpdated)="__onTripTermAdded($event)"
         ></sf-trip-term-details>
 
