@@ -8,14 +8,6 @@
   .main-form {
     flex: 2;
     height: 100%;
-
-    form {
-      height: 100%;
-
-      > quill-editor {
-        display: block;
-      }
-    }
   }
 
   .side-panel {
@@ -41,7 +33,12 @@
     border-radius: 8px;
   }
 
-  #editorContainer, img {
+  quill-editor, img {
     margin-top: 8px
   }
+}
+
+#editor {
+  background-color: white;
+  width: 100%;
 }

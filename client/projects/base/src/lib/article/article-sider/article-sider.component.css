@@ -1,0 +1,41 @@
+.article-sider {
+  margin-bottom: 96px;
+}
+
+.article-container {
+  margin-bottom: 24px;
+  cursor: pointer;
+  width: 150px;
+
+  img {
+    height: 111px;
+    width: inherit;
+  }
+}
+
+.article-sider, .article-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+
+.article-category {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.article-title {
+  letter-spacing: 1px;
+  font-size: 14px;
+  color: #333333;
+  font-weight: 600;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}

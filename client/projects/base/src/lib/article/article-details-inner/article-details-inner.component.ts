@@ -3,6 +3,7 @@ import { TripDetailsShortComponent } from '../../trip/trip-details-short/trip-de
 import { ArticleSiderComponent } from '../article-sider/article-sider.component';
 import { ArticleDTO } from '@sf/sf-base';
 import { NzDividerComponent } from 'ng-zorro-antd/divider';
+import { QuillViewComponent } from 'ngx-quill';
 
 @Component({
   selector: 'sf-article-details-inner',
@@ -10,6 +11,7 @@ import { NzDividerComponent } from 'ng-zorro-antd/divider';
     TripDetailsShortComponent,
     ArticleSiderComponent,
     NzDividerComponent,
+    QuillViewComponent,
   ],
   templateUrl: './article-details-inner.component.html',
   styleUrl: './article-details-inner.component.css',

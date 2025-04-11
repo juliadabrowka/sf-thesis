@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { QuillViewComponent } from 'ngx-quill';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ArticleStore } from '../../../state/article/article.store';
@@ -9,11 +8,7 @@ import { ArticleDetailsInnerComponent } from '../article-details-inner/article-d
 
 @Component({
   selector: 'sf-article-details',
-  imports: [
-    QuillViewComponent,
-    PageTitleFramedComponent,
-    ArticleDetailsInnerComponent,
-  ],
+  imports: [PageTitleFramedComponent, ArticleDetailsInnerComponent],
   templateUrl: './article-details.component.html',
   styleUrl: './article-details.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,22 +18,21 @@ export class SfArticleDetailsComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
   public readonly articleStore = inject(ArticleStore);
 
-  public _article = this.articleStore.article;
+  public __article = this.articleStore.article;
+  private articles$ = toObservable(this.articleStore.articles);
 
   constructor() {
     this.activatedRoute.paramMap
       .pipe(takeUntilDestroyed())
       .subscribe(async (params) => {
-        console.log('a');
         const param = params.get('customLink') ?? '';
-        console.log(param);
         await this.loadArticleByUrl(param);
       });
   }
 
   private async loadArticleByUrl(customLink: string) {
     const a = await firstValueFrom(
-      toObservable(this.articleStore.articles).pipe(
+      this.articles$.pipe(
         filter((articles) => articles.length > 0),
         map((articles) => {
           const article = articles.find((a) => a.Url === customLink);

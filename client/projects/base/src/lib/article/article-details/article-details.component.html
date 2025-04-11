@@ -1,4 +1,4 @@
-@if (_article(); as article) {
+@if (__article(); as article) {
   <div class="content">
     <img [src]="article.BackgroundImageUrl" alt="">
     <sf-page-title-framed
@@ -9,7 +9,6 @@
     <sf-article-details-inner
       [sfArticle]="article"
     ></sf-article-details-inner>
-    <quill-view [content]=""></quill-view>
   </div>
 } @else {
   <p>Loading...</p>

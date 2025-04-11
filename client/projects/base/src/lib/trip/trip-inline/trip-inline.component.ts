@@ -36,8 +36,6 @@ export class SfTripInlineComponent {
     await this.store.loadArticleDetails(trip.ArticleId);
     const article = this.store.article();
 
-    console.log(article);
-
     if (article === undefined) {
       throw new Error('Article not found');
     }

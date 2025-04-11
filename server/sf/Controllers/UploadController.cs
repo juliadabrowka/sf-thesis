@@ -20,6 +20,7 @@ public class UploadController : ControllerBase
                 return BadRequest("No file uploaded.");
 
             var fileName = $"{Guid.NewGuid()}.jpg";
+            Directory.CreateDirectory(_uploadPath); 
             var filePath = Path.Combine(_uploadPath, fileName);
 
             await System.IO.File.WriteAllBytesAsync(filePath, memoryStream.ToArray());

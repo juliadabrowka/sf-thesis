@@ -1,9 +1,14 @@
 <div class="main-content">
-  <div class="left-content">
-    <sf-trip-details-short
-      [sfTripDetails]="sfArticle()?.TripDto"
-    ></sf-trip-details-short>
-  </div>
+  @if (sfArticle(); as article) {
+    <div class="left-content">
+      @if (article.TripDto; as trip) {
+        <sf-trip-details-short
+          [sfTripDetails]="trip"
+        ></sf-trip-details-short>
+      }
+      <quill-view [content]="article.Content"></quill-view>
+    </div>
+  }
   <nz-divider [nzType]="'vertical'"></nz-divider>
   <div class="sider-content">
     <sf-article-sider></sf-article-sider>

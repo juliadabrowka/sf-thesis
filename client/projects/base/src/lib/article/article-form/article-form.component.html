@@ -3,10 +3,15 @@
     <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
       <nz-form-item>
         <nz-form-control>
-          <input nz-input [formControl]="__controls.title" [placeholder]="'Dodaj tytuł'"/>
+          <input nz-input required [formControl]="__controls.title" [placeholder]="'Dodaj tytuł'"/>
         </nz-form-control>
       </nz-form-item>
-      <quill-editor #editor [formControl]="__controls.content"></quill-editor>
+      <quill-editor
+        id="editor"
+        [formControl]="__controls.content"
+        [placeholder]="'Zacznij pisać... :)'"
+        [modules]="quillConfig"
+      ></quill-editor>
     </form>
   </div>
 
@@ -34,8 +39,8 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label>Link</nz-form-label>
-        <nz-form-control>
+        <nz-form-label nzRequired>Link</nz-form-label>
+        <nz-form-control nzErrorTip="Link nie może być pusty">
           <input nz-input [formControl]="__controls.articleUrl"/>
         </nz-form-control>
       </nz-form-item>

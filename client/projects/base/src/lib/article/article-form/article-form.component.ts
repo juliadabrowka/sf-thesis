@@ -5,7 +5,12 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   ArticleCategory,
   ArticleDTO,
@@ -34,6 +39,7 @@ import { SfIcons } from '../../icons';
 import { QuillEditorComponent } from 'ngx-quill';
 import { SfUploadComponent } from '../../upload/upload.component';
 import { TripTermDetailsComponent } from '../../trip/trip-term-details/trip-term-details.component';
+import { QuillModules } from 'ngx-quill/config/quill-editor.interfaces';
 
 @Component({
   selector: 'sf-article-form',
@@ -64,19 +70,33 @@ export class SfArticleFormComponent {
   public readonly __icons = SfIcons;
   public readonly __controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {
+      validators: Validators.required,
       nonNullable: true,
     }),
-    title: new FormControl<string>('', { nonNullable: true }),
-    articleUrl: new FormControl<string>('', { nonNullable: true }),
-    content: new FormControl<string>('', { nonNullable: true }),
+    title: new FormControl<string>('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    articleUrl: new FormControl<string>('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    content: new FormControl<string>('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
     country: new FormControl<Country>(DefaultCountryValue, {
+      validators: Validators.required,
       nonNullable: true,
     }),
     tripType: new FormControl<TripType>(DefaultTripTypeValue, {
       nonNullable: true,
     }),
     tripName: new FormControl<string>('', { nonNullable: true }),
-    backgroundImage: new FormControl<string>('', { nonNullable: true }),
+    backgroundImage: new FormControl<string>('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
     picture: new FormControl<File | null>(null),
   };
   public readonly __categories = Object.values(ArticleCategory).map((o) => ({
@@ -93,6 +113,24 @@ export class SfArticleFormComponent {
   }));
   public readonly __formGroup = new FormGroup(this.__controls);
   public isTripCategorySelected = false;
+
+  public readonly quillConfig: QuillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+
+      [{ header: 1 }, { header: 2 }, { header: 3 }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }],
+
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ font: [] }],
+      [{ align: [] }],
+
+      ['link', 'image', 'video'],
+    ],
+  };
 
   constructor() {
     toObservable(this.sfArticle)

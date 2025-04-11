@@ -3,26 +3,25 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: auto
+  margin: auto auto auto 12px;
 }
 
 .main-content {
   display: flex;
   flex-direction: row;
   width: 1000px;
-  margin: auto;
+  margin: 24px auto auto auto;
   height: 100vh;
 }
 
 .left-content {
   display: flex;
-  flex-direction: row;
-  width: 64%;
+  flex-direction: column;
+  width: 100%
 }
 
 .ant-divider-vertical {
   margin-top: 12px;
-  height: 100%;
+  height: 100vh;
   border-color: var(--divider-grey-color);
-  margin-left: 64px;
 }

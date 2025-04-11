@@ -1,1 +1,15 @@
-<p>article-sider works!</p>
+@for ((sd of siderData() | sfArticleSiderData); track $index) {
+  <div class="article-sider">
+    <div class="article-category">{{ sd.category }}</div>
+    @for (article of sd.articles; track $index) {
+      <div class="article-container" [routerLink]="['/', article.Url]">
+        <img [src]="article.BackgroundImageUrl" alt="'article image'">
+        <div class="article-title">
+          <sf-slice-text
+            [sfText]="article.Title"
+          ></sf-slice-text>
+        </div>
+      </div>
+    }
+  </div>
+}
