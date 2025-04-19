@@ -32,7 +32,7 @@ import {
 } from 'ng-zorro-antd/form';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzInputDirective } from 'ng-zorro-antd/input';
-import { ArticleStore } from '../../../state/article/article.store';
+import { ArticleStore } from '../../../state/article-store';
 import { isNil, isNotNil } from '@w11k/rx-ninja';
 import { SfIconAndTextComponent } from '../../icon-and-text/icon-and-text.component';
 import { SfIcons } from '../../icons';
@@ -188,6 +188,13 @@ export class SfArticleFormComponent {
           trip.Type = fg.tripType ?? DefaultTripTypeValue;
           trip.Name = fg.tripName ?? '';
           trip.ArticleId = articleState?.Id;
+          trip.TripTermIds = articleState.TripDto?.TripTermIds ?? [];
+          trip.TripTermDtos = articleState.TripDto?.TripTermDtos ?? [];
+
+          trip.TripApplicationIds =
+            articleState.TripDto?.TripApplicationIds ?? [];
+          trip.TripApplicationDtos =
+            articleState.TripDto?.TripApplicationDtos ?? [];
 
           articleState.TripId = articleState.TripDto?.Id;
           articleState.TripDto = trip;
@@ -214,6 +221,11 @@ export class SfArticleFormComponent {
       throw new Error('Trip is undefined but should not be');
     }
     t.TripTermDtos = tripTerms;
+    t.TripTermIds =
+      tripTerms
+        .map((tt) => tt.Id)
+        .filter((id): id is number => id !== undefined) ?? [];
+
     const updatedArticle = { ...a, TripDto: t };
     this.articleStore.setArticle(updatedArticle);
   }
@@ -256,7 +268,9 @@ export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
         term.DateTo !== otherTerm.DateTo ||
         term.ParticipantsCurrent !== otherTerm.ParticipantsCurrent ||
         term.ParticipantsTotal !== otherTerm.ParticipantsTotal ||
-        term.Price !== otherTerm.Price
+        term.Price !== otherTerm.Price ||
+        term.TripId !== otherTerm.TripId ||
+        term.TripDto !== otherTerm.TripDto
       );
     });
   };

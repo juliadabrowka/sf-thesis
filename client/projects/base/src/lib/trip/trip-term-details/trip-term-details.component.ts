@@ -9,7 +9,6 @@ import {
 import { SfButtonComponent, TripTermDTO } from '@sf/sf-base';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
-  FormArray,
   FormControl,
   FormGroup,
   FormsModule,
@@ -52,30 +51,7 @@ export class TripTermDetailsComponent {
     participantsTotal: new FormControl<number>(0, { nonNullable: true }),
     participantsCurrent: new FormControl<number>(0, { nonNullable: true }),
   };
-  public readonly __tripTermControls = {
-    tripTermId: new FormControl<number | null>(null),
-    tripTermName: new FormControl<string>('', { nonNullable: true }),
-    tripTermDateFrom: new FormControl<Date | null>(null),
-    tripTermDateTo: new FormControl<Date | null>(null),
-    tripTermPrice: new FormControl<number>(0, { nonNullable: true }),
-    tripTermParticipantsTotal: new FormControl<number>(0, {
-      nonNullable: true,
-    }),
-    tripTermParticipantsCurrent: new FormControl<number>(0, {
-      nonNullable: true,
-    }),
-  };
   public __formGroup = new FormGroup(this.__controls);
-  public __tripTerms = new FormArray([
-    new FormControl<number | null>(null),
-    new FormControl<string>('', { nonNullable: true }),
-    new FormControl<Date | null>(null),
-    new FormControl<Date | null>(null),
-    new FormControl<number>(0, { nonNullable: true }),
-    new FormControl<number>(0, { nonNullable: true }),
-    new FormControl<number>(0, { nonNullable: true }),
-  ]);
-
   public readonly __columns = ['ID terminu', 'Daty', 'Cena', 'Wolne miejsca'];
   public __editId: number | undefined;
   __editForms: Record<number, FormGroup> = {};
@@ -87,18 +63,6 @@ export class TripTermDetailsComponent {
         //tripTerms.forEach((tripTerm) => this.patchTripTerms(tripTerm));
         this.cdr.markForCheck();
       });
-
-    // this.__formGroup.valueChanges
-    //   .pipe(
-    //     map(() => this.__formGroup.getRawValue()),
-    //     takeUntilDestroyed(),
-    //   )
-    //   .subscribe(async (fg) => {
-    //     const tripTerm = this.sfTripTerms();
-    //     const currentTripTerms = isNil(tripTerm) ? [] : tripTerm;
-    //
-    //     console.log(currentTripTerms);
-    //   });
   }
 
   startEdit(tripTermDTO: TripTermDTO): void {
@@ -133,13 +97,13 @@ export class TripTermDetailsComponent {
     }
 
     const form = this.__editForms[id];
-    if (form.invalid) return; // Prevent saving if form is invalid
+    if (form.invalid) return;
 
     const updatedTripTerms = this.sfTripTerms().map((term) =>
       term.Id === id ? { ...term, ...form.getRawValue() } : term,
     );
 
-    this.sfTripTermsUpdated.emit(updatedTripTerms); // Emit updated terms
+    this.sfTripTermsUpdated.emit(updatedTripTerms);
     this.stopEdit();
   }
 }

@@ -6,7 +6,7 @@
 }
 
 .is-trip {
-  height: 315px;
+  height: 345px;
 }
 
 .tile-footer, .tile-container {
@@ -24,13 +24,30 @@
     flex-direction: column;
     align-items: center;
 
-    sf-button > .button {
-      font-size: 11px;
+    .label-button {
+      font-size: 12px;
       font-weight: bold;
-      padding: 1px 8px 2px 10px;
-      border-radius: 10px 20px 10px 20px
+      padding: 0 8px 1px 10px;
+      border-radius: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
     }
   }
+}
+
+.trip-length {
+  margin-bottom: var(--margin-m);
+}
+
+.button-read-more {
+  background-color: #8F8F8F;
+  border-radius: 20px;
+  padding: 5px 10px;
+  color: #FFF;
+  font-weight: bold;
+  line-height: 1.8;
+  margin-bottom: var(--margin-m);
+  font-family: var(--alternate-font)
 }
 
 .media {
@@ -73,7 +90,7 @@ fa-icon {
 }
 
 .button, img, .title, .media {
-  margin-bottom: 8px;
+  margin-bottom: var(--margin-s);
 }
 
 .button {

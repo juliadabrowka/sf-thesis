@@ -1,0 +1,17 @@
+<div class="footer-piece-container">
+  <div class="footer-piece-title">
+    {{ sfTitle() }}
+  </div>
+  <div class="footer-piece-content">
+    @if (sfContent(); as content) {
+      @if (isTemplateRef(content)) {
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      } @else {
+        @for (c of content; track $index) {
+          <li> {{ c }}</li>
+        }
+      }
+    }
+  </div>
+
+</div>

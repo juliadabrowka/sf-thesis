@@ -15,5 +15,6 @@ public class TripTerm
     public int ParticipantsCurrent { get; set; }
     public int ParticipantsTotal { get; set; }
     
-    public int TripId { get; set; }
+    public int? TripId { get; set; }
+    public Trip? Trip { get; set; }
 }

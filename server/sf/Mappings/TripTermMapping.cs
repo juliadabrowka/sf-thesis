@@ -7,6 +7,16 @@ public class TripTermMappingProfile: Profile
 {
     public TripTermMappingProfile()
     {
-        CreateMap<TripTerm, TripTermDTO>().ReverseMap();
+        CreateMap<TripTerm, TripTermDTO>()
+            .ForMember(dest => dest.TripDto,
+                opt =>
+                {
+                    opt.PreCondition(src => src.Trip != null);
+                    opt.MapFrom(
+                        src => src.Trip);
+                })
+            .MaxDepth(4)
+            .PreserveReferences()
+            .ReverseMap();
     }
 }

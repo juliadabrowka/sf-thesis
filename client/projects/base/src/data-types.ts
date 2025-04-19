@@ -63,30 +63,37 @@ export class SurveyAnswerDTO {
   Id: number | undefined;
   Answer: string = '';
   SurveyQuestionId: number | undefined;
+  SurveyQuestionDto: SurveyQuestionDTO | undefined;
   SurveyResponseId: number | undefined;
+  SurveyResponseDto: SurveyResponseDTO | undefined;
 }
 
 export class SurveyDTO {
   Id: number | undefined;
   Title: string = '';
-  Country: Country = DefaultCountryValue;
+  TripDto: TripDTO | undefined;
   TripId: number | undefined;
+  SurveyQuestionDtos: SurveyQuestionDTO[] = [];
   SurveyQuestionIds: number[] = [];
 }
 
 export class SurveyQuestionDTO {
   Id: number | undefined;
-  QuestionText: string = '';
+  Question: string = '';
   IsCommon: boolean = false;
   SurveyIds: number[] = [];
+  SurveyDtos: SurveyDTO[] = [];
   SurveyAnswerIds: number[] = [];
+  SurveyAnswerDtos: SurveyAnswerDTO[] = [];
 }
 
 export class SurveyResponseDTO {
   Id: number | undefined;
   RepliedOn: Date = new Date();
   TripApplicationId: number | undefined;
+  TripApplicationDto: TripApplicationDTO | undefined;
   SurveyAnswerIds: number[] = [];
+  SurveyAnswerDtos: SurveyAnswerDTO[] = [];
 }
 
 export const DefaultStatusValue = Status.Created;
@@ -99,7 +106,9 @@ export class TripApplicationDTO {
   ExtraInfo: string = '';
   Status: Status = DefaultStatusValue;
   TripId: number | undefined;
+  TripDto: TripDTO | undefined;
   SurveyResponseId: number | undefined;
+  SurveyResponseDto: SurveyResponseDTO | undefined;
 }
 
 export const DefaultTripTypeValue = TripType.Classic;
@@ -113,14 +122,19 @@ export class TripTermDTO {
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   TripId: number | undefined;
+  TripDto: TripDTO | undefined;
 }
 
 export class TripDTO {
-  Id?: number | undefined;
+  Id: number | undefined;
   Name: string = '';
+  TripTermIds: number[] = [];
   TripTermDtos: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
   SurveyId: number | undefined;
+  SurveyDto: SurveyDTO | undefined;
   ArticleId: number | undefined;
+  ArticleDto: ArticleDTO | undefined;
+  TripApplicationDtos: TripApplicationDTO[] = [];
   TripApplicationIds: number[] = [];
 }

@@ -1,10 +1,13 @@
-<div class="tiles-container">
-  @if (sfArticles(); as articles) {
-    @for (article of articles; track article.Id) {
-      <sf-tile
-        [sfArticle]="article"
-      ></sf-tile>
+<div class="main-container">
+  <div class="tiles-container">
+    @if (sfArticles(); as articles) {
+      @for (article of articles.slice(0, 3); track article.Id) {
+        <sf-tile
+          [sfArticle]="article"
+        ></sf-tile>
+      }
     }
-  }
+  </div>
+  <div class="button-show-all">Zobacz wszystkie</div>
 </div>
 

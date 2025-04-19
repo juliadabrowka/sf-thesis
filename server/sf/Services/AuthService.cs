@@ -14,19 +14,14 @@ public interface IAuthService
     
 }
 
-public class AuthService : IAuthService
+public class AuthService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
+    : IAuthService
 {
-    private readonly JwtSettings _jwtSettings;
-    private readonly IUserRepository _userRepository;
-    public AuthService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
-    {
-        _jwtSettings = jwtSettings.Value;
-        _userRepository = userRepository;
-    }
+    private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
     public async Task<string> GetAuthentication(string username, string password)
     {
-        var user = await _userRepository.GetByUsernameAsync(username);
+        var user = await userRepository.GetByUsernameAsync(username);
             
         if (user == null || !VerifyPassword(password, user.PasswordHash))
         {

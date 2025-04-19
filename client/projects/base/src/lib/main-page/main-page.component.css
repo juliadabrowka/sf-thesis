@@ -51,8 +51,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 1000px;
+  margin: auto;
+
+  .credo {
+    margin-bottom: var(--margin-lg);
+    font-size: 16px;
+    width: 95%;
+    line-height: 1.8;
+    word-wrap: break-word;
+  }
 
   sf-page-title {
-    margin-top: 32px;
+    margin-top: var(--margin-xl);
   }
 }

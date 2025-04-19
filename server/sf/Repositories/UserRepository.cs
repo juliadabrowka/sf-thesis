@@ -12,15 +12,8 @@ namespace sf.Repositories;
         Task<User[]> GetUserList();
     }
 
-public class UserRepository : IUserRepository
+public class UserRepository(SfDbContext sfDbContext) : IUserRepository
 {
-    private readonly SfDbContext _sfDbContext;
-
-    public UserRepository(SfDbContext sfDbContext)
-    {
-        _sfDbContext = sfDbContext;
-    }
-    
     public async Task<User> CreateUser(string username, string password) 
     {
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
@@ -31,20 +24,20 @@ public class UserRepository : IUserRepository
             PasswordHash = passwordHash
         };
 
-        await _sfDbContext.Users.AddAsync(u);
-        await _sfDbContext.SaveChangesAsync();
+        await sfDbContext.Users.AddAsync(u);
+        await sfDbContext.SaveChangesAsync();
 
         return u;
     }
 
     public async Task<User[]> GetUserList()
     {
-        return await _sfDbContext.Users.ToArrayAsync();
+        return await sfDbContext.Users.ToArrayAsync();
     }
 
     public async Task<User> GetByUsernameAsync(string username)
     {
-        var user = await _sfDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await sfDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         if (user == null)
         {
             throw new ApplicationException("User does not exists");

@@ -1,9 +1,5 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using sf.Models;
-using sf.Program.Data;
 using sf.Repositories;
 using ApplicationException = System.ApplicationException;
 
@@ -18,36 +14,28 @@ public interface IArticleService
     Task<ArticleDTO> GetArticleDetails(int articleId);
     Task DeleteArticles(int[] articleIds);
 }
-public class ArticleService : IArticleService
+public class ArticleService(
+    IArticleRepository articleRepository,
+    IMapper mapper,
+    ITripRepository tripRepository,
+    ITripApplicationRepository applicationRepository)
+    : IArticleService
 {
-    private readonly IArticleRepository _articleRepository;
-    private readonly IMapper _mapper;
-    private readonly ITripRepository _tripRepository;
-    private readonly ITripApplicationRepository _applicationRepository;
-
-    public ArticleService(IArticleRepository articleRepository, IMapper mapper, ITripRepository tripRepository, ITripApplicationRepository applicationRepository)
-    {
-        _articleRepository = articleRepository;
-        _mapper = mapper;
-        _tripRepository = tripRepository;
-        _applicationRepository = applicationRepository;
-    }
-    
     public async Task<ArticleDTO[]> GetArticles()
     {
-        var articles = await _articleRepository.GetArticles();
-        return _mapper.Map<ArticleDTO[]>(articles);
+        var articles = await articleRepository.GetArticles();
+        return mapper.Map<ArticleDTO[]>(articles);
     }
 
     public async Task<ArticleDTO> GetArticleDetails(int articleId)
     {
-        var articleDetails = await _articleRepository.GetArticleDetails(articleId);
-        return _mapper.Map<ArticleDTO>(articleDetails);
+        var articleDetails = await articleRepository.GetArticleDetails(articleId);
+        return mapper.Map<ArticleDTO>(articleDetails);
     }
 
     public async Task DeleteArticles(int[] articleIds)
     {
-        await _articleRepository.DeleteArticles(articleIds);
+        await articleRepository.DeleteArticles(articleIds);
     }
 
     public async Task<ArticleDTO> CreateArticle(ArticleDTO articleDto)
@@ -56,34 +44,18 @@ public class ArticleService : IArticleService
         {
             throw new ArgumentNullException(nameof(articleDto), "ArticleDTO cannot be null");
         }
-        var articleEntity = _mapper.Map<Article>(articleDto);
-
+        var articleEntity = mapper.Map<Article>(articleDto);
+        var newArticle = await articleRepository.CreateArticle(articleEntity);
         
-        if (articleDto.TripDto != null)
+        if (newArticle.Trip != null)
         {
-            var t = articleDto.TripDto;
-            var tripEntity = _mapper.Map<Trip>(t);
-            await _tripRepository.CreateTrip(tripEntity);
+            newArticle.Trip.ArticleId = newArticle.Id;
+            newArticle.Trip.Article = newArticle;
+            await articleRepository.UpdateArticle(newArticle);
         }
-        var newArticle = await _articleRepository.CreateArticle(articleEntity);
-        
-        if (articleDto.ArticleCategory == ArticleCategory.Wyprawy)
-        {
-            if (articleDto.TripDto == null)
-            {
-                throw new ApplicationException("Trip given in the article is null but should not be");
-            }
+        ArticleDTO article = mapper.Map<ArticleDTO>(newArticle);
 
-            if (newArticle.Trip == null)
-            {
-                throw new ApplicationException("Trip in article is null but should not be");
-            }
-            
-            newArticle.TripId = newArticle.Trip.Id;
-            await _articleRepository.UpdateArticle(newArticle);
-        }
-
-        return _mapper.Map<ArticleDTO>(newArticle);
+        return article;
     }
 
     public async Task<ArticleDTO> UpdateArticle(ArticleDTO articleDto)
@@ -93,7 +65,7 @@ public class ArticleService : IArticleService
             throw new ApplicationException("This article does not have an ID but should have.");
         }
 
-        var article = await _articleRepository.GetArticleDetails(articleDto.Id.Value);
+        var article = await articleRepository.GetArticleDetails(articleDto.Id.Value);
 
         if (article == null)
         {
@@ -143,30 +115,29 @@ public class ArticleService : IArticleService
             
             if (article.TripId != null) // if has id - only some data changes - has to be article bc dto cant be passed from ui
             { 
-                var existingTrip = await _tripRepository.GetTripDetails(article.TripId.Value);
-                
+                var existingTrip = await tripRepository.GetTripDetails(article.TripId.Value);
                 
                 existingTrip.Name = articleDto.TripDto.Name;
                 existingTrip.Type = articleDto.TripDto.Type;
 
-                var ttd = _mapper.Map<ICollection<TripTerm>>(articleDto.TripDto.TripTermDtos);
+                var ttd = mapper.Map<ICollection<TripTerm>>(articleDto.TripDto.TripTermDtos);
                 existingTrip.TripTerms = ttd;
                 
-                existingTrip.TripApplications = await _applicationRepository.GetByIds(articleDto.TripDto.TripApplicationIds);
+                existingTrip.TripApplications = await applicationRepository.GetByIds(articleDto.TripDto.TripApplicationIds);
                 //existingTrip.Survey = articleDto.TripDto.SurveyId; get from survey server
             
-                await _tripRepository.UpdateTrip(existingTrip);
+                await tripRepository.UpdateTrip(existingTrip);
 
                 article.Trip = existingTrip;
             }
             else // article trip id is null = not existing yet
             {
-                Trip newTripEntity = _mapper.Map<Trip>(articleDto.TripDto);
-                var newTrip = await _tripRepository.CreateTrip(newTripEntity); // set id
+                Trip newTripEntity = mapper.Map<Trip>(articleDto.TripDto);
+                var newTrip = await tripRepository.CreateTrip(newTripEntity); // set id
 
-                newTrip.ArticleId = article.Id;
+                newTrip.Article = article;
                 //newTrip.TripTerms = article.Trip != null ? article.Trip.TripTerms : new List<TripTerm>();
-                var t = await _tripRepository.UpdateTrip(newTrip);
+                var t = await tripRepository.UpdateTrip(newTrip);
                 
                 article.Trip = t;
                 article.TripId = t.Id; 
@@ -175,16 +146,16 @@ public class ArticleService : IArticleService
         else if (article.Trip != null)
         {
             isUpdated = true;
-            await _tripRepository.DeleteTrips([article.Trip.Id]);
+            await tripRepository.DeleteTrips([article.Trip.Id]);
             article.TripId = null;
             article.Trip = null;
         }
 
         if (isUpdated)
         {
-            await _articleRepository.UpdateArticle(article);
+            await articleRepository.UpdateArticle(article);
         }
 
-        return _mapper.Map<ArticleDTO>(article);
+        return mapper.Map<ArticleDTO>(article);
     }
 }

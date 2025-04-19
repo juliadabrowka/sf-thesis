@@ -1,5 +1,111 @@
-<div>
-  @if (surveyModel; as creatorModel) {
-    <survey-creator [model]="creatorModel"></survey-creator>
-  }
-</div>
+<nz-card [nzTitle]="surveyTitleTemplate" [nzBordered]="false">
+  <form nz-form [formGroup]="__formGroup">
+    <div class="survey-start">
+      <div class="survey-title">
+        <nz-form-item>
+          <nz-form-label>Tytuł</nz-form-label>
+          <nz-form-control>
+            <input [formControl]="__controls.title" placeholder="Wpisz tytuł"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="survey-trip">
+        <nz-form-item>
+          <nz-form-label>Wyprawa</nz-form-label>
+          <nz-form-control>
+            <nz-select [formControl]="__controls.trip" [nzOptions]="__tripOptions"></nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="add-question">
+        <nz-form-item>
+          <nz-form-label>Pytanie</nz-form-label>
+          <nz-form-control>
+            <input
+              class="question-input"
+              [formControl]="__controls.question"
+              placeholder="Wpisz pytanie"
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div
+          nz-tooltip
+          [nzTooltipTitle]="'Naciśnij, aby dodać pytanie do ankiety'"
+          class="save-button"
+          (click)="addQuestion()">
+          <fa-icon [icon]="__icons.add"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div class="questions">
+      <span class="questions-title">Pytania</span>
+      @if (__questionsArray.length === 0) {
+        <nz-empty
+          nzNotFoundImage="assets/empty-folder.png"
+          nzNotFoundContent="Brak dodanych pytań dla tej ankiety"
+        ></nz-empty>
+      }
+      <div
+        class="question-container"
+        cdkDropList
+        (cdkDropListDropped)="onDrop($event)"
+      >
+        @for (question of __questionsArray.controls; track $index) {
+          <div class="question-row" cdkDrag [cdkDragData]="question">
+            <div class="drag-handle" cdkDragHandle>⠿</div>
+
+            <div class="question-content">
+              @if (editingIndex === $index) {
+                <input
+                  [formControl]="__questionsArray.at($index)"
+                  class="edit-input"
+                  placeholder="Edytuj pytanie"
+                />
+                <div class="confirm-button custom-button">
+                  <sf-icon-and-text
+                    [sfText]="'Zapisz'"
+                    [sfIcon]="__icons.save"
+                    (click)="saveEdit($index)"
+                  ></sf-icon-and-text>
+                </div>
+                <div class="cancel-button custom-button">
+                  <sf-icon-and-text
+                    [sfText]="'Anuluj'"
+                    [sfIcon]="__icons.cancel"
+                    (click)="cancelEdit()"
+                  ></sf-icon-and-text>
+                </div>
+              } @else {
+                <span class="question-text">{{ question.value }}</span>
+                <div class="edit-button custom-button">
+                  <sf-icon-and-text
+                    [sfText]="'Edytuj'"
+                    [sfIcon]="__icons.editQuestion"
+                    (click)="startEditing($index)"
+                  ></sf-icon-and-text>
+                </div>
+              }
+              <div class="remove-button custom-button">
+                <sf-icon-and-text
+                  [sfText]="'Usuń'"
+                  [sfIcon]="__icons.delete"
+                  (click)="removeQuestion($index)"
+                ></sf-icon-and-text>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </form>
+</nz-card>
+
+<ng-template #surveyTitleTemplate>
+  <sf-icon-and-text
+    [sfText]="'Kreator ankiet'"
+    [sfIcon]="__icons.surveyAdd"
+  ></sf-icon-and-text>
+</ng-template>

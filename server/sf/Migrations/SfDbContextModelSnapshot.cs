@@ -72,6 +72,9 @@ namespace sf.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TripId")
+                        .IsUnique();
+
                     b.ToTable("Articles");
                 });
 
@@ -221,9 +224,6 @@ namespace sf.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId")
-                        .IsUnique();
-
                     b.ToTable("Trips");
                 });
 
@@ -297,7 +297,7 @@ namespace sf.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("TripId")
+                    b.Property<int?>("TripId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -343,6 +343,16 @@ namespace sf.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("sf.Models.Article", b =>
+                {
+                    b.HasOne("sf.Models.Trip", "Trip")
+                        .WithOne("Article")
+                        .HasForeignKey("sf.Models.Article", "TripId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Trip");
+                });
+
             modelBuilder.Entity("sf.Models.Survey", b =>
                 {
                     b.HasOne("sf.Models.Trip", "Trip")
@@ -381,14 +391,6 @@ namespace sf.Migrations
                     b.Navigation("TripApplication");
                 });
 
-            modelBuilder.Entity("sf.Models.Trip", b =>
-                {
-                    b.HasOne("sf.Models.Article", null)
-                        .WithOne("Trip")
-                        .HasForeignKey("sf.Models.Trip", "ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("sf.Models.TripApplication", b =>
                 {
                     b.HasOne("sf.Models.Trip", "Trip")
@@ -402,15 +404,11 @@ namespace sf.Migrations
 
             modelBuilder.Entity("sf.Models.TripTerm", b =>
                 {
-                    b.HasOne("sf.Models.Trip", null)
+                    b.HasOne("sf.Models.Trip", "Trip")
                         .WithMany("TripTerms")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity("sf.Models.Article", b =>
-                {
                     b.Navigation("Trip");
                 });
 
@@ -426,6 +424,8 @@ namespace sf.Migrations
 
             modelBuilder.Entity("sf.Models.Trip", b =>
                 {
+                    b.Navigation("Article");
+
                     b.Navigation("Survey");
 
                     b.Navigation("TripApplications");

@@ -9,9 +9,11 @@ public class SurveyAnswer
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Answer { get; set; }
+    [ForeignKey("SurveyQuestion")]
     
     public int SurveyQuestionId { get; set; }
     public SurveyQuestion SurveyQuestion { get; set; }
+    [ForeignKey("SurveyResponse")]
     public int? SurveyResponseId { get; set; }
     public SurveyResponse? SurveyResponse { get; set; }
 }

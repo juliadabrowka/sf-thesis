@@ -1,7 +1,11 @@
 <div class="background">
   <div class="images">
-    <img class="main-img" src="/assets/autorskie-wyjazdy-dla-kobiet.png" alt="">
-    <img class="arrow" src="/assets/superfemka-down-bt.png" alt="">
+    <img
+      class="main-img"
+      src="/assets/autorskie-wyjazdy-dla-kobiet.png"
+      alt=""
+    />
+    <img class="arrow" src="/assets/superfemka-down-bt.png" alt=""/>
   </div>
 </div>
 
@@ -11,11 +15,45 @@
       [sfSubTitle]="section.subtitle"
       [sfTitle]="section.title"
     ></sf-page-title>
-    <span class="divider">
-        <nz-divider></nz-divider>
-  </span>
+    @if ($first) {
+      <div class="credo">
+        Bo jest pięknie, bo jest fantastyczne powietrze, bo jest z
+        dala od ludzi i miejskiego zgiełku,bo jest po prostu różnorodnie dziko i w
+        tej dziczy można się zatracić dniem i nocą, bo jest bezpiecznie w drodze i
+        poza nią. I można by tak wymieniać same atuty podróży rowerem, bo z
+        pozycji siodełka ciało i dusza delektuje się perspektywą, którą znajduje
+        wokół własnej osi. Kontakt z naturą przez duże N jest jak wirus, który
+        sprzyja synergii człowieka z rowerem.
+        <br>
+        <br>
+        Norwegia jest dla nas synonimem
+        roweru, bo tak jak on daje poczucie wolności, aż z każdym kilometrem chce
+        się więcej. Mobilność to także przestrzeń, której jest tam pod dostatkiem.
+        Norwegia gwarantuje, że znajdujemy prywatny horyzont, mogąc go obserwować
+        z elitarnego pokładu, którym jest dzika plaża na wyłączność, którym może
+        być urwisko nad fiordem, czy skrawek lofociańskiej ziemi, który sobie
+        upodobamy, to jak pewna polisa, że mamy go na własność.
+        <br>
+        <br>
+        Nasze wyprawy
+        rowerowe są bez szczegółowej agendy, szukamy osób, które dadzą się porwać
+        w nieznaną spiralę przygód i będą potrafiły dzielić z nami spontaniczność
+        scenariusza pisanego na żywo w trakcie wypraw. Nasze podróże to nie
+        instrukcja, ale dobry scenariusz na pamiętnik. Dlatego też w trakcie
+        naszych dalszych kierunków rowerowych staramy się rekrutować osoby, które
+        cenią sobie swobodę, nie stanowią poduszki bezpieczeństwa dla naszych
+        pomysłów, są swoistymi kreatorkami przygód i potrafią wnieść ciekawą
+        wartość w nasz żywy repertuar. My dajemy swój czas, doświadczenie, a przy
+        tym chcemy doświadczać w towarzystwie kobiet, które są szczęściarami, bo
+        bohaterkami naszej rewolucji!
+      </div>
+    }
+
     <sf-tiles
-      [sfArticles]="__articles() | sfFilterArticlesByType : section.articleType"
+      [sfArticles]="__articles() | sfFilterArticlesByType: section.articleType"
     ></sf-tiles>
+    <span class="divider">
+      <nz-divider></nz-divider>
+    </span>
   }
 </div>

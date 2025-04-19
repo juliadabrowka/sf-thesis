@@ -13,18 +13,11 @@ public interface ITripRepository
     Task DeleteTrips(int[] tripIds);
 }
 
-public class TripRepository : ITripRepository
+public class TripRepository(SfDbContext sfDbContext) : ITripRepository
 {
-    private readonly SfDbContext _sfDbContext;
-
-    public TripRepository(SfDbContext sfDbContext)
-    {
-        _sfDbContext = sfDbContext;
-    }
-
     public async Task<Trip[]> GetTrips()
     {
-        return await _sfDbContext.Trips
+        return await sfDbContext.Trips
             .Include(t => t.TripApplications)
             .Include(t => t.TripTerms)
             .Include(t => t.Survey)
@@ -33,9 +26,7 @@ public class TripRepository : ITripRepository
 
     public async Task<Trip> GetTripDetails(int tripId)
     {
-        var t = await _sfDbContext.Trips
-            .Include(t => t.TripApplications)
-            .Include(t => t.TripTerms)
+        var t = await sfDbContext.Trips
             .FirstOrDefaultAsync(t => t.Id == tripId);
         
         if (t == null)
@@ -48,28 +39,28 @@ public class TripRepository : ITripRepository
 
     public async Task<Trip> CreateTrip(Trip trip)
     {
-        _sfDbContext.Trips.Add(trip);
+        sfDbContext.Trips.Add(trip);
     
-        await _sfDbContext.SaveChangesAsync();
+        await sfDbContext.SaveChangesAsync();
         return trip;
     }
 
     public async Task<Trip> UpdateTrip(Trip trip)
     {
-        var existingTrip = await _sfDbContext.Trips.FindAsync(trip.Id);
+        var existingTrip = await sfDbContext.Trips.FindAsync(trip.Id);
         if (existingTrip == null)
         {
             throw new ApplicationException($"Trip with ID {trip.Id} not found.");
         }
 
-        _sfDbContext.Entry(existingTrip).CurrentValues.SetValues(trip);
-        await _sfDbContext.SaveChangesAsync();
+        sfDbContext.Entry(existingTrip).CurrentValues.SetValues(trip);
+        await sfDbContext.SaveChangesAsync();
         return existingTrip;
     }
     
     public async Task DeleteTrips(int[] tripIds)
     {
-        var trips = await _sfDbContext.Trips
+        var trips = await sfDbContext.Trips
             .Where(t => tripIds.Contains(t.Id))
             .ToListAsync();
         
@@ -78,7 +69,7 @@ public class TripRepository : ITripRepository
             throw new AggregateException("No trips found to delete");
         }
         
-        _sfDbContext.Trips.RemoveRange(trips);
-        await _sfDbContext.SaveChangesAsync();
+        sfDbContext.Trips.RemoveRange(trips);
+        await sfDbContext.SaveChangesAsync();
     }
 }

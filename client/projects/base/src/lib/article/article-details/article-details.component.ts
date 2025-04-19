@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { ArticleStore } from '../../../state/article/article.store';
+import { ArticleStore } from '../../../state/article-store';
 import { filter, firstValueFrom, map } from 'rxjs';
 import { PageTitleFramedComponent } from '../../page-title-framed/page-title-framed.component';
 import { ArticleDetailsInnerComponent } from '../article-details-inner/article-details-inner.component';

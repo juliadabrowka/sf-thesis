@@ -1,71 +1,65 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sf.Models;
 using sf.Program.Data;
-using sf.Services;
 
 namespace sf.Repositories;
 
 public interface IArticleRepository
     {
-        Task<Article> CreateArticle(Article articleDto);
+        Task<Article> CreateArticle(Article article);
         Task<Article[]> GetArticles();
         Task<Article> GetArticleDetails(int articleId);
         Task<Article> UpdateArticle(Article article);
         Task DeleteArticles(int[] articleId);
     }
 
-public class ArticleRepository : IArticleRepository
+public class ArticleRepository(SfDbContext sfDbContext) : IArticleRepository
 {
-    private readonly SfDbContext _sfDbContext;
-
-    public ArticleRepository(SfDbContext sfDbContext)
-    {
-        _sfDbContext = sfDbContext;
-    }
-    
     public async Task<Article> CreateArticle(Article article)
     {
-        await _sfDbContext.Articles.AddAsync(article);
-        await _sfDbContext.SaveChangesAsync();
+        await sfDbContext.Articles.AddAsync(article);
+        await sfDbContext.SaveChangesAsync();
 
         return article;
     }
 
     public async Task<Article[]> GetArticles()
     {
-        return await _sfDbContext.Articles
+        return await sfDbContext.Articles
             .Include(a => a.Trip)
-            .ThenInclude(t => t.TripTerms)
+                .ThenInclude(t => t.TripTerms)
+            .Include(a => a.Trip)
+                .ThenInclude(t => t.TripApplications)
             .ToArrayAsync();
     }
 
     public async Task<Article> GetArticleDetails(int articleId)
     {
-        var p = await _sfDbContext.Articles
+        var article = await sfDbContext.Articles
             .Include(a => a.Trip)
-            .ThenInclude(t => t.TripTerms)
+                .ThenInclude(t => t.TripTerms)
+            .Include(a => a.Trip)
+                .ThenInclude(t => t.TripApplications)
             .FirstOrDefaultAsync(a => a.Id == articleId);
 
-        if (p == null)
+        if (article == null)
         {
             throw new ApplicationException("Article not found");
         }
 
-        return p;
+        return article;
     }
 
     public async Task<Article> UpdateArticle(Article article)
     {
-        _sfDbContext.Articles.Update(article);
-        await _sfDbContext.SaveChangesAsync();
+        sfDbContext.Articles.Update(article);
+        await sfDbContext.SaveChangesAsync();
         return article;
     }
 
     public async Task DeleteArticles(int[] articleIds)
     {
-        var articles = await _sfDbContext.Articles
+        var articles = await sfDbContext.Articles
             .Where(a => articleIds.Contains(a.Id))
             .ToListAsync(); 
         
@@ -74,8 +68,8 @@ public class ArticleRepository : IArticleRepository
             throw new AggregateException("No articles found to delete");
         }
         
-        _sfDbContext.Articles.RemoveRange(articles);
-        await _sfDbContext.SaveChangesAsync();
+        sfDbContext.Articles.RemoveRange(articles);
+        await sfDbContext.SaveChangesAsync();
     }
     
 

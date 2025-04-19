@@ -1,1 +1,15 @@
-<p>footer works!</p>
+<div class="footer-bar">
+  @for (piece of __footerPieces(); track $index) {
+    <sf-footer-piece
+      [sfTitle]="piece.title"
+      [sfContent]="piece.content"
+    ></sf-footer-piece>
+  }
+
+  <ng-template #newsletterTemplate>
+    <input type="email" placeholder="Twój email"/>
+    <div class="newsletter-button">Zapisz się</div>
+  </ng-template>
+</div>
+
+

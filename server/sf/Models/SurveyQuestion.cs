@@ -13,7 +13,6 @@ public class SurveyQuestion
     public string Question { get; set; }
     public bool IsCommon { get; set; }
 
-    public ICollection<Survey> Surveys { get; set; }
-    public ICollection<SurveyAnswer> SurveyAnswers { get; set; }
-
+    public ICollection<Survey> Surveys = new List<Survey>();
+    public ICollection<SurveyAnswer> SurveyAnswers = new List<SurveyAnswer>();
 }

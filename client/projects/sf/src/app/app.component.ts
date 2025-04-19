@@ -1,18 +1,13 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
-import {ArticleStore, TripService} from '@sf/sf-base';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ArticleStore, TripService } from '@sf/sf-base';
 
 @Component({
   selector: 'sf-root',
-  imports: [
-    CommonModule,
-    RouterOutlet,
-  ],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TripService, ArticleStore]
+  providers: [TripService, ArticleStore],
 })
-export class AppComponent {
-}
+export class AppComponent {}

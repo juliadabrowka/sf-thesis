@@ -63,8 +63,10 @@ export class SfBackofficeArticleViewComponent {
       await this.articleStore.updateArticle(article);
       if (!this.__loading$$()) {
         this.message.success('Post poprawnie aktualizowany');
-        await this.router.navigate(['admin-backoffice']);
+      } else {
+        this.message.error('Post nie został poprawnie aktualizowany');
       }
+      await this.router.navigate(['admin-backoffice']);
     }
   }
 
@@ -74,8 +76,10 @@ export class SfBackofficeArticleViewComponent {
       await this.articleStore.createArticle(article);
       if (!this.__loading$$()) {
         this.message.success('Post poprawnie dodany');
-        await this.router.navigate(['admin-backoffice']);
+      } else {
+        this.message.error('Post nie został dodany');
       }
+      await this.router.navigate(['admin-backoffice']);
     }
   }
 

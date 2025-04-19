@@ -1,0 +1,22 @@
+.footer-piece-container {
+  background: #191919;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  width: 250px;
+  color: var(--text-grey-color);
+  font-size: 15px;
+}
+
+.footer-piece-title {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+li {
+  font-family: var(--alternate-font);
+  margin: var(--margin-m) 0;
+}

@@ -11,8 +11,8 @@ public class Survey
     public int Id { get; set; }
     public string Title { get; set; }
     public Country Country { get; set; }
-    
     public int? TripId { get; set; }
     public Trip? Trip { get; set; }
-    public ICollection<SurveyQuestion> SurveyQuestions { get; set; }
+    public ICollection<int> SurveyQuestionIds = new List<int>();
+    public ICollection<SurveyQuestion> SurveyQuestions = new List<SurveyQuestion>();
 }

@@ -24,14 +24,14 @@ export class ArticleService {
     return this.http.post<ArticleDTO>(
       this.apiUrl + '/createArticle',
       articleDto,
-    ) as Observable<ArticleDTO>;
+    );
   }
 
   public updateArticle(articleDto: ArticleDTO) {
-    return this.http.post(
+    return this.http.post<ArticleDTO>(
       this.apiUrl + '/updateArticle',
       articleDto,
-    ) as Observable<ArticleDTO>;
+    );
   }
 
   public deleteArticles(articleIds: number[]) {

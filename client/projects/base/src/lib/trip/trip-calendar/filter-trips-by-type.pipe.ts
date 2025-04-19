@@ -12,7 +12,7 @@ export class SfFilterTripsByTypePipe implements PipeTransform {
   async transform(trips: TripDTO[], type: TripType): Promise<TripFlag[]> {
     return await Promise.all(
       trips
-        .filter((trip) => trip.Type === type)
+        .filter((trip) => trip.Type === type && trip.ArticleId)
         .map(async (t) => {
           const article = await firstValueFrom(
             this.articleService.getArticleDetails(t.ArticleId ?? -1),

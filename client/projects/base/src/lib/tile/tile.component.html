@@ -12,24 +12,25 @@
       <div class="title">{{ article.Title }}</div>
       @if (article.TripDto; as trip) {
         <div class="trip-container">
-          <sf-button
-            [sfFontSize]="'11px'"
-            [sfButtonText]="'Termin'"
-          ></sf-button>
+          <div class="label-button">
+            Termin
+          </div>
           <span class="bold">
             {{ __getTripMonth(trip.TripTermDtos) }}
           </span>
-          {{ __getTripLength(trip.TripTermDtos) }}
-          <sf-button
-            [sfFontSize]="'11px'"
-            [sfButtonText]="'Koszt wyprawy'"
-          ></sf-button>
-          <span class="bold">
+          <span class="trip-length">
+            {{ __getTripLength(trip.TripTermDtos) }}
+          </span>
+
+          <div class="label-button">
+            Koszt wyprawy
+          </div>
+          <span class="bold trip-length">
             {{ trip.TripTermDtos[0].Price ?? 0 }}
           </span>
         </div>
       }
-      <div class="button" (click)="__goToArticle(article)">
+      <div class="button-read-more" (click)="__goToArticle(article)">
         Czytaj więcej
       </div>
     </div>

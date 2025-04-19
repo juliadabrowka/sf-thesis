@@ -1,4 +1,3 @@
-using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +10,9 @@ public class SurveyResponse
     public int Id { get; set; }
     public DateTime RepliedOn { get; set; }
     
+    [ForeignKey("TripApplication")]
     public int TripApplicationId { get; set; }
     public TripApplication TripApplication { get; set; }
-    public ICollection<SurveyAnswer> SurveyAnswers { get; set; }
+    public ICollection<int> SurveyAnswerIds = new List<int>();
+    public ICollection<SurveyAnswer> SurveyAnswers = new List<SurveyAnswer>();
 }

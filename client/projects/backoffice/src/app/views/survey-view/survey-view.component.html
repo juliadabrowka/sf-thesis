@@ -1,2 +1,8 @@
-<p>survey-view works!</p>
-<sf-survey></sf-survey>
+<sf-survey
+  [sfTrips]="__trips()"
+  [sfSurvey]="__survey()"
+></sf-survey>
+<sf-button
+  [sfButtonText]="'Dodaj ankietę'"
+  (click)="__createSurvey()"
+></sf-button>

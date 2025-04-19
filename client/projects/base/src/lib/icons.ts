@@ -1,7 +1,9 @@
 import {
   faCalendarCheck,
   faCameraRetro,
+  faCheck,
   faChevronDown,
+  faClipboardList,
   faFileUpload,
   faFolderPlus,
   faFolderTree,
@@ -9,6 +11,7 @@ import {
   faIcons,
   faMagnifyingGlass,
   faNewspaper,
+  faPenFancy,
   faPenToSquare,
   faPersonBiking,
   faPersonHiking,
@@ -22,6 +25,7 @@ import {
   faThumbsUp,
   faTrashCan,
   faUpRightFromSquare,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SfIcons = {
@@ -31,9 +35,11 @@ export const SfIcons = {
   allForms: faRectangleList,
   backgroundImage: faCameraRetro,
   bikeTrip: faPersonBiking,
+  cancel: faXmark,
   classicTrip: faPersonHiking,
   delete: faTrashCan,
   dropDownArrow: faChevronDown,
+  editQuestion: faPenFancy,
   forms: faFolderTree,
   media: faPhotoFilm,
   mediaLibrary: faIcons,
@@ -43,7 +49,9 @@ export const SfIcons = {
   postOptions: faSliders,
   posts: faNewspaper,
   recommendations: faHeart,
+  save: faCheck,
   search: faMagnifyingGlass,
+  surveyAdd: faClipboardList,
   tips: faThumbsUp,
   tripDetails: faSuitcaseRolling,
   trips: faPlaneDeparture,

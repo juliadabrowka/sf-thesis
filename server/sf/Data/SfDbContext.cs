@@ -3,13 +3,8 @@ using sf.Models;
 
 namespace sf.Program.Data;
 
-public class SfDbContext : DbContext
+public class SfDbContext(DbContextOptions<SfDbContext> options) : DbContext(options)
 {
-    public SfDbContext(DbContextOptions<SfDbContext> options)
-        : base(options)
-    {
-    }
-    
     public DbSet<Opinion> Opinions { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Survey> Surveys { get; set; }
@@ -56,10 +51,10 @@ public class SfDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade); 
         
         // trip - article
-        modelBuilder.Entity<Article>()
-            .HasOne(a => a.Trip)
-            .WithOne()
-            .HasForeignKey<Trip>(t => t.ArticleId)
+        modelBuilder.Entity<Trip>()
+            .HasOne(t => t.Article)
+            .WithOne(a => a.Trip)
+            .HasForeignKey<Article>(a => a.TripId)
             .OnDelete(DeleteBehavior.Cascade); 
 
         // trip - trip application
@@ -72,7 +67,7 @@ public class SfDbContext : DbContext
         // trip - trip term
         modelBuilder.Entity<Trip>()
             .HasMany<TripTerm>(t => t.TripTerms)
-            .WithOne()
+            .WithOne(tt => tt.Trip)
             .HasForeignKey(tt => tt.TripId)
             .OnDelete(DeleteBehavior.Cascade);
     }
