@@ -1,0 +1,9 @@
+<nz-card [nzTitle]="title">
+  <sf-article-table
+    [sfArticles]="__articles()"
+    [sfLoading]="__loading$$()"
+    (sfOnArticleClick)="__onArticleClicked($event)"
+  ></sf-article-table>
+</nz-card>
+
+<ng-template #title></ng-template>

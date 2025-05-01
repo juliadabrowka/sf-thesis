@@ -5,6 +5,7 @@ import { SfBackofficeArticleViewComponent } from './views/article-view/article-v
 import { SfBackofficeComponent } from './views/backoffice-view/backoffice-view.component';
 import { AppComponent } from './app.component';
 import { SfBackofficeSurveyViewComponent } from './views/survey-view/survey-view.component';
+import { SfFilteredTableViewComponent } from './views/filtered-table-view/filtered-table-view.component';
 
 export const backofficeRoutes: Routes = [
   {
@@ -31,6 +32,27 @@ export const backofficeRoutes: Routes = [
       {
         path: 'create-survey',
         component: SfBackofficeSurveyViewComponent,
+      },
+      {
+        path: 'recommendations',
+        component: SfFilteredTableViewComponent,
+        data: {
+          filter: 'recommendations',
+        },
+      },
+      {
+        path: 'tips',
+        component: SfFilteredTableViewComponent,
+        data: {
+          filter: 'tips',
+        },
+      },
+      {
+        path: 'photo-stories',
+        component: SfFilteredTableViewComponent,
+        data: {
+          filter: 'stories',
+        },
       },
     ],
   },

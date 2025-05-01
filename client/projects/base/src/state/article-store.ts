@@ -109,7 +109,7 @@ export const ArticleStore = signalStore(
       patchState(store, { articles, loading: false });
     },
 
-    changeCategoryFilter(categoryFilter: ArticleCategory) {
+    setCategoryFilter(categoryFilter: ArticleCategory) {
       patchState(store, { loading: true, categoryFilter });
       patchState(store, { loading: false });
     },

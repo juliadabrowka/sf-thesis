@@ -4,14 +4,17 @@
       <sf-icon-and-text
         [sfIcon]="__icons.recommendations"
         [sfText]="'Rekomendacje'"
+        (click)="__goToRecommendations()"
       ></sf-icon-and-text>
       <sf-icon-and-text
         [sfIcon]="__icons.tips"
         [sfText]="'Ciekawostki'"
+        (click)="__goToTips()"
       ></sf-icon-and-text>
       <sf-icon-and-text
         [sfIcon]="__icons.photoRel"
         [sfText]="'Fotorelacje'"
+        (click)="__goToStories()"
       ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>

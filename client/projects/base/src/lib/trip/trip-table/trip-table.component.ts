@@ -1,12 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
   input,
   output,
 } from '@angular/core';
 import { NzTableModule, NzThAddOnComponent } from 'ng-zorro-antd/table';
-import { ArticleDTO, ArticleService, ColumnItem } from '@sf/sf-base';
+import { ArticleDTO, ColumnItem } from '@sf/sf-base';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -21,8 +20,6 @@ export class SfTripTableComponent {
   public readonly sfLoading = input<boolean | null>();
 
   public readonly sfOnTripClick = output<ArticleDTO>();
-
-  private readonly articleService = inject(ArticleService);
 
   public readonly __columns: ColumnItem<ArticleDTO>[] = [
     {
@@ -56,8 +53,4 @@ export class SfTripTableComponent {
       //sortFn: (a: ArticleDTO, b: ArticleDTO) => a.TripDto?.Type.localeCompare(b.TripDto?.Type ?? ''),
     },
   ];
-
-  trackByIndex(_: number, data: ArticleDTO): number {
-    return data.Id ?? -1;
-  }
 }
