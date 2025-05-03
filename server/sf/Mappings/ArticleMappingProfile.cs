@@ -9,9 +9,11 @@ public class ArticleMappingProfile : Profile
     {
         CreateMap<Article, ArticleDTO>()
             .ForMember(
-                dest => dest.TripDto,
+                dest => dest.TripDTO,
                 opt => opt.MapFrom(
                     src => src.Trip))
+            .MaxDepth(4)
+            .PreserveReferences()
             .ReverseMap();
     }
 }

@@ -6,7 +6,7 @@
 nz-header {
   width: 100%;
   display: flex;
-  background-color: #11162A;
+  background-color: var(--header-dark-blue-color);
   align-items: center;
   padding: 3px 0;
 
@@ -14,7 +14,7 @@ nz-header {
     cursor: pointer;
 
     li:hover {
-      background-color: rgba(50, 59, 96, 0.61);
+      background-color: var(--header-hover-dark-blue-color);
     }
   }
 
@@ -30,7 +30,6 @@ img {
   cursor: pointer;
 }
 
-
 .main-layout {
   display: flex;
   flex-direction: row;
@@ -39,7 +38,8 @@ img {
 
 sf-sider {
   width: 230px;
-  background: rgba(66, 77, 124, 0.61);
+  background: var(--blue-sider-background-color);
+  height: 100vh;
 }
 
 nz-footer {

@@ -1,4 +1,5 @@
 @if (sfTripInfo(); as trip) {
+  @for (tripTerm of trip.trip.TripTermDTOS; track tripTerm.Id) {
   <div class="trip-container">
     <div class="left" (click)="navigateToTrip(trip.trip)">
       @if (trip.flagSrc) {
@@ -11,7 +12,6 @@
     <div class="trip-data">
       <div class="trip-info">
         <div class="trip-inline-data">
-          @for (tripTerm of trip.trip.TripTermDtos; track tripTerm.Id) {
             <ng-container>
               <div class="trip-date">
                 {{ tripTerm.DateFrom | date:'yyyy | dd.MM' }} - {{ tripTerm.DateTo | date:'dd.MM' }}
@@ -33,17 +33,20 @@
                 ></sf-button>
               </div>
             </ng-container>
-          }
         </div>
       </div>
       @if (showSlider()) {
         <div class="application-form">
-          <sf-application-form></sf-application-form>
+          <sf-application-form
+            #surveyForm
+            (sfClientData)="createTripApplication($event)"></sf-application-form>
           <sf-button
             [sfButtonText]="'REZERWUJ'"
+            (click)="surveyForm.submitForm()"
           ></sf-button>
         </div>
       }
     </div>
   </div>
+  }
 }

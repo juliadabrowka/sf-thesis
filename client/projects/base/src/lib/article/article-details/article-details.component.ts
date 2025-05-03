@@ -38,13 +38,15 @@ export class SfArticleDetailsComponent {
     effect(async () => {
       const link = this.__customLink();
       const articles = this.__articles();
-      const article = articles.find((a) => a.Url === link);
+      if (articles.length) {
+        const article = articles.find((a) => a.Url === link);
 
-      if (!article?.Id) {
-        throw new Error('Article not found');
+        if (!article?.Id) {
+          return;
+        }
+
+        await this.__articleStore.getArticleDetails(article.Id);
       }
-
-      await this.__articleStore.loadArticleDetails(article.Id);
     });
   }
 }

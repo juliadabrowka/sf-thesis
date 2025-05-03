@@ -10,15 +10,15 @@ export class SurveyService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
 
-  public getSurveys() {
+  getSurveys() {
     return this.http.get<SurveyDTO[]>(this.apiUrl + '/surveyList');
   }
 
-  public getSurveyDetails(surveyId: number) {
-    return this.http.get<SurveyDTO>(`${this.apiUrl}/survey/${surveyId}`);
+  getSurveyDetails(surveyId: number) {
+    return this.http.get<SurveyDTO>(`${this.apiUrl}/surveys/${surveyId}`);
   }
 
-  public createSurvey(surveyDTO: SurveyDTO) {
+  createSurvey(surveyDTO: SurveyDTO) {
     return this.http.post<SurveyDTO>(this.apiUrl + '/createSurvey', surveyDTO);
   }
 
@@ -28,5 +28,9 @@ export class SurveyService {
 
   deleteSurveys(surveyIds: number[]) {
     return this.http.post(this.apiUrl + `/deleteSurveys`, surveyIds);
+  }
+
+  getSurveyByHash(hash: string) {
+    return this.http.get<SurveyDTO>(this.apiUrl + '/survey/' + hash);
   }
 }

@@ -11,5 +11,5 @@ public class TripTermDTO
     public int ParticipantsTotal { get; set; }
     
     public int? TripId { get; set; }
-    public TripDTO? TripDto { get; set; }
+    public TripDTO? TripDTO { get; set; }
 }

@@ -29,4 +29,26 @@ public class SurveyController(ISurveyService surveyService): ControllerBase
       var survey = await surveyService.CreateSurvey(surveyDto);
       return Ok(survey);
    }
+    
+   [HttpPost("updateSurvey")]
+   public async Task<ActionResult<SurveyDTO>> UpdateSurvey(SurveyDTO surveyDto)
+   {
+      var survey = await surveyService.UpdateSurvey(surveyDto);
+      return Ok(survey);
+   }
+   
+   [HttpGet("surveys/{surveyId}")]
+   public async Task<ActionResult<SurveyDTO>> SurveyDetails(int surveyId)
+   {
+      var survey = await surveyService.GetSurveyDetails(surveyId);
+      return Ok(survey);
+   }
+   
+   [HttpGet("survey/{hash}")]
+   public async Task<ActionResult<SurveyDTO>> GetSurveyByHash(string hash)
+   {
+      var survey = await surveyService.GetSurveyByHash(hash);
+
+      return Ok(survey);
+   }
 }

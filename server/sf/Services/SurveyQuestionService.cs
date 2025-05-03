@@ -42,9 +42,9 @@ public class SurveyQuestionService(
 
         bool isUpdated = false;
 
-        if (sq.IsCommon != surveyQuestionDto.isCommon)
+        if (sq.IsCommon != surveyQuestionDto.IsCommon)
         {
-            sq.IsCommon = surveyQuestionDto.isCommon;
+            sq.IsCommon = surveyQuestionDto.IsCommon;
              isUpdated = true;
         }
 

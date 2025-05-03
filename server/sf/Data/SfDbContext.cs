@@ -19,9 +19,10 @@ public class SfDbContext(DbContextOptions<SfDbContext> options) : DbContext(opti
     {
         // survey - trip
         modelBuilder.Entity<Survey>()
-            .HasOne<Trip>(s => s.Trip)
-            .WithOne(o => o.Survey)
-            .HasForeignKey<Survey>(s => s.TripId);
+            .HasMany(s => s.Trips)
+            .WithOne(t => t.Survey)
+            .HasForeignKey(s => s.SurveyId)
+            .OnDelete(DeleteBehavior.Cascade);
         
         // survey - survey question
         modelBuilder.Entity<Survey>()

@@ -6,16 +6,16 @@
   margin-bottom: 8px;
 
   .main-form {
-    flex: 2;
+    flex: 0 0 65%;
     height: 100%;
   }
 
   .side-panel {
-    flex: 1;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    flex: 0 0 35%;
   }
 
   h3 {

@@ -1,25 +1,20 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
-import { ArticleService, Country, TripDTO, TripType } from '@sf/sf-base';
+import { Pipe, PipeTransform } from '@angular/core';
+import { Country, TripDTO, TripType } from '@sf/sf-base';
 import { TripFlag } from './trip-calendar.component';
-import { firstValueFrom } from 'rxjs';
 
 @Pipe({
   name: 'sfFilterTripsByType',
 })
 export class SfFilterTripsByTypePipe implements PipeTransform {
-  private readonly articleService = inject(ArticleService);
-
   async transform(trips: TripDTO[], type: TripType): Promise<TripFlag[]> {
     return await Promise.all(
       trips
         .filter((trip) => trip.Type === type && trip.ArticleId)
         .map(async (t) => {
-          const article = await firstValueFrom(
-            this.articleService.getArticleDetails(t.ArticleId ?? -1),
-          );
+          const article = t.ArticleDTO;
           return {
             trip: t,
-            flagSrc: this.getFlagByTripCountry(article.Country),
+            flagSrc: this.getFlagByTripCountry(article?.Country),
           };
         }),
     );

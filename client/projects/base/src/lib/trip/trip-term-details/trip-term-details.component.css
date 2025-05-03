@@ -10,6 +10,18 @@
   padding: 4px 11px;
 }
 
-.date-cell {
-  display: inline-block;
+.dates {
+  display: flex;
+  align-items: center;
 }
+
+.dash {
+  margin: 0 var(--margin-xxs);
+}
+
+.custom-width {
+  width: 70px;
+  margin-right: var(--margin-xs);
+}
+
+

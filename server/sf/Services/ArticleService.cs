@@ -18,6 +18,7 @@ public class ArticleService(
     IArticleRepository articleRepository,
     IMapper mapper,
     ITripRepository tripRepository,
+    ITripTermRepository tripTermRepository,
     ITripApplicationRepository applicationRepository)
     : IArticleService
 {
@@ -109,7 +110,7 @@ public class ArticleService(
             isUpdated = true;
         }
 
-        if (articleDto.TripDto != null)
+        if (articleDto.TripDTO != null)
         {
             isUpdated = true;
             
@@ -117,22 +118,37 @@ public class ArticleService(
             { 
                 var existingTrip = await tripRepository.GetTripDetails(article.TripId.Value);
                 
-                existingTrip.Name = articleDto.TripDto.Name;
-                existingTrip.Type = articleDto.TripDto.Type;
-
-                var ttd = mapper.Map<ICollection<TripTerm>>(articleDto.TripDto.TripTermDtos);
-                existingTrip.TripTerms = ttd;
+                existingTrip.Name = articleDto.TripDTO.Name;
+                existingTrip.Type = articleDto.TripDTO.Type;
                 
-                existingTrip.TripApplications = await applicationRepository.GetByIds(articleDto.TripDto.TripApplicationIds);
-                //existingTrip.Survey = articleDto.TripDto.SurveyId; get from survey server
-            
-                await tripRepository.UpdateTrip(existingTrip);
+                foreach (var tripTermDto in articleDto.TripDTO.TripTermDTOS)
+                {
+                    if (tripTermDto.Id != null)
+                    {
+                        TripTerm existingTripTerm = await tripTermRepository.GetTripTermDetails(tripTermDto.Id.Value);
+
+                        var updatedTripTerm = CompareTripTerms(existingTripTerm, tripTermDto);
+
+                         await tripTermRepository.UpdateTripTerm(updatedTripTerm);
+                    }
+                    else
+                    {
+                        var newTripTerm = mapper.Map<TripTerm>(tripTermDto);
+                        existingTrip.TripTerms.Add(newTripTerm);
+                        await tripRepository.UpdateTrip(existingTrip);
+                    }
+                }
+                
+                existingTrip.TripApplications = await applicationRepository.GetByIds(articleDto.TripDTO.TripApplicationIds);
+                //existingTrip.Survey = articleDto.TripDto.
+
+               
 
                 article.Trip = existingTrip;
             }
             else // article trip id is null = not existing yet
             {
-                Trip newTripEntity = mapper.Map<Trip>(articleDto.TripDto);
+                Trip newTripEntity = mapper.Map<Trip>(articleDto.TripDTO);
                 var newTrip = await tripRepository.CreateTrip(newTripEntity); // set id
 
                 newTrip.Article = article;
@@ -157,5 +173,40 @@ public class ArticleService(
         }
 
         return mapper.Map<ArticleDTO>(article);
+    }
+
+    private TripTerm CompareTripTerms(TripTerm existingTripTerm, TripTermDTO tripTermDto)
+    {
+        if (existingTripTerm.Name != tripTermDto.Name)
+        {
+            existingTripTerm.Name = tripTermDto.Name;
+        }
+
+        if (existingTripTerm.Price != tripTermDto.Price)
+        {
+            existingTripTerm.Price = tripTermDto.Price;
+        }
+
+        if (existingTripTerm.DateFrom != tripTermDto.DateFrom)
+        {
+            existingTripTerm.DateFrom = tripTermDto.DateFrom;
+        }
+
+        if (existingTripTerm.DateTo != tripTermDto.DateTo)
+        {
+            existingTripTerm.DateTo = tripTermDto.DateTo;
+        }
+
+        if (existingTripTerm.ParticipantsCurrent != tripTermDto.ParticipantsCurrent)
+        {
+            existingTripTerm.ParticipantsCurrent = tripTermDto.ParticipantsCurrent;
+        }
+
+        if (existingTripTerm.ParticipantsTotal != tripTermDto.ParticipantsTotal)
+        {
+            existingTripTerm.ParticipantsTotal = tripTermDto.ParticipantsTotal;
+        }
+
+        return existingTripTerm;
     }
 }

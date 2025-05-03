@@ -9,8 +9,6 @@ public class SurveyResponse
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public DateTime RepliedOn { get; set; }
-    
-    [ForeignKey("TripApplication")]
     public int TripApplicationId { get; set; }
     public TripApplication TripApplication { get; set; }
     public ICollection<int> SurveyAnswerIds = new List<int>();

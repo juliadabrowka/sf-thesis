@@ -48,7 +48,7 @@ export class SfFilteredTableViewComponent {
       const filteredArticles = articles.filter(
         (article) =>
           article.ArticleCategory === cf &&
-          (tf ? article.TripDto?.Type === tf : false),
+          (tf ? article.TripDTO?.Type === tf : false),
       );
 
       this.articles.set(filteredArticles);

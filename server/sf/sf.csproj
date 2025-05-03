@@ -46,4 +46,29 @@
     <ItemGroup>
       <None Remove="obj\**" />
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\02dd0f51-9b1b-48d8-aa2c-f161a65f62e3.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\08d636df-4f13-420a-bd5a-0d9528c002ec.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\13a86f7d-72a9-4b3f-a39d-1d2469eca37e.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\142d3bb1-6522-4374-86c2-da233b6a6a6c.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\17736b97-97b6-4fac-819f-c1ca835db5b3.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\1f5981e7-d86c-412c-9e04-88bfe6323a6b.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\352fbec8-4d5a-419a-becb-801e8a57fc45.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\50578178-c239-42b4-8954-889e484f3d09.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\5df0ec96-80bf-4982-9985-31ee9017b8ce.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\61114a1b-5a69-4168-94a8-8a3251d1958f.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\70757023-2038-4b73-81e0-0662f3075217.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\764bfb73-7b41-4c5a-b277-d00eed22ffc2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\8af26566-2542-4ec1-be20-292e0067c0aa.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\8f1d98d1-0328-40f0-a875-4d971bc80f93.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\b8340162-8274-4e41-b938-0538f86cdabe.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\cb0c1ed4-4a84-4dc1-907b-26efa0c1db0a.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\cc286971-2d63-4e51-b08d-a15ab028dfbb.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\d493dd4f-fc1d-41ea-8060-1c9a8e1289e8.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\d95e0a7f-3c14-4a1a-8f0d-6360a9dafbce.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\e8d41115-67fa-4776-9361-f85bd8823f34.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\ebf8b45e-d174-4899-9976-dc9b5847b5f9.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\f7d4a29e-185d-41b2-a9a2-bc9fd2b951eb.jpg" />
+    </ItemGroup>
 </Project>

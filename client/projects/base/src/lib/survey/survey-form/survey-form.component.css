@@ -1,0 +1,154 @@
+.survey-start {
+  margin-bottom: 20px;
+  padding: 20px 10px;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.add-question {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--margin-s);
+}
+
+input, .bg-picture {
+  width: 100%;
+}
+
+sf-button {
+  width: 5%;
+}
+
+nz-form-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ant-form-item {
+  margin-bottom: 0;
+}
+
+.survey-title, .survey-trip, .add-question {
+  margin-bottom: var(--margin-s);
+  width: 100%;
+}
+
+input {
+  padding: var(--margin-s);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.question-input {
+  font-size: 14px;
+  outline: none;
+}
+
+.questions {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.questions-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.question-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-s);
+}
+
+.question-row {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: var(--margin-s);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  gap: var(--margin-s);
+  transition: background 0.2s ease;
+}
+
+.question-row:hover {
+  background: #f8f5f5;
+}
+
+.drag-handle {
+  cursor: grab;
+  font-size: 20px;
+  user-select: none;
+}
+
+.question-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+}
+
+.question-text {
+  font-size: 16px;
+  width: 100%;
+}
+
+.edit-input {
+  font-size: 16px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+button {
+  margin-left: 4px;
+}
+
+.cdk-drag {
+  cursor: grab;
+}
+
+.cdk-drag-preview {
+  background-color: #ddd;
+}
+
+.cdk-drop-list {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cdk-drop-list-dragging {
+  background-color: #f0f8ff;
+}
+
+.save-button {
+  border-radius: 5px;
+  border: 2px solid var(--primary-color);
+  padding: var(--margin-xs) var(--margin-s);
+  color: var(--primary-color);
+
+  &:hover {
+    color: var(--focus-dark-color);
+    border-color: var(--focus-dark-color);
+  }
+}
+
+nz-form-label {
+  width: 100px
+}
+
+.default-question {
+  margin-bottom: var(--margin-s);
+  padding: 10px
+}

@@ -1,0 +1,46 @@
+<nz-table
+  #surveyTable
+  [nzData]="sfSurveys()"
+  [nzBordered]="true"
+  [nzOuterBordered]="true"
+  [nzFrontPagination]="false"
+  [nzShowPagination]="true"
+>
+  <thead>
+  <tr>
+    @for (column of columns; track $index) {
+      <th
+        class="th"
+      >
+        {{ column }}
+      </th>
+    }
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (data of surveyTable.data; track data.Id) {
+      <tr (click)="goToSurvey(data.Id)">
+        <td>{{ data.Title }}</td>
+
+        <td>
+          @for (trip of data.TripDTOS; track $index) {
+            <div>
+              {{ trip.Name }}
+            </div>
+          }
+        </td>
+
+        <td>
+          @for (trip of data.TripDTOS; track $index) {
+            <div>
+              {{ trip.ArticleDTO?.Country }}
+            </div>
+
+          }
+        </td>
+
+      </tr>
+    }
+  </tbody>
+</nz-table>

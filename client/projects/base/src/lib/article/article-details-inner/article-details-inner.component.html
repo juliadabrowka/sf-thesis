@@ -1,7 +1,7 @@
 <div class="main-content">
   @if (sfArticle(); as article) {
     <div class="left-content">
-      @if (article.TripDto; as trip) {
+      @if (article.TripDTO; as trip) {
         <sf-trip-details-short
           [sfTripDetails]="trip"
         ></sf-trip-details-short>

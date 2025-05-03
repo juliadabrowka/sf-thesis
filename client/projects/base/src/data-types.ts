@@ -52,7 +52,7 @@ export class ArticleDTO {
   Country: Country = DefaultCountryValue;
   ArticleCategory = DefaultArticleCategoryValue;
   TripId: number | undefined;
-  TripDto: TripDTO | undefined;
+  TripDTO: TripDTO | undefined;
 }
 
 export const DefaultRatingValue = Rating.Good;
@@ -69,17 +69,18 @@ export class SurveyAnswerDTO {
   Id: number | undefined;
   Answer: string = '';
   SurveyQuestionId: number | undefined;
-  SurveyQuestionDto: SurveyQuestionDTO | undefined;
+  SurveyQuestionDTO: SurveyQuestionDTO | undefined;
   SurveyResponseId: number | undefined;
-  SurveyResponseDto: SurveyResponseDTO | undefined;
+  SurveyResponseDTO: SurveyResponseDTO | undefined;
 }
 
 export class SurveyDTO {
   Id: number | undefined;
   Title: string = '';
-  TripDto: TripDTO | undefined;
-  TripId: number | undefined;
-  SurveyQuestionDtos: SurveyQuestionDTO[] = [];
+  ExtraLogoUrl: string | undefined;
+  TripDTOS: TripDTO[] = [];
+  TripIds: number[] = [];
+  SurveyQuestionDTOS: SurveyQuestionDTO[] = [];
   SurveyQuestionIds: number[] = [];
 }
 
@@ -88,33 +89,34 @@ export class SurveyQuestionDTO {
   Question: string = '';
   IsCommon: boolean = false;
   SurveyIds: number[] = [];
-  SurveyDtos: SurveyDTO[] = [];
+  SurveyDTOS: SurveyDTO[] = [];
   SurveyAnswerIds: number[] = [];
-  SurveyAnswerDtos: SurveyAnswerDTO[] = [];
+  SurveyAnswerDTOS: SurveyAnswerDTO[] = [];
 }
 
 export class SurveyResponseDTO {
   Id: number | undefined;
   RepliedOn: Date = new Date();
   TripApplicationId: number | undefined;
-  TripApplicationDto: TripApplicationDTO | undefined;
+  TripApplicationDTOS: TripApplicationDTO | undefined;
   SurveyAnswerIds: number[] = [];
-  SurveyAnswerDtos: SurveyAnswerDTO[] = [];
+  SurveyAnswerDTOS: SurveyAnswerDTO[] = [];
 }
 
 export const DefaultStatusValue = Status.Created;
 
 export class TripApplicationDTO {
   Id: number | undefined;
+  Hash: string | undefined;
   Name: string = '';
   Email: string = '';
   PhoneNumber: string = '';
   ExtraInfo: string = '';
   Status: Status = DefaultStatusValue;
   TripId: number | undefined;
-  TripDto: TripDTO | undefined;
+  TripDTO: TripDTO | undefined;
   SurveyResponseId: number | undefined;
-  SurveyResponseDto: SurveyResponseDTO | undefined;
+  SurveyResponseDTO: SurveyResponseDTO | undefined;
 }
 
 export const DefaultTripTypeValue = TripType.Classic;
@@ -128,19 +130,19 @@ export class TripTermDTO {
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
   TripId: number | undefined;
-  TripDto: TripDTO | undefined;
+  TripDTO: TripDTO | undefined;
 }
 
 export class TripDTO {
   Id: number | undefined;
   Name: string = '';
   TripTermIds: number[] = [];
-  TripTermDtos: TripTermDTO[] = [];
+  TripTermDTOS: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
   SurveyId: number | undefined;
-  SurveyDto: SurveyDTO | undefined;
+  SurveyDTO: SurveyDTO | undefined;
   ArticleId: number | undefined;
-  ArticleDto: ArticleDTO | undefined;
-  TripApplicationDtos: TripApplicationDTO[] = [];
+  ArticleDTO: ArticleDTO | undefined;
+  TripApplicationDTOS: TripApplicationDTO[] = [];
   TripApplicationIds: number[] = [];
 }

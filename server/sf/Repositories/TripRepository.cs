@@ -11,6 +11,7 @@ public interface ITripRepository
     Task<Trip> CreateTrip(Trip trip);
     Task<Trip> UpdateTrip(Trip trip);
     Task DeleteTrips(int[] tripIds);
+    Task<ICollection<Trip>> GetTripsByIds(ICollection<int> surveyTripIds);
 }
 
 public class TripRepository(SfDbContext sfDbContext) : ITripRepository
@@ -71,5 +72,10 @@ public class TripRepository(SfDbContext sfDbContext) : ITripRepository
         
         sfDbContext.Trips.RemoveRange(trips);
         await sfDbContext.SaveChangesAsync();
+    }
+
+    public async Task<ICollection<Trip>> GetTripsByIds(ICollection<int> surveyTripIds)
+    {
+        return await sfDbContext.Trips.Where(t => surveyTripIds.Contains(t.Id)).ToListAsync();
     }
 }

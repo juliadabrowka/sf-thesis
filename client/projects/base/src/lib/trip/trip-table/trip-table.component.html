@@ -8,9 +8,10 @@
 >
   <thead>
   <tr>
-    @for (column of __columns; track column) {
+    @for (column of columns; track $index) {
       <th
         [nzSortFn]="column.sortFn"
+        [nzShowSort]="column.sortFn"
         class="th"
       >
         {{ column.name }}
@@ -21,17 +22,30 @@
   <tbody>
     @for (data of tripTable.data; track data.Id; ) {
         <tr (click)="sfOnTripClick.emit(data)">
-          @for (tripTerm of data.TripDto?.TripTermDtos; track tripTerm.Id) {
-            <ng-container>
               <td>{{ data.Title }}</td>
               <td>{{ data.Country }}</td>
-              <td>{{ tripTerm.DateFrom | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ tripTerm.DateTo | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ tripTerm.Price }}</td>
-              <td>{{ tripTerm.ParticipantsCurrent }}</td>
-              <td>{{ data.TripDto?.Type }}</td>
-            </ng-container>
-          }
+          <td>
+            @for (term of data.TripDTO?.TripTermDTOS; track $index) {
+              <div class="term-dates">
+                {{ term.DateFrom | date: 'dd/MM/yyyy' }} – {{ term.DateTo | date: 'dd/MM/yyyy' }}
+              </div>
+            }
+          </td>
+          <td>
+            @for (term of data.TripDTO?.TripTermDTOS; track $index) {
+              <div class="term-prices">
+                {{ term.Price }}
+              </div>
+            }
+          </td>
+          <td>
+            @for (term of data.TripDTO?.TripTermDTOS; track $index) {
+              <div class="term-prices">
+                {{ term.ParticipantsCurrent }}
+              </div>
+            }
+          </td>
+          <td>{{ data.TripDTO?.Type }}</td>
         </tr>
     }
   </tbody>

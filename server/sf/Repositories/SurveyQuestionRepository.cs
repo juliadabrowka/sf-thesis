@@ -12,6 +12,7 @@ public interface ISurveyQuestionRepository
     Task<SurveyQuestion> GetSurveyQuestionDetails(int surveyQuestionId);
     Task<SurveyQuestion> UpdateSurveyQuestion(SurveyQuestion surveyQuestion);
     Task DeleteSurveyQuestions(int[] surveyQuestionIds);
+    Task<ICollection<SurveyQuestion>> GetSurveyQuestionsByIds(ICollection<int> surveySurveyQuestionIds);
 }
 public class SurveyQuestionRepository(SfDbContext sfDbContext) : ISurveyQuestionRepository
 {
@@ -67,5 +68,10 @@ public class SurveyQuestionRepository(SfDbContext sfDbContext) : ISurveyQuestion
         sfDbContext.SurveyQuestions.RemoveRange(sq);
 
         await sfDbContext.SaveChangesAsync();
+    }
+
+    public async Task<ICollection<SurveyQuestion>> GetSurveyQuestionsByIds(ICollection<int> surveySurveyQuestionIds)
+    {
+        return await sfDbContext.SurveyQuestions.Where(sq => surveySurveyQuestionIds.Contains(sq.Id)).ToListAsync();
     }
 }

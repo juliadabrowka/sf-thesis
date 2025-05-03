@@ -29,7 +29,10 @@ export * from './lib/page-title/page-title.component';
 
 export * from './lib/sider/sider.component';
 
+export * from './lib/survey/survey-form/survey-form.component';
+export * from './lib/survey/survey-table/survey-table.component';
 export * from './lib/survey/survey.component';
+export * from './lib/survey/survey-modal/survey-modal.component';
 
 export * from './lib/tiles/tiles.component';
 

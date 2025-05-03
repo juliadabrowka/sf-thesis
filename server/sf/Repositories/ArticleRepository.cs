@@ -25,12 +25,14 @@ public class ArticleRepository(SfDbContext sfDbContext) : IArticleRepository
 
     public async Task<Article[]> GetArticles()
     {
-        return await sfDbContext.Articles
+        var articles =  await sfDbContext.Articles
             .Include(a => a.Trip)
                 .ThenInclude(t => t.TripTerms)
-            .Include(a => a.Trip)
-                .ThenInclude(t => t.TripApplications)
+            // .Include(a => a.Trip)
+            //     .ThenInclude(t => t.TripApplications)
             .ToArrayAsync();
+
+        return articles;
     }
 
     public async Task<Article> GetArticleDetails(int articleId)

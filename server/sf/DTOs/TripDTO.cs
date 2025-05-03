@@ -10,11 +10,11 @@ public class TripDTO
     [JsonConverter(typeof(StringEnumConverter))]
     public TripType Type { get; set; }
     public ICollection<int> TripTermIds { get; set; }
-    public ICollection<TripTermDTO> TripTermDtos { get; set; }
+    public ICollection<TripTermDTO> TripTermDTOS { get; set; }
     public int? SurveyId { get; set; }
-    public SurveyDTO? SurveyDto { get; set; }
+    public SurveyDTO? SurveyDTO { get; set; }
     public int? ArticleId { get; set; }
-    public ArticleDTO? ArticleDto { get; set; }
+    public ArticleDTO? ArticleDTO { get; set; }
     public ICollection<int> TripApplicationIds { get; set; }
-    public ICollection<TripApplicationDTO> TripApplicationDtos { get; set; }
+    public ICollection<TripApplicationDTO> TripApplicationDTOS { get; set; }
 }

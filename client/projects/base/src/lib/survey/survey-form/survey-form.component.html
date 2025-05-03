@@ -1,0 +1,117 @@
+<form nz-form [formGroup]="formGroup">
+  <div class="survey-start">
+    <div class="survey-title">
+      <nz-form-item>
+        <nz-form-label>Tytuł</nz-form-label>
+        <nz-form-control>
+          <input [formControl]="controls.title" placeholder="Wpisz tytuł"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="survey-trip">
+      <nz-form-item>
+        <nz-form-label>Wyprawy</nz-form-label>
+        <nz-form-control>
+          <nz-select [nzMode]="'multiple'" [formControl]="controls.tripIds" [nzOptions]="tripOptions()"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="add-question">
+      <nz-form-item>
+        <nz-form-label>Pytanie</nz-form-label>
+        <nz-form-control>
+          <input
+            class="question-input"
+            [formControl]="controls.question"
+            placeholder="Wpisz pytanie"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <div
+        nz-tooltip
+        [nzTooltipTitle]="'Naciśnij, aby dodać pytanie do ankiety'"
+        class="save-button"
+        (click)="addQuestion()">
+        <fa-icon [icon]="icons.add"></fa-icon>
+      </div>
+    </div>
+
+    <div class="bg-picture">
+      <nz-form-item>
+        <nz-form-label>Dodatkowe logo</nz-form-label>
+        <nz-form-control>
+          <sf-upload
+            (sfUploadedImgUrl)="uploadedLogo($event)"
+          ></sf-upload>
+        </nz-form-control>
+      </nz-form-item>
+      @if (controls.extraLogo.value) {
+        <img [src]="controls.extraLogo.value" height="250" alt="">
+      }
+    </div>
+  </div>
+  <div class="questions">
+    <span class="questions-title">Pytania:</span>
+    @if (questionsArray.length === 0) {
+      <nz-empty
+        nzNotFoundImage="assets/empty-folder.png"
+        nzNotFoundContent="Brak dodanych pytań dla tej ankiety"
+      ></nz-empty>
+    }
+    <div
+      class="question-container"
+      cdkDropList
+      (cdkDropListDropped)="onDrop($event)"
+    >
+      @for (question of questionsArray.controls; track $index) {
+        <div class="question-row" cdkDrag [cdkDragData]="question">
+          <div class="drag-handle" cdkDragHandle>⠿</div>
+
+          <div class="question-content">
+            @if (editingIndex() === $index) {
+              <input
+                [ngModel]="questionsArray.at($index).value.Question"
+                (ngModelChange)="setQuestionArray($index, $event)"
+                [ngModelOptions]="{ standalone: true }"
+                class="edit-input"
+                placeholder="Edytuj pytanie"
+              />
+              <div class="confirm-button custom-button">
+                <sf-icon-and-text
+                  [sfText]="'Zapisz'"
+                  [sfIcon]="icons.save"
+                  (click)="saveEdit($index)"
+                ></sf-icon-and-text>
+              </div>
+              <div class="cancel-button custom-button">
+                <sf-icon-and-text
+                  [sfText]="'Anuluj'"
+                  [sfIcon]="icons.cancel"
+                  (click)="cancelEdit()"
+                ></sf-icon-and-text>
+              </div>
+            } @else {
+              <span class="question-text">{{ question.value.Question }}</span>
+              <div class="edit-button custom-button">
+                <sf-icon-and-text
+                  [sfText]="'Edytuj'"
+                  [sfIcon]="icons.editQuestion"
+                  (click)="startEditing($index)"
+                ></sf-icon-and-text>
+              </div>
+            }
+            <div class="remove-button custom-button">
+              <sf-icon-and-text
+                [sfText]="'Usuń'"
+                [sfIcon]="icons.delete"
+                (click)="removeQuestion($index)"
+              ></sf-icon-and-text>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</form>

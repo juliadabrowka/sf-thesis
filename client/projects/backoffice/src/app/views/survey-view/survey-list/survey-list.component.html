@@ -1,0 +1,14 @@
+<nz-card
+  [nzTitle]="surveysTemplate"
+  [nzBordered]="false">
+  <sf-survey-table
+    [sfSurveys]="surveys()"
+  ></sf-survey-table>
+</nz-card>
+
+<ng-template #surveysTemplate>
+  <sf-icon-and-text
+    [sfIcon]="icons.allForms"
+    [sfText]="'Utworzone ankiety'"
+  ></sf-icon-and-text>
+</ng-template>

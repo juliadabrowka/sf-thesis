@@ -1,8 +1,30 @@
-<sf-survey
-  [sfTrips]="trips()"
-  [sfSurvey]="survey()"
-></sf-survey>
+<nz-card [nzTitle]="surveyTitleTemplate" [nzBordered]="false" [nzExtra]="surveyExtraTemplate">
+  <sf-survey-form
+    [sfTrips]="trips()"
+    [sfSurvey]="survey()"
+  ></sf-survey-form>
+</nz-card>
 <sf-button
-  [sfButtonText]="'Dodaj ankietę'"
-  (click)="__createSurvey()"
+  [sfButtonText]="survey()?.Id ? 'Zapisz ankietę' : 'Dodaj ankietę'"
+  (click)="survey()?.Id ? onSaveSurvey() : onCreateSurvey()"
 ></sf-button>
+
+<ng-template #surveyTitleTemplate>
+  <sf-icon-and-text
+    [sfText]="'Kreator ankiet'"
+    [sfIcon]="icons.surveyAdd"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #surveyExtraTemplate>
+  <div class="survey-preview"
+       nz-tooltip
+       [nzTooltipTitle]="'Kliknij, aby zobaczyć podgląd ankiety'"
+       [nzTooltipPlacement]="'left'">
+    <fa-icon [icon]="icons.surveyPreview" (click)="surveyModal.openSurveyModal()"></fa-icon>
+  </div>
+</ng-template>
+
+<sf-survey-modal
+  #surveyModal
+></sf-survey-modal>

@@ -6,7 +6,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { SfButtonComponent, TripTermDTO } from '@sf/sf-base';
+import { SfButtonComponent, SfIcons, TripTermDTO } from '@sf/sf-base';
 import {
   FormControl,
   FormGroup,
@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
-import { NzTableComponent } from 'ng-zorro-antd/table';
+import { NzCellAlignDirective, NzTableComponent } from 'ng-zorro-antd/table';
 import { NzInputDirective } from 'ng-zorro-antd/input';
 import { DatePipe } from '@angular/common';
 
@@ -30,12 +30,14 @@ import { DatePipe } from '@angular/common';
     NzInputDirective,
     DatePipe,
     FormsModule,
+    NzCellAlignDirective,
   ],
   templateUrl: './trip-term-details.component.html',
   styleUrl: './trip-term-details.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripTermDetailsComponent {
+  public readonly icons = SfIcons;
   public readonly sfTripTerms = input<TripTermDTO[] | null | undefined>([]);
   public readonly sfTripId = input<number | null | undefined>(undefined);
   public readonly sfTripTermsUpdated = output<TripTermDTO[]>();
@@ -56,7 +58,31 @@ export class TripTermDetailsComponent {
   constructor() {
     effect(() => {
       const tripTerms = this.sfTripTerms();
-      //tripTerms.forEach((tripTerm) => this.patchTripTerms(tripTerm));
+
+      if (tripTerms) {
+        tripTerms.forEach((tripTerm) => {
+          const editForms = this.__editForms();
+
+          if (!tripTerm.Id) {
+            return;
+          }
+
+          editForms[tripTerm.Id] = new FormGroup({
+            name: new FormControl(tripTerm.Name ?? '', { nonNullable: true }),
+            dateFrom: new FormControl(tripTerm.DateFrom ?? null),
+            dateTo: new FormControl(tripTerm.DateTo ?? null),
+            price: new FormControl(tripTerm.Price ?? 0, { nonNullable: true }),
+            participantsTotal: new FormControl(
+              tripTerm.ParticipantsTotal ?? 0,
+              { nonNullable: true },
+            ),
+            participantsCurrent: new FormControl(
+              tripTerm.ParticipantsCurrent ?? 0,
+              { nonNullable: true },
+            ),
+          });
+        });
+      }
     });
   }
 
@@ -64,7 +90,7 @@ export class TripTermDetailsComponent {
     if (tripTermDTO.Id === undefined) {
       throw new Error('TripTerm is required');
     }
-    console.log(tripTermDTO);
+
     this.editId.set(tripTermDTO.Id);
   }
 
@@ -72,7 +98,7 @@ export class TripTermDetailsComponent {
     this.editId.set(undefined);
   }
 
-  __addTripTerm() {
+  addTripTerm() {
     const newTripTerm: TripTermDTO = {
       Id: undefined,
       Name: this.__controls.name.value,
@@ -84,21 +110,6 @@ export class TripTermDetailsComponent {
     } as TripTermDTO;
     this.sfTripTermsUpdated.emit([...(this.sfTripTerms() ?? []), newTripTerm]);
     this.__formGroup.reset();
-  }
-
-  __saveTripTerms(id: number | undefined) {
-    if (id === undefined) {
-      throw new Error('Trip id is undefined but should not be');
-    }
-
-    const form = this.__editForms()[id];
-    if (form.invalid) return;
-
-    const updatedTripTerms = (this.sfTripTerms() ?? []).map((term) =>
-      term.Id === id ? { ...term, ...form.getRawValue() } : term,
-    );
-
-    this.sfTripTermsUpdated.emit(updatedTripTerms);
     this.stopEdit();
   }
 }

@@ -4,3 +4,13 @@
   align-items: center;
   flex-direction: column;
 }
+
+sf-page-title-framed {
+  font-size: 34px;
+  margin: 80px auto auto auto;
+  position: absolute;
+}
+
+img {
+  z-index: -1;
+}

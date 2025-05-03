@@ -4,7 +4,7 @@
     <ul nz-menu nzTheme="dark" nzMode="horizontal">
       <li nz-submenu [nzTitle]="addPostTemplate" (click)="createNewArticle()"></li>
       <li nz-submenu [nzTitle]="addTripTemplate" (click)="createNewTrip()"></li>
-      <li nz-submenu [nzTitle]="addSurveyTemplate" (click)="createNewTrip()"></li>
+      <li nz-submenu [nzTitle]="addSurveyTemplate" (click)="createNewSurvey()"></li>
     </ul>
   </nz-header>
   <nz-layout class="main-layout">
@@ -34,6 +34,6 @@
 <ng-template #addSurveyTemplate>
   <sf-icon-and-text
     [sfIcon]="icons.add"
-    [sfText]="'Utwórz kwestionariusz'"
+    [sfText]="'Utwórz ankietę'"
   ></sf-icon-and-text>
 </ng-template>

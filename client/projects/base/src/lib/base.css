@@ -15,12 +15,20 @@
   --text-grey-color: #8a8989; /* very light grey */
   --button-grey-color: #939393; /* very light grey */
   --button-grey-hover-color: #6c6c6c; /* very light grey */
+  --blue-sider-background-color: #424D7C9C; /* blue */
   --blue-color: #7aa5ed; /* blue */
   --blue-hover-color: #5779b3; /* blue */
   --divider-grey-color: #dad0d0; /* very light grey */
   --danger-color: #d53838; /* Red */
   --danger-hover-color: #c53838; /* Red */
+  --header-dark-blue-color: #11162A;
+  --header-hover-dark-blue-color: #272F57FF;
+  --table-header-dark-blue-color: #242950;
+  --table-header-pink-color: rgba(204, 142, 187, 0.73); /* Dusty rose / dirty pink */
+  --table-header-hover-color: #b379a5; /* Muted lilac-gray */
+  --sorters-blue-color: #393f6a; /* Desaturated slate blue */
 
+  --margin-xxs: 2px;
   --margin-xs: 4px;
   --margin-s: 8px;
   --margin-m: 12px;
@@ -77,8 +85,6 @@ body {
   color: #fff;
   border: 2px solid #fff;
   padding: 5px 10px;
-  font-size: 34px;
-  margin: 80px auto auto auto;
   font-weight: 700;
   max-width: 1000px;
   letter-spacing: 2px;
@@ -148,18 +154,27 @@ body {
   }
 }
 
-.table {
-  .th {
-    background-color: rgba(147, 84, 137, 0.61);
+.th {
+  padding: 5px !important;
+  background-color: var(--table-header-pink-color) !important;
+
+  &:hover {
+    background-color: var(--table-header-hover-color) !important;
   }
 
-  .ant-table-column-has-sorters:hover {
-    background-color: rgba(246, 236, 119, 0.61);
+  .ant-table-column-sorter {
+    color: var(--sorters-blue-color) !important;
   }
 
-  tbody > tr {
-    cursor: pointer;
+  .ant-table-column-title {
+    color: var(--table-header-dark-blue-color) !important;
+    letter-spacing: 1px;
   }
+}
+
+tbody > tr {
+  cursor: pointer;
+  color: var(--button-grey-hover-color);
 }
 
 nz-card {
@@ -220,13 +235,11 @@ nz-content {
   align-items: center;
   flex-direction: column;
   height: 350px;
-  width: 100vw;
   background-repeat: no-repeat;
   background-size: cover;
 
   img {
     position: absolute;
-    z-index: -1;
     object-fit: cover;
     width: 100%;
     height: 350px;

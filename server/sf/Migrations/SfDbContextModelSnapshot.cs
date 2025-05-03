@@ -117,17 +117,14 @@ namespace sf.Migrations
                     b.Property<int>("Country")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ExtraLogoUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("TripId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TripId")
-                        .IsUnique();
 
                     b.ToTable("Surveys");
                 });
@@ -224,6 +221,8 @@ namespace sf.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SurveyId");
+
                     b.ToTable("Trips");
                 });
 
@@ -244,6 +243,9 @@ namespace sf.Migrations
 
                     b.Property<string>("ExtraInfo")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hash")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -353,15 +355,6 @@ namespace sf.Migrations
                     b.Navigation("Trip");
                 });
 
-            modelBuilder.Entity("sf.Models.Survey", b =>
-                {
-                    b.HasOne("sf.Models.Trip", "Trip")
-                        .WithOne("Survey")
-                        .HasForeignKey("sf.Models.Survey", "TripId");
-
-                    b.Navigation("Trip");
-                });
-
             modelBuilder.Entity("sf.Models.SurveyAnswer", b =>
                 {
                     b.HasOne("sf.Models.SurveyQuestion", "SurveyQuestion")
@@ -391,6 +384,16 @@ namespace sf.Migrations
                     b.Navigation("TripApplication");
                 });
 
+            modelBuilder.Entity("sf.Models.Trip", b =>
+                {
+                    b.HasOne("sf.Models.Survey", "Survey")
+                        .WithMany("Trips")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Survey");
+                });
+
             modelBuilder.Entity("sf.Models.TripApplication", b =>
                 {
                     b.HasOne("sf.Models.Trip", "Trip")
@@ -412,6 +415,11 @@ namespace sf.Migrations
                     b.Navigation("Trip");
                 });
 
+            modelBuilder.Entity("sf.Models.Survey", b =>
+                {
+                    b.Navigation("Trips");
+                });
+
             modelBuilder.Entity("sf.Models.SurveyQuestion", b =>
                 {
                     b.Navigation("SurveyAnswers");
@@ -425,8 +433,6 @@ namespace sf.Migrations
             modelBuilder.Entity("sf.Models.Trip", b =>
                 {
                     b.Navigation("Article");
-
-                    b.Navigation("Survey");
 
                     b.Navigation("TripApplications");
 

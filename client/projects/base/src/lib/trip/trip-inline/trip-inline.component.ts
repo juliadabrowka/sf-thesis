@@ -8,9 +8,15 @@ import {
 import { DatePipe } from '@angular/common';
 import { TripFlag } from '../trip-calendar/trip-calendar.component';
 import { SfFormatPricePipe } from './trip-inline-format-price.pipe';
-import { ArticleStore, SfButtonComponent, TripDTO } from '@sf/sf-base';
+import {
+  ArticleStore,
+  SfButtonComponent,
+  TripApplicationDTO,
+  TripDTO,
+} from '@sf/sf-base';
 import { ApplicationFormComponent } from '../../application-form/application-form.component';
 import { Router } from '@angular/router';
+import { TripApplicationService } from '../../../services/trip-application-service.service';
 
 @Component({
   selector: 'sf-trip-inline',
@@ -27,6 +33,7 @@ import { Router } from '@angular/router';
 export class SfTripInlineComponent {
   private readonly __router = inject(Router);
   private readonly __store = inject(ArticleStore);
+  private readonly __tripApplicationService = inject(TripApplicationService);
 
   public readonly sfTripInfo = input<TripFlag | null | undefined>();
   public readonly showSlider = signal(false);
@@ -39,12 +46,31 @@ export class SfTripInlineComponent {
     if (trip.ArticleId === undefined) {
       throw new Error('Article trip id not found');
     }
-    await this.__store.loadArticleDetails(trip.ArticleId);
+    await this.__store.getArticleDetails(trip.ArticleId);
     const article = this.__store.article();
 
     if (article === undefined) {
       throw new Error('Article not found');
     }
     await this.__router.navigate([article.Url]);
+  }
+
+  createTripApplication(tripApplication: TripApplicationDTO) {
+    const trip = this.sfTripInfo()?.trip;
+    console.log(trip);
+    tripApplication.TripDTO = trip;
+    tripApplication.TripId = trip?.Id;
+
+    this.__tripApplicationService
+      .createTripApplication(tripApplication)
+      .subscribe({
+        next: (res) => {
+          console.log('TripApplication created:', res);
+          // Optionally: show success message, navigate, etc.
+        },
+        error: (err) => {
+          console.error('Error creating TripApplication', err);
+        },
+      });
   }
 }

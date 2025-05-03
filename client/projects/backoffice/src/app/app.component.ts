@@ -16,6 +16,7 @@ import {
   SfIconAndTextComponent,
   SfIcons,
   SfSiderComponent,
+  SurveyStore,
 } from '@sf/sf-base';
 
 @Component({
@@ -39,6 +40,7 @@ export class AppComponent {
   private readonly __router = inject(Router);
   private readonly __activatedRoute = inject(ActivatedRoute);
   private readonly __articleStore = inject(ArticleStore);
+  private readonly __surveyStore = inject(SurveyStore);
 
   public readonly icons = SfIcons;
 
@@ -54,6 +56,13 @@ export class AppComponent {
   }
 
   async createNewTrip() {
+    await this.__router.navigate(['create-trip'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
+
+  async createNewSurvey() {
+    this.__surveyStore.setSurvey(undefined);
     await this.__router.navigate(['create-survey'], {
       relativeTo: this.__activatedRoute,
     });

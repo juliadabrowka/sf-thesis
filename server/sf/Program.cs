@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using sf.Models;
@@ -7,6 +8,7 @@ using WebApplicationBuilder = Microsoft.AspNetCore.Builder.WebApplicationBuilder
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using sf.Controllers;
 using sf.Program.Data;
 
 namespace sf.Program;
@@ -106,19 +108,24 @@ class Program
         // add services
         builder.Services.AddScoped<IAuthService, AuthService>();
         
-        builder.Services.AddScoped<ITripRepository, TripRepository>();
-        builder.Services.AddScoped<ITripService, TripService>();
-
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
-
         builder.Services.AddScoped<IArticleService, ArticleService>();
         builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
         builder.Services.AddScoped<ISurveyService, SurveyService>();
         builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+        builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>();
 
+        builder.Services.AddScoped<ITripRepository, TripRepository>();
+        builder.Services.AddScoped<ITripService, TripService>();
+        builder.Services.AddScoped<ITripApplicationService, TripApplicationService>();
         builder.Services.AddScoped<ITripApplicationRepository, TripApplicationRepository>();
+        builder.Services.AddScoped<ITripTermRepository, TripTermRepository>();
+        
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<SmtpClient>(provider => new SmtpClient("smtp.gmail.com"));
 
         builder.Services.AddCors(options =>
         {

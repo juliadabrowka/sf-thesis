@@ -1,0 +1,25 @@
+<nz-modal
+  [nzVisible]="visible()"
+  [nzTitle]="surveyTitleTemplate"
+  [nzFooter]="null"
+  (nzOnCancel)="visible.set(false)"
+  [nzStyle]="{marginTop: 'var(--margin-xl)'}"
+  [nzWidth]="'auto'"
+  [nzBodyStyle]="{ padding: '0', display: 'flex', justifyContent: 'center' }"
+  [nzCentered]="true"
+>
+  <ng-container *nzModalContent>
+    <div class="a4-container">
+      <div class="a4-content">
+        <sf-survey></sf-survey>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>
+
+<ng-template #surveyTitleTemplate>
+  <sf-icon-and-text
+    [sfIcon]="icons.surveyPreview"
+    [sfText]="'Podgląd ankiety'"
+  ></sf-icon-and-text>
+</ng-template>

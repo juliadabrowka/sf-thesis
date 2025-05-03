@@ -8,7 +8,7 @@ public class TripTermMappingProfile: Profile
     public TripTermMappingProfile()
     {
         CreateMap<TripTerm, TripTermDTO>()
-            .ForMember(dest => dest.TripDto,
+            .ForMember(dest => dest.TripDTO,
                 opt =>
                 {
                     opt.PreCondition(src => src.Trip != null);

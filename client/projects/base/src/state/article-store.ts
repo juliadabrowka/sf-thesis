@@ -53,8 +53,8 @@ export const ArticleStore = signalStore(
     trips: computed(() =>
       store
         .articles()
-        .filter((a) => !!a.TripDto)
-        .map((a) => a.TripDto!),
+        .filter((a) => !!a.TripDTO)
+        .map((a) => a.TripDTO!),
     ),
   })),
   withMethods((store) => ({
@@ -88,7 +88,7 @@ export const ArticleStore = signalStore(
       patchState(store, { loading: false });
     },
 
-    async loadArticleDetails(id: number) {
+    async getArticleDetails(id: number) {
       patchState(store, { loading: true });
       const loadArticleDetailsApiCall$ =
         store.articleService.getArticleDetails(id);

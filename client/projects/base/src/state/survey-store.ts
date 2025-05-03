@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import {
   patchState,
   signalStore,
+  withHooks,
   withMethods,
   withProps,
   withState,
@@ -71,10 +72,19 @@ export const SurveyStore = signalStore(
             )
           : {
               survey: undefined,
-              error: 'Failed to update survey: missing Id',
+              error: 'Failed to update survey-form: missing Id',
             },
       );
       patchState(store, { loading: false });
+    },
+
+    async loadSurveyById(surveyId: number) {
+      patchState(store, { loading: true });
+      const loadSurveyByIdApiCall$ =
+        store.surveyService.getSurveyDetails(surveyId);
+      const survey = await firstValueFrom(loadSurveyByIdApiCall$);
+
+      this.setSurvey(survey);
     },
 
     setSurvey(survey: SurveyDTO | undefined) {
@@ -89,5 +99,18 @@ export const SurveyStore = signalStore(
       await firstValueFrom(deleteSurveysApiCall$);
       patchState(store, { loading: false });
     },
+
+    async getSurveyByHash(hash: string) {
+      patchState(store, { loading: true });
+      const getSurveyByHashApiCall$ = store.surveyService.getSurveyByHash(hash);
+      const survey = await firstValueFrom(getSurveyByHashApiCall$);
+
+      this.setSurvey(survey);
+    },
   })),
+  withHooks({
+    async onInit(store) {
+      await store.loadSurveyList();
+    },
+  }),
 );

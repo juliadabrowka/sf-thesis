@@ -81,4 +81,10 @@ export class SfSiderComponent {
       relativeTo: this.__activatedRoute,
     });
   }
+
+  public async goToSurveys() {
+    await this.__router.navigate(['surveys'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
 }

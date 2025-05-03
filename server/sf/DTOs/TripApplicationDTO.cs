@@ -11,7 +11,7 @@ public class TripApplicationDTO
     public DateTime AppliedAt { get; set; }
     
     public int TripId { get; set; }
-    public Trip TripDto { get; set; }
+    public TripDTO TripDTO { get; set; }
     public int? SurveyResponseId { get; set; }
-    public SurveyResponseDTO? SurveyResponseDto { get; set; }
+    public SurveyResponseDTO? SurveyResponseDTO { get; set; }
 }

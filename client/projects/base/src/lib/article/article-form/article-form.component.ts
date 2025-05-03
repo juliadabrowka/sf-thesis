@@ -145,8 +145,8 @@ export class SfArticleFormComponent {
         country: article?.Country ?? DefaultCountryValue,
         articleUrl: article?.Url ?? '',
         backgroundImage: article?.BackgroundImageUrl,
-        tripName: article?.TripDto?.Name,
-        tripType: article?.TripDto?.Type,
+        tripName: article?.TripDTO?.Name,
+        tripType: article?.TripDTO?.Type,
       });
     });
 
@@ -171,10 +171,10 @@ export class SfArticleFormComponent {
         map(() => this.formGroup.getRawValue()),
         takeUntilDestroyed(),
       )
-      .subscribe(async (fg) => {
+      .subscribe((fg) => {
         this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
-        const a = this.sfArticle();
-        const articleState = isNil(a) ? new ArticleDTO() : a;
+        const article = this.sfArticle();
+        const articleState = isNil(article) ? new ArticleDTO() : article;
 
         articleState.Title = fg.title;
         articleState.Content = fg.content;
@@ -184,23 +184,23 @@ export class SfArticleFormComponent {
         articleState.BackgroundImageUrl = fg.backgroundImage;
 
         if (this.isTripCategorySelected) {
-          const trip = articleState.TripDto ?? new TripDTO();
+          const trip = articleState.TripDTO ?? new TripDTO();
           trip.Type = fg.tripType ?? DefaultTripTypeValue;
           trip.Name = fg.tripName ?? '';
           trip.ArticleId = articleState?.Id;
-          trip.TripTermIds = articleState.TripDto?.TripTermIds ?? [];
-          trip.TripTermDtos = articleState.TripDto?.TripTermDtos ?? [];
+          trip.TripTermIds = articleState.TripDTO?.TripTermIds ?? [];
+          trip.TripTermDTOS = articleState.TripDTO?.TripTermDTOS ?? [];
 
           trip.TripApplicationIds =
-            articleState.TripDto?.TripApplicationIds ?? [];
-          trip.TripApplicationDtos =
-            articleState.TripDto?.TripApplicationDtos ?? [];
+            articleState.TripDTO?.TripApplicationIds ?? [];
+          trip.TripApplicationDTOS =
+            articleState.TripDTO?.TripApplicationDTOS ?? [];
 
-          articleState.TripId = articleState.TripDto?.Id;
-          articleState.TripDto = trip;
+          articleState.TripId = articleState.TripDTO?.Id;
+          articleState.TripDTO = trip;
         }
 
-        if (articleChanged(a, articleState))
+        if (articleChanged(article, articleState))
           this.__articleStore.setArticle(articleState);
 
         this.__cdr.markForCheck();
@@ -216,11 +216,11 @@ export class SfArticleFormComponent {
     if (!a) {
       throw new Error('Article is undefined but should not be');
     }
-    const t = a.TripDto;
+    const t = a.TripDTO;
     if (!t) {
       throw new Error('Trip is undefined but should not be');
     }
-    t.TripTermDtos = tripTerms;
+    t.TripTermDTOS = tripTerms;
     t.TripTermIds =
       tripTerms
         .map((tt) => tt.Id)
@@ -235,19 +235,16 @@ export function articleChanged(
   prev: ArticleDTO | undefined,
   current: ArticleDTO,
 ) {
-  if (
+  return (
     prev?.Id !== current.Id ||
     prev?.Title !== current.Title ||
     prev?.Content !== current.Content ||
     prev?.Country !== current.Country ||
     prev?.ArticleCategory !== current.ArticleCategory ||
     prev?.Url !== current.Url ||
-    isNotNil(prev?.TripDto) ||
-    isNotNil(current.TripDto)
-  ) {
-    return true;
-  }
-  return false;
+    isNotNil(prev?.TripDTO) ||
+    isNotNil(current.TripDTO)
+  );
 }
 export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
   const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
@@ -270,7 +267,7 @@ export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
         term.ParticipantsTotal !== otherTerm.ParticipantsTotal ||
         term.Price !== otherTerm.Price ||
         term.TripId !== otherTerm.TripId ||
-        term.TripDto !== otherTerm.TripDto
+        term.TripDTO !== otherTerm.TripDTO
       );
     });
   };
@@ -279,7 +276,7 @@ export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
     prev?.Id !== current.Id ||
     prev?.Type !== current.Type ||
     prev?.SurveyId !== current.SurveyId ||
-    compareTripTerms(prev?.TripTermDtos, current.TripTermDtos) ||
+    compareTripTerms(prev?.TripTermDTOS, current.TripTermDTOS) ||
     arraysEqualSet(
       prev?.TripApplicationIds ?? [],
       current.TripApplicationIds ?? [],

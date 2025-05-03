@@ -1,5 +1,5 @@
 @if (sfArticle(); as article) {
-  <div class="tile-container" [class.is-trip]="article.TripDto">
+  <div class="tile-container" [class.is-trip]="article.TripDTO">
     <div class="media">
       <img [src]="article.BackgroundImageUrl" alt="">
       <fa-icon
@@ -10,23 +10,23 @@
 
     <div class="tile-footer">
       <div class="title">{{ article.Title }}</div>
-      @if (article.TripDto; as trip) {
+      @if (article.TripDTO; as trip) {
         <div class="trip-container">
           <div class="label-button">
             Termin
           </div>
           <span class="bold">
-            {{ getTripMonth(trip.TripTermDtos) }}
+            {{ getTripMonth(trip.TripTermDTOS) }}
           </span>
           <span class="trip-length">
-            {{ getTripLength(trip.TripTermDtos) }}
+            {{ getTripLength(trip.TripTermDTOS) }}
           </span>
 
           <div class="label-button">
             Koszt wyprawy
           </div>
           <span class="bold trip-length">
-            {{ trip.TripTermDtos[0].Price ?? 0 }}
+            {{ trip.TripTermDTOS[0].Price ?? 0 }}
           </span>
         </div>
       }

@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   ArticleStore,
   SfArticleFormComponent,
@@ -36,7 +31,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   providers: [ArticleStore],
 })
 export class SfBackofficeArticleViewComponent {
-  private readonly __cdr = inject(ChangeDetectorRef);
   private readonly __articleStore = inject(ArticleStore);
   private readonly __route = inject(ActivatedRoute);
   private readonly __router = inject(Router);
@@ -52,9 +46,7 @@ export class SfBackofficeArticleViewComponent {
       .subscribe(async (params) => {
         if (params.get('articleId')) {
           const id = Number(params.get('articleId'));
-          await this.__articleStore.loadArticleDetails(id);
-
-          this.__cdr.markForCheck();
+          await this.__articleStore.getArticleDetails(id);
         }
       });
   }

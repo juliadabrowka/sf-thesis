@@ -3,8 +3,8 @@
   [nzData]="sfTripTerms() ?? []">
   <thead>
   <tr>
-    @for (column of __columns; track column) {
-      <th class="th">{{ column }}</th>
+    @for (column of __columns; track $index) {
+      <th [nzAlign]="'center'" [class.custom-width]="$index === 0" class="th">{{ column }}</th>
     }
   </tr>
   </thead>
@@ -16,12 +16,15 @@
     />
   </td>
   <td>
-    <nz-date-picker
-      [formControl]="__controls.dateFrom"
-    ></nz-date-picker>
-    <nz-date-picker
-      [formControl]="__controls.dateTo"
-    ></nz-date-picker>
+    <div class="dates">
+      <nz-date-picker
+        [formControl]="__controls.dateFrom"
+      ></nz-date-picker>
+      <span class="dash"> - </span>
+      <nz-date-picker
+        [formControl]="__controls.dateTo"
+      ></nz-date-picker>
+    </div>
   </td>
   <td>
     <nz-input-number
@@ -37,7 +40,7 @@
     <sf-button
       [sfFontSize]="'12px'"
       [sfButtonText]="'Dodaj'"
-      (sfOnButtonClicked)="__addTripTerm()"
+      (sfOnButtonClicked)="addTripTerm()"
     ></sf-button>
   </td>
     @for (tripTerm of tripTermTable.data; track tripTerm.Id) {
@@ -59,32 +62,35 @@
         </td>
 
         <td>
-          <div
-            class="editable-cell"
-            [hidden]="editId() === tripTerm.Id"
-            (click)="startEdit(tripTerm)"
-          >
+          <div class="dates">
+            <div
+              class="editable-cell"
+              [hidden]="editId() === tripTerm.Id"
+              (click)="startEdit(tripTerm)"
+            >
             {{ tripTerm.DateFrom | date: 'dd/MM/yyyy' }}
           </div>
           <nz-date-picker
             [(ngModel)]="tripTerm.DateFrom"
             [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
-        ></nz-date-picker>
-        </td>
+          ></nz-date-picker>
 
-        <td>
-          <nz-date-picker
+            <span class="dash"> - </span>
+
+            <div
             class="editable-cell"
             [hidden]="editId() === tripTerm.Id"
           >
             {{ tripTerm.DateTo | date: 'dd/MM/yyyy' }}
-          </nz-date-picker>
+            </div>
           <nz-date-picker
             [(ngModel)]="tripTerm.DateTo"
             [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
-        ></nz-date-picker>
+          ></nz-date-picker>
+          </div>
+
         </td>
 
         <td>
@@ -116,14 +122,6 @@
               (blur)="stopEdit()"
             ></nz-input-number>
           </div>
-        </td>
-
-        <td>
-          <sf-button
-            [sfButtonText]="'Zapisz'"
-            [sfFontSize]="'12px'"
-            (sfOnButtonClicked)="__saveTripTerms(tripTerm.Id)"
-          ></sf-button>
         </td>
       </tr>
 

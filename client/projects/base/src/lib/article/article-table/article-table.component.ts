@@ -5,16 +5,7 @@ import {
   output,
 } from '@angular/core';
 import { ArticleDTO } from '@sf/sf-base';
-import {
-  NzTableModule,
-  NzTableSortFn,
-  NzThAddOnComponent,
-} from 'ng-zorro-antd/table';
-
-export interface ColumnItem<T> {
-  name: string;
-  sortFn: NzTableSortFn<T> | null;
-}
+import { NzTableModule, NzThAddOnComponent } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'sf-article-table',
@@ -24,7 +15,7 @@ export interface ColumnItem<T> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfArticleTableComponent {
-  public readonly columns: ColumnItem<ArticleDTO>[] = [
+  public readonly columns = [
     {
       name: 'Tytuł',
       sortFn: (a: ArticleDTO, b: ArticleDTO) => a.Title.localeCompare(b.Title),

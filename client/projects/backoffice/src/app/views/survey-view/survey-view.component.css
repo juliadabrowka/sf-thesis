@@ -1,0 +1,22 @@
+.survey-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f5ff;
+  border-radius: 50%;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.survey-preview:hover {
+  background-color: #adc6ff;
+}
+
+.survey-preview fa-icon {
+  color: #1d39c4;
+  font-size: 18px;
+}

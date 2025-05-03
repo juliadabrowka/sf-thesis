@@ -88,8 +88,8 @@
           </nz-form-control>
         </nz-form-item>
         <sf-trip-term-details
-          [sfTripTerms]="sfArticle()?.TripDto?.TripTermDtos ?? []"
-          [sfTripId]="sfArticle()?.TripDto?.Id"
+          [sfTripTerms]="sfArticle()?.TripDTO?.TripTermDTOS ?? []"
+          [sfTripId]="sfArticle()?.TripDTO?.Id"
           (sfTripTermsUpdated)="__onTripTermAdded($event)"
         ></sf-trip-term-details>
 
