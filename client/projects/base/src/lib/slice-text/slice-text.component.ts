@@ -10,5 +10,5 @@ import { SlicePipe } from '@angular/common';
 })
 export class SliceTextComponent {
   public readonly sfText = input<string | null | undefined>();
-  public readonly sfMaxLength = input<number>(150);
+  public readonly sfMaxLength = input<number | null | undefined>(150);
 }

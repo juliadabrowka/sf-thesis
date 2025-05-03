@@ -36,62 +36,64 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   providers: [ArticleStore],
 })
 export class SfBackofficeArticleViewComponent {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly articleStore = inject(ArticleStore);
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly message = inject(NzMessageService);
+  private readonly __cdr = inject(ChangeDetectorRef);
+  private readonly __articleStore = inject(ArticleStore);
+  private readonly __route = inject(ActivatedRoute);
+  private readonly __router = inject(Router);
+  private readonly __message = inject(NzMessageService);
 
-  public readonly __article$$ = this.articleStore.article;
-  public readonly __loading$$ = this.articleStore.loading;
-  public readonly __icons = SfIcons;
+  public readonly article = this.__articleStore.article;
+  public readonly loading = this.__articleStore.loading;
+  public readonly icons = SfIcons;
 
   constructor() {
-    this.route.paramMap.pipe(takeUntilDestroyed()).subscribe(async (params) => {
-      if (params.get('articleId')) {
-        const id = Number(params.get('articleId'));
-        await this.articleStore.loadArticleDetails(id);
+    this.__route.paramMap
+      .pipe(takeUntilDestroyed())
+      .subscribe(async (params) => {
+        if (params.get('articleId')) {
+          const id = Number(params.get('articleId'));
+          await this.__articleStore.loadArticleDetails(id);
 
-        this.cdr.markForCheck();
-      }
-    });
+          this.__cdr.markForCheck();
+        }
+      });
   }
 
-  async __onSaveClick() {
-    const article = this.__article$$();
+  async onSaveClick() {
+    const article = this.article();
     if (article) {
-      await this.articleStore.updateArticle(article);
-      if (!this.__loading$$()) {
-        this.message.success('Post poprawnie aktualizowany');
+      await this.__articleStore.updateArticle(article);
+      if (!this.loading()) {
+        this.__message.success('Post poprawnie aktualizowany');
       } else {
-        this.message.error('Post nie został poprawnie aktualizowany');
+        this.__message.error('Post nie został poprawnie aktualizowany');
       }
-      await this.router.navigate(['admin-backoffice']);
+      await this.__router.navigate(['admin-backoffice']);
     }
   }
 
-  async __onCreateClick() {
-    const article = this.__article$$();
+  async onCreateClick() {
+    const article = this.article();
     if (article) {
-      await this.articleStore.createArticle(article);
-      if (!this.__loading$$()) {
-        this.message.success('Post poprawnie dodany');
+      await this.__articleStore.createArticle(article);
+      if (!this.loading()) {
+        this.__message.success('Post poprawnie dodany');
       } else {
-        this.message.error('Post nie został dodany');
+        this.__message.error('Post nie został dodany');
       }
-      await this.router.navigate(['admin-backoffice']);
+      await this.__router.navigate(['admin-backoffice']);
     }
   }
 
-  public async __removeArticle(articleId: number | undefined) {
+  public async removeArticle(articleId: number | undefined) {
     if (!articleId) {
       throw new Error('Article id is undefined but should not be.');
     }
-    await this.articleStore.deleteArticles([articleId]);
+    await this.__articleStore.deleteArticles([articleId]);
 
-    if (!this.__loading$$()) {
-      this.message.success('Post poprawnie usunięty');
-      await this.router.navigate(['admin-backoffice']);
+    if (!this.loading()) {
+      this.__message.success('Post poprawnie usunięty');
+      await this.__router.navigate(['admin-backoffice']);
     }
   }
 }

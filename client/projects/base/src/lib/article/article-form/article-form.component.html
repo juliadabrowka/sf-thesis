@@ -1,14 +1,14 @@
 <div class="cockpit-container">
   <div class="main-form">
-    <form nz-form [nzLayout]="'horizontal'" [formGroup]="__formGroup">
+    <form nz-form [nzLayout]="'horizontal'" [formGroup]="formGroup">
       <nz-form-item>
         <nz-form-control>
-          <input nz-input required [formControl]="__controls.title" [placeholder]="'Dodaj tytuł'"/>
+          <input nz-input required [formControl]="controls.title" [placeholder]="'Dodaj tytuł'"/>
         </nz-form-control>
       </nz-form-item>
       <quill-editor
         id="editor"
-        [formControl]="__controls.content"
+        [formControl]="controls.content"
         [placeholder]="'Zacznij pisać... :)'"
         [modules]="quillConfig"
       ></quill-editor>
@@ -19,7 +19,7 @@
     <div class="category-section">
       <h3>
         <sf-icon-and-text
-          [sfIcon]="__icons.postOptions"
+          [sfIcon]="icons.postOptions"
           [sfText]="'Opcje artykułu'"
         ></sf-icon-and-text>
       </h3>
@@ -27,28 +27,28 @@
       <nz-form-item>
         <nz-form-label>Kategoria</nz-form-label>
         <nz-form-control>
-          <nz-select [formControl]="__controls.category" [nzOptions]="__categories"></nz-select>
+          <nz-select [formControl]="controls.category" [nzOptions]="categories"></nz-select>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label>Kraj</nz-form-label>
         <nz-form-control>
-          <nz-select [formControl]="__controls.country" [nzOptions]="__countries"></nz-select>
+          <nz-select [formControl]="controls.country" [nzOptions]="countries"></nz-select>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label nzRequired>Link</nz-form-label>
         <nz-form-control nzErrorTip="Link nie może być pusty">
-          <input nz-input [formControl]="__controls.articleUrl"/>
+          <input nz-input [formControl]="controls.articleUrl"/>
         </nz-form-control>
       </nz-form-item>
 
       <div class="media-section">
         <h3>
           <sf-icon-and-text
-            [sfIcon]="__icons.backgroundImage"
+            [sfIcon]="icons.backgroundImage"
             [sfText]="'Zdjęcie w tle'"
           ></sf-icon-and-text>
         </h3>
@@ -58,8 +58,8 @@
             (sfUploadedImgUrl)="__onFilesUpload($event)"
           ></sf-upload>
         </div>
-        @if (__controls.backgroundImage.value) {
-          <img [src]="__controls.backgroundImage.value" height="250" alt="">
+        @if (controls.backgroundImage.value) {
+          <img [src]="controls.backgroundImage.value" height="250" alt="">
         }
       </div>
     </div>
@@ -69,7 +69,7 @@
       <div class="trip-section">
         <h3>
           <sf-icon-and-text
-            [sfIcon]="__icons.tripDetails"
+            [sfIcon]="icons.tripDetails"
             [sfText]="'Szczegóły wyprawy'"
           ></sf-icon-and-text>
         </h3>
@@ -77,14 +77,14 @@
         <nz-form-item>
           <nz-form-label>Nazwa</nz-form-label>
           <nz-form-control>
-            <input nz-input [formControl]="__controls.tripName"/>
+            <input nz-input [formControl]="controls.tripName"/>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
           <nz-form-label>Rodzaj</nz-form-label>
           <nz-form-control>
-            <nz-select [formControl]="__controls.tripType" [nzOptions]="__tripTypes"></nz-select>
+            <nz-select [formControl]="controls.tripType" [nzOptions]="tripTypes"></nz-select>
           </nz-form-control>
         </nz-form-item>
         <sf-trip-term-details

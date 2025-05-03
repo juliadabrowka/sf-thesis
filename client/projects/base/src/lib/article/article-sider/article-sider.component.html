@@ -1,4 +1,4 @@
-@for ((sd of siderData() | sfArticleSiderData); track $index) {
+@for ((sd of articles() | sfArticleSiderData); track $index) {
   <div class="article-sider">
     <div class="article-category">{{ sd.category }}</div>
     @for (article of sd.articles; track $index) {

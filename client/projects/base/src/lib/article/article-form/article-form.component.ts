@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   inject,
   input,
 } from '@angular/core';
@@ -21,8 +22,9 @@ import {
   TripDTO,
   TripTermDTO,
   TripType,
+  TripTypeLabels,
 } from '../../../data-types';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import {
   NzFormControlComponent,
@@ -61,14 +63,14 @@ import { QuillModules } from 'ngx-quill/config/quill-editor.interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfArticleFormComponent {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly articleStore = inject(ArticleStore);
+  private readonly __cdr = inject(ChangeDetectorRef);
+  private readonly __articleStore = inject(ArticleStore);
 
   public readonly sfArticle = input<ArticleDTO | undefined>(undefined);
   public readonly sfLoading = input<boolean>(false);
 
-  public readonly __icons = SfIcons;
-  public readonly __controls = {
+  public readonly icons = SfIcons;
+  public readonly controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {
       validators: Validators.required,
       nonNullable: true,
@@ -99,19 +101,19 @@ export class SfArticleFormComponent {
     }),
     picture: new FormControl<File | null>(null),
   };
-  public readonly __categories = Object.values(ArticleCategory).map((o) => ({
+  public readonly categories = Object.values(ArticleCategory).map((o) => ({
     label: o,
     value: o,
   }));
-  public readonly __countries = Object.values(Country).map((o) => ({
+  public readonly countries = Object.values(Country).map((o) => ({
     label: o,
     value: o,
   }));
-  public readonly __tripTypes = Object.keys(TripType).map((k) => ({
-    label: TripType[k as keyof typeof TripType],
+  public readonly tripTypes = Object.keys(TripType).map((k) => ({
+    label: TripTypeLabels[k as keyof typeof TripType],
     value: k as TripType,
   }));
-  public readonly __formGroup = new FormGroup(this.__controls);
+  public readonly formGroup = new FormGroup(this.controls);
   public isTripCategorySelected = false;
 
   public readonly quillConfig: QuillModules = {
@@ -133,24 +135,22 @@ export class SfArticleFormComponent {
   };
 
   constructor() {
-    toObservable(this.sfArticle)
-      .pipe(takeUntilDestroyed())
-      .subscribe((article) => {
-        this.__formGroup.patchValue({
-          category: article?.ArticleCategory ?? DefaultArticleCategoryValue,
-          title: article?.Title ?? '',
-          content: article?.Content ?? '',
-          country: article?.Country ?? DefaultCountryValue,
-          articleUrl: article?.Url ?? '',
-          backgroundImage: article?.BackgroundImageUrl,
-          tripName: article?.TripDto?.Name,
-          tripType: article?.TripDto?.Type,
-        });
+    effect(() => {
+      const article = this.sfArticle();
 
-        this.cdr.markForCheck();
+      this.formGroup.patchValue({
+        category: article?.ArticleCategory ?? DefaultArticleCategoryValue,
+        title: article?.Title ?? '',
+        content: article?.Content ?? '',
+        country: article?.Country ?? DefaultCountryValue,
+        articleUrl: article?.Url ?? '',
+        backgroundImage: article?.BackgroundImageUrl,
+        tripName: article?.TripDto?.Name,
+        tripType: article?.TripDto?.Type,
       });
+    });
 
-    this.__controls.title.valueChanges
+    this.controls.title.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((value) => {
         if (value) {
@@ -160,15 +160,15 @@ export class SfArticleFormComponent {
             .toLowerCase()
             .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-');
-          this.__controls.articleUrl.setValue(formattedValue, {
+          this.controls.articleUrl.setValue(formattedValue, {
             emitEvent: false,
           });
         }
       });
 
-    this.__formGroup.valueChanges
+    this.formGroup.valueChanges
       .pipe(
-        map(() => this.__formGroup.getRawValue()),
+        map(() => this.formGroup.getRawValue()),
         takeUntilDestroyed(),
       )
       .subscribe(async (fg) => {
@@ -201,14 +201,14 @@ export class SfArticleFormComponent {
         }
 
         if (articleChanged(a, articleState))
-          this.articleStore.setArticle(articleState);
+          this.__articleStore.setArticle(articleState);
 
-        this.cdr.markForCheck();
+        this.__cdr.markForCheck();
       });
   }
 
   __onFilesUpload(imgUrl: string) {
-    this.__controls.backgroundImage.patchValue(imgUrl);
+    this.controls.backgroundImage.patchValue(imgUrl);
   }
 
   __onTripTermAdded(tripTerms: TripTermDTO[]) {
@@ -227,7 +227,7 @@ export class SfArticleFormComponent {
         .filter((id): id is number => id !== undefined) ?? [];
 
     const updatedArticle = { ...a, TripDto: t };
-    this.articleStore.setArticle(updatedArticle);
+    this.__articleStore.setArticle(updatedArticle);
   }
 }
 

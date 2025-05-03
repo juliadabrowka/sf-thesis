@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import { SurveyCreatorModule } from 'survey-creator-angular';
 import { SurveyDTO, SurveyQuestionDTO, TripDTO } from '../../data-types';
@@ -33,8 +35,7 @@ import { NzCardComponent } from 'ng-zorro-antd/card';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzEmptyComponent } from 'ng-zorro-antd/empty';
-import { SurveyService } from '../../services/survey.service';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { ArticleStore } from '../../state/article-store';
 import { SurveyStore } from '../../state/survey-store';
@@ -65,9 +66,8 @@ import { isNil } from '@w11k/rx-ninja';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfSurveyComponent {
-  private readonly surveyService = inject(SurveyService);
-  private readonly articleStore = inject(ArticleStore);
-  private readonly surveyStore = inject(SurveyStore);
+  private readonly __articleStore = inject(ArticleStore);
+  private readonly __surveyStore = inject(SurveyStore);
 
   public readonly sfTrips = input([], {
     transform: (trips: TripDTO[] | null | undefined) => trips ?? [],
@@ -76,13 +76,11 @@ export class SfSurveyComponent {
     transform: (survey: SurveyDTO | null | undefined) => survey ?? undefined,
   });
 
-  public readonly __icons = SfIcons;
-  public readonly __questionsArray = new FormArray<FormControl<string>>([], {
+  public readonly icons = SfIcons;
+  public readonly questionsArray = new FormArray<FormControl<string>>([], {
     validators: Validators.required,
   });
-
-  public __surveyQuestions: SurveyQuestionDTO[] = [];
-  public readonly __controls = {
+  public readonly controls = {
     title: new FormControl('', {
       validators: Validators.required,
       nonNullable: true,
@@ -100,112 +98,114 @@ export class SfSurveyComponent {
       nonNullable: true,
     }),
   };
-
-  public readonly __formGroup = new FormGroup({
-    ...this.__controls,
-    questionsArray: this.__questionsArray,
+  public readonly formGroup = new FormGroup({
+    ...this.controls,
+    questionsArray: this.questionsArray,
   });
+  public readonly surveyQuestions = signal<SurveyQuestionDTO[]>([]);
+  public readonly editingIndex = signal<number | undefined>(undefined);
+  public readonly tripOptions = signal<{ label: string; value: string }[]>([]);
 
-  public __tripOptions: { label: string; value: string }[] = [];
-  private tripId: number | undefined;
-  private trip: TripDTO | undefined;
-  public editingIndex: number | undefined;
+  private readonly __tripId = signal<number | undefined>(undefined);
+  private readonly __trip = signal<TripDTO | undefined>(undefined);
 
   constructor() {
-    toObservable(this.sfTrips)
-      .pipe(takeUntilDestroyed())
-      .subscribe(
-        (trips) =>
-          (this.__tripOptions = trips.map((trip) => ({
-            label: trip?.Name ?? '',
-            value: (trip.Id ?? 0).toString(),
-          }))),
-      );
+    effect(() => {
+      const trips = this.sfTrips();
 
-    this.__formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      const tripOpts = trips.map((trip) => ({
+        label: trip?.Name ?? '',
+        value: (trip.Id ?? 0).toString(),
+      }));
+
+      this.tripOptions.set(tripOpts);
+    });
+
+    this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       const survey = this.sfSurvey();
       const surveyState = isNil(survey) ? new SurveyDTO() : survey;
 
-      const questions = this.__questionsArray.controls.map((ctrl) => {
+      const questions = this.questionsArray.controls.map((ctrl) => {
         const dto = new SurveyQuestionDTO();
         dto.Question = ctrl.value;
         return dto;
       });
 
-      surveyState.TripDto = this.trip;
-      surveyState.TripId = this.tripId;
+      surveyState.TripDto = this.__trip();
+      surveyState.TripId = this.__tripId();
       surveyState.SurveyQuestionDtos = questions;
-      surveyState.Title = this.__controls.title.value;
+      surveyState.Title = this.controls.title.value;
       surveyState.SurveyQuestionIds = questions
         .map((q) => q.Id)
         .filter((id): id is number => id !== undefined);
 
-      this.surveyStore.setSurvey(surveyState);
+      this.__surveyStore.setSurvey(surveyState);
     });
 
-    this.__controls.trip.valueChanges
+    this.controls.trip.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((tripId) => {
-        this.tripId = tripId ? parseInt(tripId) : undefined;
-        this.trip = this.articleStore
-          .articles()
-          .find((a) => a.TripDto?.Id === this.tripId)?.TripDto;
+        this.__tripId.set(tripId ? parseInt(tripId) : undefined);
+        this.__trip.set(
+          this.__articleStore
+            .articles()
+            .find((a) => a.TripDto?.Id === this.__tripId())?.TripDto,
+        );
       });
   }
 
   addQuestion(): void {
-    const q = this.__controls.question.value?.trim();
+    const q = this.controls.question.value?.trim();
     if (!q) return;
 
-    this.__questionsArray.push(
+    this.questionsArray.push(
       new FormControl(q, {
         validators: Validators.required,
         nonNullable: true,
       }),
     );
 
-    this.__controls.question.reset();
+    this.controls.question.reset();
   }
 
   removeQuestion(i: number): void {
     if (i === undefined) {
       throw new Error('Question id is required');
     }
-    this.__surveyQuestions = this.__surveyQuestions.filter(
-      (_, index) => index !== i,
-    );
+    const sq = this.surveyQuestions().filter((_, index) => index !== i);
 
-    this.__questionsArray.removeAt(i);
+    this.surveyQuestions.set(sq);
+    this.questionsArray.removeAt(i);
   }
 
   onDrop(event: CdkDragDrop<FormControl<string>[]>): void {
     moveItemInArray(
-      this.__questionsArray.controls,
+      this.questionsArray.controls,
       event.previousIndex,
       event.currentIndex,
     );
   }
 
   startEditing(index: number): void {
-    this.editingIndex = index;
+    this.editingIndex.set(index);
   }
 
   saveEdit(index: number): void {
-    const control = this.__questionsArray.at(index);
+    const control = this.questionsArray.at(index);
     const newValue = control.value.trim();
 
     if (newValue) {
-      const question = this.__surveyQuestions[index];
+      const question = this.surveyQuestions()[index];
       if (question) {
         question.Question = newValue;
         control.setValue(newValue);
       }
     }
 
-    this.editingIndex = undefined;
+    this.editingIndex.set(undefined);
   }
 
   cancelEdit(): void {
-    this.editingIndex = undefined;
+    this.editingIndex.set(undefined);
   }
 }

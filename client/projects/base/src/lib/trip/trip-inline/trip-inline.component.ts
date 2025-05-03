@@ -1,4 +1,10 @@
-import { Component, inject, input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TripFlag } from '../trip-calendar/trip-calendar.component';
 import { SfFormatPricePipe } from './trip-inline-format-price.pipe';
@@ -19,26 +25,26 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class SfTripInlineComponent {
-  private readonly router = inject(Router);
-  private readonly store = inject(ArticleStore);
+  private readonly __router = inject(Router);
+  private readonly __store = inject(ArticleStore);
 
   public readonly sfTripInfo = input<TripFlag | null | undefined>();
-  public __showSlider = false;
+  public readonly showSlider = signal(false);
 
   public __onShowSlider() {
-    this.__showSlider = !this.__showSlider;
+    this.showSlider.set(!this.showSlider());
   }
 
-  async __navigateToTrip(trip: TripDTO) {
+  async navigateToTrip(trip: TripDTO) {
     if (trip.ArticleId === undefined) {
       throw new Error('Article trip id not found');
     }
-    await this.store.loadArticleDetails(trip.ArticleId);
-    const article = this.store.article();
+    await this.__store.loadArticleDetails(trip.ArticleId);
+    const article = this.__store.article();
 
     if (article === undefined) {
       throw new Error('Article not found');
     }
-    await this.router.navigate([article.Url]);
+    await this.__router.navigate([article.Url]);
   }
 }

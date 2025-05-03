@@ -3,8 +3,8 @@
     <div class="media">
       <img [src]="article.BackgroundImageUrl" alt="">
       <fa-icon
-        (click)="__goToArticle(article)"
-        [icon]="__icons.linkTo"
+        (click)="goToArticle(article)"
+        [icon]="icons.linkTo"
         [size]="'lg'"></fa-icon>
     </div>
 
@@ -16,10 +16,10 @@
             Termin
           </div>
           <span class="bold">
-            {{ __getTripMonth(trip.TripTermDtos) }}
+            {{ getTripMonth(trip.TripTermDtos) }}
           </span>
           <span class="trip-length">
-            {{ __getTripLength(trip.TripTermDtos) }}
+            {{ getTripLength(trip.TripTermDtos) }}
           </span>
 
           <div class="label-button">
@@ -30,7 +30,7 @@
           </span>
         </div>
       }
-      <div class="button-read-more" (click)="__goToArticle(article)">
+      <div class="button-read-more" (click)="goToArticle(article)">
         Czytaj więcej
       </div>
     </div>

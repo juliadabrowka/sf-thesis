@@ -1,5 +1,10 @@
 import { computed, inject } from '@angular/core';
-import { ArticleCategory, ArticleDTO, ArticleService } from '@sf/sf-base';
+import {
+  ArticleCategory,
+  ArticleDTO,
+  ArticleService,
+  TripType,
+} from '@sf/sf-base';
 import {
   patchState,
   signalStore,
@@ -22,6 +27,7 @@ type SfArticleState = {
   article: ArticleDTO | undefined;
   loading: boolean;
   categoryFilter: ArticleCategory | undefined;
+  tripFilter: TripType | undefined;
   error: any;
 };
 
@@ -30,6 +36,7 @@ const initialState: SfArticleState = {
   article: undefined,
   loading: false,
   categoryFilter: undefined,
+  tripFilter: undefined,
   error: null,
 };
 
@@ -111,6 +118,11 @@ export const ArticleStore = signalStore(
 
     setCategoryFilter(categoryFilter: ArticleCategory) {
       patchState(store, { loading: true, categoryFilter });
+      patchState(store, { loading: false });
+    },
+
+    setTripFilter(tripFilter: TripType) {
+      patchState(store, { loading: true, tripFilter });
       patchState(store, { loading: false });
     },
   })),

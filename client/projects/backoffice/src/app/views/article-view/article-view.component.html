@@ -1,18 +1,18 @@
-<nz-card [nzTitle]="postTemplate" [nzExtra]="__article$$()?.Id ? extraTemplate : undefined" [nzBordered]="false">
-  @if (__loading$$()) {
+<nz-card [nzTitle]="postTemplate" [nzExtra]="article()?.Id ? extraTemplate : undefined" [nzBordered]="false">
+  @if (loading()) {
     <div class="loading-container">
       loading
       <mat-spinner [diameter]="50"></mat-spinner>
     </div>
   } @else {
     <sf-article-form
-      [sfArticle]="__article$$()"
-      [sfLoading]="__loading$$()"
+      [sfArticle]="article()"
+      [sfLoading]="loading()"
     ></sf-article-form>
 
     <sf-button
-      [sfButtonText]="__article$$()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
-      (sfOnButtonClicked)="__article$$()?.Id ? __onSaveClick() : __onCreateClick()"
+      [sfButtonText]="article()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
+      (sfOnButtonClicked)="article()?.Id ? onSaveClick() : onCreateClick()"
     ></sf-button>
   }
 </nz-card>
@@ -20,7 +20,7 @@
 <ng-template #postTemplate>
   <sf-icon-and-text
     [sfText]="'Post'"
-    [sfIcon]="__icons.post"
+    [sfIcon]="icons.post"
   ></sf-icon-and-text>
 </ng-template>
 
@@ -34,7 +34,7 @@
   >
     <sf-icon-and-text
       [sfText]="'Usuń'"
-      [sfIcon]="__icons.delete"
+      [sfIcon]="icons.delete"
     ></sf-icon-and-text>
   </div>
   <ng-template #removeConfirmation>
@@ -52,7 +52,7 @@
           [nzType]="'primary'"
           [nzDanger]="true"
           [nzSize]="'small'"
-          (click)="__removeArticle(__article$$()?.Id)"
+          (click)="removeArticle(article()?.Id)"
         >Usuń
         </button>
       </div>

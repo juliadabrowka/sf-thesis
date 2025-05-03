@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SfTripGridComponent } from '../trip-grid/trip-grid.component';
 import { PageTitleFramedComponent } from '../../page-title-framed/page-title-framed.component';
-import { ArticleStore, TripDTO, TripType } from '@sf/sf-base';
+import { ArticleStore, TripDTO, TripType, TripTypeLabels } from '@sf/sf-base';
 import { SfFilterTripsByTypePipe } from './filter-trips-by-type.pipe';
 import { NzDividerComponent } from 'ng-zorro-antd/divider';
 import { AsyncPipe } from '@angular/common';
@@ -24,18 +24,18 @@ export interface TripFlag {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfTripCalendarComponent {
-  private readonly store = inject(ArticleStore);
+  private readonly __store = inject(ArticleStore);
+
+  public readonly sfTrips = this.__store.trips;
 
   public readonly titleFramed = 'KALENDARIUM WYPRAW 2024/2025';
-  public readonly __tripTypes = Object.keys(TripType).map((k) => ({
-    label: TripType[k as keyof typeof TripType],
+  public readonly tripTypes = Object.keys(TripType).map((k) => ({
+    label: TripTypeLabels[k as keyof typeof TripType],
     value: k as TripType,
-    icon: this.getDataForTripType(TripType[k as keyof typeof TripType]),
+    icon: this.__getDataForTripType(TripType[k as keyof typeof TripType]),
   }));
 
-  public readonly sfTrips = this.store.trips;
-
-  private getDataForTripType(tripTypeElement: TripType) {
+  private __getDataForTripType(tripTypeElement: TripType) {
     switch (tripTypeElement) {
       case TripType.Bike:
         return '/assets/wyprawy-bike-icon.png';

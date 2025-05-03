@@ -1,14 +1,14 @@
-<form nz-form [formGroup]="__formGroup" (ngSubmit)="submitForm()">
+<form nz-form [formGroup]="formGroup" (ngSubmit)="submitForm()">
   <nz-form-item>
     <nz-form-label nzRequired>Imię</nz-form-label>
     <nz-form-control>
-      <input nz-input [formControl]="__controls.name"/>
+      <input nz-input [formControl]="controls.name"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label nzRequired>E-mail</nz-form-label>
     <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
-      <input nz-input [formControl]="__controls.email" placeholder="email" type="email"/>
+      <input nz-input [formControl]="controls.email" placeholder="email" type="email"/>
       <ng-template #emailErrorTpl let-control>
         @if (control.errors?.['email']) {
           The input is not valid E-mail!
@@ -22,13 +22,13 @@
   <nz-form-item>
     <nz-form-label nzRequired>Telefon</nz-form-label>
     <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
-      <input nz-input type="tel" [formControl]="__controls.phone"/>
+      <input nz-input type="tel" [formControl]="controls.phone"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label>Dodatkowe info</nz-form-label>
     <nz-form-control>
-      <textarea [formControl]="__controls.extra" nz-input rows="4" placeholder=":-)"></textarea>
+      <textarea [formControl]="controls.extra" nz-input rows="4" placeholder=":-)"></textarea>
     </nz-form-control>
   </nz-form-item>
 </form>

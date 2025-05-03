@@ -1,6 +1,6 @@
 <nz-table
   #articleTable
-  [nzData]="__articles$$.value"
+  [nzData]="sfArticles()"
   [nzBordered]="true"
   [nzOuterBordered]="true"
   [nzFrontPagination]="false"
@@ -8,7 +8,7 @@
 >
   <thead>
   <tr>
-    @for (column of __columns; track column) {
+    @for (column of columns; track column) {
       <th
         [nzSortFn]="column.sortFn"
         class="th"

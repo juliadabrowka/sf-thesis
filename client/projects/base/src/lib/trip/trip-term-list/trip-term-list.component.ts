@@ -1,18 +1,13 @@
-import {ChangeDetectionStrategy, Component, input} from '@angular/core';
-import {TripTermDTO} from '@sf/sf-base';
-import {TripTermDetailsComponent} from '../trip-term-details/trip-term-details.component';
-import {NzEmptyComponent} from 'ng-zorro-antd/empty';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TripTermDTO } from '@sf/sf-base';
 
 @Component({
   selector: 'sf-trip-term-list',
-  imports: [
-    TripTermDetailsComponent,
-    NzEmptyComponent
-  ],
+  imports: [],
   templateUrl: './trip-term-list.component.html',
   styleUrl: './trip-term-list.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripTermListComponent {
-  public sfTripTerms = input<TripTermDTO[]>([]);
+  public readonly sfTripTerms = input<TripTermDTO[] | null | undefined>([]);
 }

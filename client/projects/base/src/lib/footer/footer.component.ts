@@ -16,9 +16,9 @@ import { FooterPieceComponent } from './footer-piece/footer-piece.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfFooterComponent {
-  public newsletterTemplate = viewChild<TemplateRef<any>>('newsletterTemplate');
-
-  public readonly __footerPieces = signal<
+  public readonly newsletterTemplate =
+    viewChild<TemplateRef<any>>('newsletterTemplate');
+  public readonly footerPieces = signal<
     { title: string; content: string[] | TemplateRef<any> }[]
   >([
     {
@@ -49,7 +49,7 @@ export class SfFooterComponent {
     effect(() => {
       const template = this.newsletterTemplate();
       if (template) {
-        this.__footerPieces.update((pieces) =>
+        this.footerPieces.update((pieces) =>
           pieces.map((p) =>
             p.title.includes('newsletter') ? { ...p, content: template } : p,
           ),

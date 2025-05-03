@@ -18,9 +18,7 @@ import { DatePipe } from '@angular/common';
 export class SfTripTableComponent {
   public readonly sfArticles = input<ArticleDTO[]>([]);
   public readonly sfLoading = input<boolean | null>();
-
   public readonly sfOnTripClick = output<ArticleDTO>();
-
   public readonly __columns: ColumnItem<ArticleDTO>[] = [
     {
       name: 'Nazwa',

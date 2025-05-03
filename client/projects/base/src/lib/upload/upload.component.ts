@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   output,
+  signal,
 } from '@angular/core';
 import { SfIcons } from '../icons';
 import { NzUploadComponent, NzUploadFile } from 'ng-zorro-antd/upload';
@@ -25,25 +26,25 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfUploadComponent {
-  private readonly uploadService = inject(UploadService);
-  private readonly msg = inject(NzMessageService);
+  private readonly __uploadService = inject(UploadService);
+  private readonly __messageService = inject(NzMessageService);
 
-  public readonly __icons = SfIcons;
-  public fileList: NzUploadFile[] = [];
+  public readonly icons = SfIcons;
+  public readonly fileList = signal<NzUploadFile[]>([]);
   public readonly sfUploadedImgUrl = output<string>();
 
   customUpload = (item: any) => {
     const file = item.file as File;
 
-    return this.uploadService.uploadFile(file).subscribe({
+    return this.__uploadService.uploadFile(file).subscribe({
       next: (res) => {
         item.onSuccess!(res, item.file, {});
         this.sfUploadedImgUrl.emit(res.imageUrl);
-        this.msg.success('Plik poprawnie załadowany');
+        this.__messageService.success('Plik poprawnie załadowany');
       },
       error: (err) => {
         item.onError!(err);
-        this.msg.error('Plik nie został załadowany');
+        this.__messageService.error('Plik nie został załadowany');
       },
     });
   };

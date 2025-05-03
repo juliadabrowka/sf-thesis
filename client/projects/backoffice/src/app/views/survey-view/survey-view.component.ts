@@ -14,17 +14,17 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrl: './survey-view.component.css',
 })
 export class SfBackofficeSurveyViewComponent {
-  private readonly articleStore = inject(ArticleStore);
-  private readonly surveyStore = inject(SurveyStore);
-  private readonly msg = inject(NzMessageService);
+  private readonly __articleStore = inject(ArticleStore);
+  private readonly __surveyStore = inject(SurveyStore);
+  private readonly __messageService = inject(NzMessageService);
 
-  public __trips = this.articleStore.trips;
-  public __survey = this.surveyStore.survey;
+  public readonly trips = this.__articleStore.trips;
+  public readonly survey = this.__surveyStore.survey;
 
   public async __createSurvey() {
-    const survey = this.__survey();
+    const survey = this.survey();
     if (survey) {
-      await this.surveyStore.createSurvey(survey);
+      await this.__surveyStore.createSurvey(survey);
     }
   }
 }

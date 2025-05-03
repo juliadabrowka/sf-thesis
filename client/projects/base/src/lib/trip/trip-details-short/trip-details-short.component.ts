@@ -10,15 +10,10 @@ import { NzDividerComponent } from 'ng-zorro-antd/divider';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripDetailsShortComponent {
-  __getTripMonth(tripTerms: TripTermDTO[]) {
-    return getTripMonth(tripTerms);
-  }
-
   public readonly sfTripDetails = input<TripDTO | null | undefined>();
 
-  __getTripLength(tripTerms: TripTermDTO[]): string {
-    return getTripLength(tripTerms);
-  }
+  protected readonly getTripMonth = getTripMonth;
+  protected readonly getTripLength = getTripLength;
 }
 
 export function getTripMonth(tripTerms: TripTermDTO[]): string {

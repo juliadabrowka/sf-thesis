@@ -36,26 +36,26 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly articleStore = inject(ArticleStore);
+  private readonly __router = inject(Router);
+  private readonly __activatedRoute = inject(ActivatedRoute);
+  private readonly __articleStore = inject(ArticleStore);
 
-  public readonly __icons = SfIcons;
+  public readonly icons = SfIcons;
 
-  public __onElementIdClicked(elementId: number) {
+  public onElementIdClicked(elementId: number) {
     console.log(elementId);
   }
 
-  async __createNewArticle() {
-    this.articleStore.setArticle(undefined);
-    await this.router.navigate(['create-article'], {
-      relativeTo: this.activatedRoute,
+  async createNewArticle() {
+    this.__articleStore.setArticle(undefined);
+    await this.__router.navigate(['create-article'], {
+      relativeTo: this.__activatedRoute,
     });
   }
 
-  async __createNewTrip() {
-    await this.router.navigate(['create-survey'], {
-      relativeTo: this.activatedRoute,
+  async createNewTrip() {
+    await this.__router.navigate(['create-survey'], {
+      relativeTo: this.__activatedRoute,
     });
   }
 }

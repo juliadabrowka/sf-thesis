@@ -1,9 +1,14 @@
-<nz-card [nzTitle]="title">
+<nz-card [nzTitle]="tableTitle" [nzBordered]="false">
   <sf-article-table
-    [sfArticles]="__articles()"
-    [sfLoading]="__loading$$()"
-    (sfOnArticleClick)="__onArticleClicked($event)"
+    [sfArticles]="articles()"
+    [sfLoading]="loading()"
+    (sfOnArticleClick)="onArticleClicked($event)"
   ></sf-article-table>
 </nz-card>
 
-<ng-template #title></ng-template>
+<ng-template #tableTitle>
+  <sf-icon-and-text
+    [sfText]="title()"
+    [sfIcon]="icon()"
+  ></sf-icon-and-text>
+</ng-template>

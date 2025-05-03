@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleSiderComponent {
-  private readonly store = inject(ArticleStore);
+  private readonly __store = inject(ArticleStore);
 
-  public siderData = this.store.articles;
+  public readonly articles = this.__store.articles;
 }

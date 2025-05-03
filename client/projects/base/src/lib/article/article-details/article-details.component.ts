@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ArticleStore } from '../../../state/article-store';
-import { filter, firstValueFrom, map } from 'rxjs';
 import { PageTitleFramedComponent } from '../../page-title-framed/page-title-framed.component';
 import { ArticleDetailsInnerComponent } from '../article-details-inner/article-details-inner.component';
 
@@ -15,34 +20,31 @@ import { ArticleDetailsInnerComponent } from '../article-details-inner/article-d
   providers: [ArticleStore],
 })
 export class SfArticleDetailsComponent {
-  private readonly activatedRoute = inject(ActivatedRoute);
-  public readonly articleStore = inject(ArticleStore);
+  private readonly __activatedRoute = inject(ActivatedRoute);
+  private readonly __articleStore = inject(ArticleStore);
 
-  public __article = this.articleStore.article;
-  private articles$ = toObservable(this.articleStore.articles);
+  public readonly article = this.__articleStore.article;
+  private readonly __articles = this.__articleStore.articles;
+  private readonly __customLink = signal<string>('');
 
   constructor() {
-    this.activatedRoute.paramMap
+    this.__activatedRoute.paramMap
       .pipe(takeUntilDestroyed())
-      .subscribe(async (params) => {
+      .subscribe((params) => {
         const param = params.get('customLink') ?? '';
-        await this.loadArticleByUrl(param);
+        this.__customLink.set(param);
       });
-  }
 
-  private async loadArticleByUrl(customLink: string) {
-    const a = await firstValueFrom(
-      this.articles$.pipe(
-        filter((articles) => articles.length > 0),
-        map((articles) => {
-          const article = articles.find((a) => a.Url === customLink);
-          if (!article) {
-            throw new Error('Article not found');
-          }
-          return article;
-        }),
-      ),
-    );
-    await this.articleStore.loadArticleDetails(a.Id ?? 0);
+    effect(async () => {
+      const link = this.__customLink();
+      const articles = this.__articles();
+      const article = articles.find((a) => a.Url === link);
+
+      if (!article?.Id) {
+        throw new Error('Article not found');
+      }
+
+      await this.__articleStore.loadArticleDetails(article.Id);
+    });
   }
 }

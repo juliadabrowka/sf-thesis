@@ -19,10 +19,10 @@ import { ArticleCategory } from '../../data-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfMainPageComponent {
-  private readonly articleStore = inject(ArticleStore);
+  private readonly __articleStore = inject(ArticleStore);
 
-  public readonly __articles = this.articleStore.articles;
-  public readonly __sections = [
+  public readonly articles = this.__articleStore.articles;
+  public readonly sections = [
     {
       title: 'superfemka to wyprawy rowerowe, wyjazdy i warsztaty dla kobiet',
       subtitle: 'niezapomniana podróż dla każdej z nas!',

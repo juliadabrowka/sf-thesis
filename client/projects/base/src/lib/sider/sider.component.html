@@ -2,35 +2,38 @@
   <nz-collapse [nzExpandIconPosition]="'end'">
     <nz-collapse-panel [nzHeader]="postsTemplate">
       <sf-icon-and-text
-        [sfIcon]="__icons.recommendations"
+        [sfIcon]="icons.recommendations"
         [sfText]="'Rekomendacje'"
-        (click)="__goToRecommendations()"
+        (click)="goToRecommendations()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="__icons.tips"
+        [sfIcon]="icons.tips"
         [sfText]="'Ciekawostki'"
-        (click)="__goToTips()"
+        (click)="goToTips()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="__icons.photoRel"
+        [sfIcon]="icons.photoRel"
         [sfText]="'Fotorelacje'"
-        (click)="__goToStories()"
+        (click)="goToStories()"
       ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>
   <nz-collapse [nzExpandIconPosition]="'end'">
     <nz-collapse-panel [nzHeader]="tripsTemplate">
       <sf-icon-and-text
-        [sfIcon]="__icons.classicTrip"
+        [sfIcon]="icons.classicTrip"
         [sfText]="'Classic'"
+        (click)="goToClassicTrips()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="__icons.weekendTrip"
+        [sfIcon]="icons.weekendTrip"
         [sfText]="'Weekend'"
+        (click)="goToWeekendTrips()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="__icons.bikeTrip"
+        [sfIcon]="icons.bikeTrip"
         [sfText]="'Rower'"
+        (click)="goToBikeTrips()"
       ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>
@@ -38,12 +41,14 @@
   <nz-collapse [nzExpandIconPosition]="'end'">
     <nz-collapse-panel [nzHeader]="formsTemplate">
       <sf-icon-and-text
-        [sfIcon]="__icons.allForms"
+        [sfIcon]="icons.allForms"
         [sfText]="'Wszystkie formularze'"
+        (click)="goToStories()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="__icons.addForm"
+        [sfIcon]="icons.addForm"
         [sfText]="'Dodaj nowy'"
+        (click)="goToStories()"
       ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>
@@ -51,28 +56,21 @@
 
 <ng-template #postsTemplate>
   <sf-icon-and-text
-    [sfIcon]="__icons.posts"
+    [sfIcon]="icons.posts"
     [sfText]="'Posty'"
   ></sf-icon-and-text>
 </ng-template>
 
 <ng-template #tripsTemplate>
   <sf-icon-and-text
-    [sfIcon]="__icons.trips"
+    [sfIcon]="icons.trips"
     [sfText]="'Wyprawy'"
-  ></sf-icon-and-text>
-</ng-template>
-
-<ng-template #mediaTemplate>
-  <sf-icon-and-text
-    [sfIcon]="__icons.media"
-    [sfText]="'Media'"
   ></sf-icon-and-text>
 </ng-template>
 
 <ng-template #formsTemplate>
   <sf-icon-and-text
-    [sfIcon]="__icons.forms"
+    [sfIcon]="icons.forms"
     [sfText]="'Formularze'"
   ></sf-icon-and-text>
 </ng-template>

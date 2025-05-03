@@ -14,7 +14,7 @@ import {
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleStore } from '../../state/article-store';
-import { ArticleCategory } from '../../data-types';
+import { ArticleCategory, TripType } from '../../data-types';
 
 @Component({
   selector: 'sf-sider',
@@ -30,31 +30,55 @@ import { ArticleCategory } from '../../data-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfSiderComponent {
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly store = inject(ArticleStore);
+  private readonly __router = inject(Router);
+  private readonly __activatedRoute = inject(ActivatedRoute);
+  private readonly __store = inject(ArticleStore);
 
-  protected readonly __icons = SfIcons;
+  protected readonly icons = SfIcons;
   public readonly sfOnElementClicked = output<number>();
 
-  public async __goToRecommendations() {
-    this.store.setCategoryFilter(ArticleCategory.Rekomendacje);
-    await this.router.navigate(['recommendations'], {
-      relativeTo: this.activatedRoute,
+  public async goToRecommendations() {
+    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    await this.__router.navigate(['recommendations'], {
+      relativeTo: this.__activatedRoute,
     });
   }
 
-  public async __goToTips() {
-    this.store.setCategoryFilter(ArticleCategory.Rekomendacje);
-    await this.router.navigate(['tips'], {
-      relativeTo: this.activatedRoute,
+  public async goToTips() {
+    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    await this.__router.navigate(['tips'], {
+      relativeTo: this.__activatedRoute,
     });
   }
 
-  public async __goToStories() {
-    this.store.setCategoryFilter(ArticleCategory.Rekomendacje);
-    await this.router.navigate(['photo-stories'], {
-      relativeTo: this.activatedRoute,
+  public async goToStories() {
+    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    await this.__router.navigate(['photo-stories'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
+
+  public async goToClassicTrips() {
+    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setTripFilter(TripType.Classic);
+    await this.__router.navigate(['classic-trips'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
+
+  public async goToWeekendTrips() {
+    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setTripFilter(TripType.Weekend);
+    await this.__router.navigate(['weekend-trips'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
+
+  public async goToBikeTrips() {
+    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setTripFilter(TripType.Bike);
+    await this.__router.navigate(['bike-trips'], {
+      relativeTo: this.__activatedRoute,
     });
   }
 }

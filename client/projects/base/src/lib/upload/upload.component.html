@@ -2,11 +2,11 @@
   [nzCustomRequest]="customUpload"
   [nzMultiple]="false"
   [nzListType]="'picture'"
-  [(nzFileList)]="fileList"
+  [nzFileList]="fileList()"
 >
   <button nz-button>
     <sf-icon-and-text
-      [sfIcon]="__icons.upload"
+      [sfIcon]="icons.upload"
       [sfText]="'Wybierz pliki do załadowania'"
     ></sf-icon-and-text>
   </button>

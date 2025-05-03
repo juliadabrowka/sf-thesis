@@ -1,61 +1,61 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import {
-  ArticleCategory,
   ArticleDTO,
   ArticleStore,
-  DefaultArticleCategoryValue,
   SfArticleTableComponent,
+  SfIconAndTextComponent,
 } from '@sf/sf-base';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'sf-backoffice-filtered-table-view',
-  imports: [NzCardComponent, SfArticleTableComponent],
+  imports: [NzCardComponent, SfArticleTableComponent, SfIconAndTextComponent],
   templateUrl: './filtered-table-view.component.html',
   styleUrl: './filtered-table-view.component.css',
 })
 export class SfFilteredTableViewComponent {
-  private readonly store = inject(ArticleStore);
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly __store = inject(ArticleStore);
+  private readonly __router = inject(Router);
+  private readonly __activatedRoute = inject(ActivatedRoute);
 
-  public readonly __articles = signal<ArticleDTO[]>([]);
-  public readonly __loading$$ = this.store.loading;
+  public readonly articles = signal<ArticleDTO[]>([]);
+  public readonly loading = this.__store.loading;
+  public readonly icon = signal<IconDefinition | undefined>(undefined);
+  public readonly title = signal('');
 
-  private readonly categoryFilter = this.store.categoryFilter;
+  private readonly __articles = this.__store.articles;
+  private readonly __categoryFilter = this.__store.categoryFilter;
+  private readonly __tripFilter = this.__store.tripFilter;
 
   constructor() {
-    this.activatedRoute.data.pipe(takeUntilDestroyed()).subscribe((data) => {
-      const filter = data['filter'];
-      let articleCategory = DefaultArticleCategoryValue;
-      switch (filter) {
-        case 'recommendations':
-          articleCategory = ArticleCategory.Rekomendacje;
-          break;
-        case 'tips':
-          articleCategory = ArticleCategory.Ciekawostki;
-          break;
-        case 'stories':
-          articleCategory = ArticleCategory.Fotorelacje;
-          break;
-      }
-      this.store.setCategoryFilter(articleCategory);
+    this.__activatedRoute.data.pipe(takeUntilDestroyed()).subscribe((data) => {
+      const categoryFilter = data['categoryFilter'];
+      const tripFilter = data['tripFilter'];
+      this.icon.set(data['icon']);
+      this.title.set(data['title']);
+
+      this.__store.setCategoryFilter(categoryFilter);
+      this.__store.setTripFilter(tripFilter);
     });
 
     effect(() => {
-      const cf = this.categoryFilter();
-      const articles = this.store.articles();
+      const cf = this.__categoryFilter();
+      const tf = this.__tripFilter();
+      const articles = this.__articles();
       const filteredArticles = articles.filter(
-        (article) => article.ArticleCategory === cf,
+        (article) =>
+          article.ArticleCategory === cf &&
+          (tf ? article.TripDto?.Type === tf : false),
       );
 
-      this.__articles.set(filteredArticles);
+      this.articles.set(filteredArticles);
     });
   }
 
-  public async __onArticleClicked(article: ArticleDTO) {
-    await this.router.navigate([`admin-backoffice/articles/${article.Id}`]);
+  public async onArticleClicked(article: ArticleDTO) {
+    await this.__router.navigate([`admin-backoffice/articles/${article.Id}`]);
   }
 }

@@ -1,11 +1,11 @@
 <nz-card [nzTitle]="surveyTitleTemplate" [nzBordered]="false">
-  <form nz-form [formGroup]="__formGroup">
+  <form nz-form [formGroup]="formGroup">
     <div class="survey-start">
       <div class="survey-title">
         <nz-form-item>
           <nz-form-label>Tytuł</nz-form-label>
           <nz-form-control>
-            <input [formControl]="__controls.title" placeholder="Wpisz tytuł"/>
+            <input [formControl]="controls.title" placeholder="Wpisz tytuł"/>
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -14,7 +14,7 @@
         <nz-form-item>
           <nz-form-label>Wyprawa</nz-form-label>
           <nz-form-control>
-            <nz-select [formControl]="__controls.trip" [nzOptions]="__tripOptions"></nz-select>
+            <nz-select [formControl]="controls.trip" [nzOptions]="tripOptions()"></nz-select>
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -25,7 +25,7 @@
           <nz-form-control>
             <input
               class="question-input"
-              [formControl]="__controls.question"
+              [formControl]="controls.question"
               placeholder="Wpisz pytanie"
             />
           </nz-form-control>
@@ -36,13 +36,13 @@
           [nzTooltipTitle]="'Naciśnij, aby dodać pytanie do ankiety'"
           class="save-button"
           (click)="addQuestion()">
-          <fa-icon [icon]="__icons.add"></fa-icon>
+          <fa-icon [icon]="icons.add"></fa-icon>
         </div>
       </div>
     </div>
     <div class="questions">
       <span class="questions-title">Pytania</span>
-      @if (__questionsArray.length === 0) {
+      @if (questionsArray.length === 0) {
         <nz-empty
           nzNotFoundImage="assets/empty-folder.png"
           nzNotFoundContent="Brak dodanych pytań dla tej ankiety"
@@ -53,28 +53,28 @@
         cdkDropList
         (cdkDropListDropped)="onDrop($event)"
       >
-        @for (question of __questionsArray.controls; track $index) {
+        @for (question of questionsArray.controls; track $index) {
           <div class="question-row" cdkDrag [cdkDragData]="question">
             <div class="drag-handle" cdkDragHandle>⠿</div>
 
             <div class="question-content">
-              @if (editingIndex === $index) {
+              @if (editingIndex() === $index) {
                 <input
-                  [formControl]="__questionsArray.at($index)"
+                  [formControl]="questionsArray.at($index)"
                   class="edit-input"
                   placeholder="Edytuj pytanie"
                 />
                 <div class="confirm-button custom-button">
                   <sf-icon-and-text
                     [sfText]="'Zapisz'"
-                    [sfIcon]="__icons.save"
+                    [sfIcon]="icons.save"
                     (click)="saveEdit($index)"
                   ></sf-icon-and-text>
                 </div>
                 <div class="cancel-button custom-button">
                   <sf-icon-and-text
                     [sfText]="'Anuluj'"
-                    [sfIcon]="__icons.cancel"
+                    [sfIcon]="icons.cancel"
                     (click)="cancelEdit()"
                   ></sf-icon-and-text>
                 </div>
@@ -83,7 +83,7 @@
                 <div class="edit-button custom-button">
                   <sf-icon-and-text
                     [sfText]="'Edytuj'"
-                    [sfIcon]="__icons.editQuestion"
+                    [sfIcon]="icons.editQuestion"
                     (click)="startEditing($index)"
                   ></sf-icon-and-text>
                 </div>
@@ -91,7 +91,7 @@
               <div class="remove-button custom-button">
                 <sf-icon-and-text
                   [sfText]="'Usuń'"
-                  [sfIcon]="__icons.delete"
+                  [sfIcon]="icons.delete"
                   (click)="removeQuestion($index)"
                 ></sf-icon-and-text>
               </div>
@@ -106,6 +106,6 @@
 <ng-template #surveyTitleTemplate>
   <sf-icon-and-text
     [sfText]="'Kreator ankiet'"
-    [sfIcon]="__icons.surveyAdd"
+    [sfIcon]="icons.surveyAdd"
   ></sf-icon-and-text>
 </ng-template>

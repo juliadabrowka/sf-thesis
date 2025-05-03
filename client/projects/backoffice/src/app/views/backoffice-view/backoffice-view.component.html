@@ -1,29 +1,29 @@
-<nz-card [nzTitle]="articlesTemplate">
+<nz-card [nzTitle]="articlesTemplate" [nzBordered]="false">
   <sf-article-table
-    [sfArticles]="__articles$$()"
-    [sfLoading]="__loading$$()"
-    (sfOnArticleClick)="__onArticleClicked($event)"
+    [sfArticles]="articles()"
+    [sfLoading]="loading()"
+    (sfOnArticleClick)="onArticleClicked($event)"
   ></sf-article-table>
 </nz-card>
 
-<nz-card [nzTitle]="tripsTemplate">
+<nz-card [nzTitle]="tripsTemplate" [nzBordered]="false">
   <sf-trip-table
-    [sfArticles]="__articles$$()"
-    [sfLoading]="__loading$$()"
-    (sfOnTripClick)="__onArticleClicked($event)"
+    [sfArticles]="articles()"
+    [sfLoading]="loading()"
+    (sfOnTripClick)="onArticleClicked($event)"
   ></sf-trip-table>
 </nz-card>
 
 <ng-template #articlesTemplate>
   <sf-icon-and-text
-    [sfIcon]="__icons.posts"
+    [sfIcon]="icons.posts"
     [sfText]="'Posty'"
   ></sf-icon-and-text>
 </ng-template>
 
 <ng-template #tripsTemplate>
   <sf-icon-and-text
-    [sfIcon]="__icons.trips"
+    [sfIcon]="icons.trips"
     [sfText]="'Wyprawy'"
   ></sf-icon-and-text>
 </ng-template>

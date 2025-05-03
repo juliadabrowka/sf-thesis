@@ -1,6 +1,6 @@
 @if (sfTripInfo(); as trip) {
   <div class="trip-container">
-    <div class="left" (click)="__navigateToTrip(trip.trip)">
+    <div class="left" (click)="navigateToTrip(trip.trip)">
       @if (trip.flagSrc) {
         <div class="flag">
           <img [src]="trip.flagSrc" alt="flaga">
@@ -36,7 +36,7 @@
           }
         </div>
       </div>
-      @if (__showSlider) {
+      @if (showSlider()) {
         <div class="application-form">
           <sf-application-form></sf-application-form>
           <sf-button

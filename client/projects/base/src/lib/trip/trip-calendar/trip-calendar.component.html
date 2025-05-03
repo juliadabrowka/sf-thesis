@@ -5,7 +5,7 @@
   ></sf-page-title-framed>
 </div>
 <div class="trip-grid">
-  @for (tripType of __tripTypes; track tripType) {
+  @for (tripType of tripTypes; track tripType) {
     <sf-trip-grid
       [sfTitle]="tripType.label"
       [sfTrips]="sfTrips() | sfFilterTripsByType : tripType.value | async"

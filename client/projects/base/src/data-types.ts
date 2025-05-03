@@ -29,10 +29,16 @@ export enum Status {
 }
 
 export enum TripType {
-  Classic = 'Wyprawy Classic',
-  Weekend = 'Weekendowe wojaże',
-  Bike = 'Wyprawy Rowerowe',
+  Classic = 'Classic',
+  Weekend = 'Weekend',
+  Bike = 'Bike',
 }
+
+export const TripTypeLabels: Record<TripType, string> = {
+  [TripType.Classic]: 'Wyprawy classic',
+  [TripType.Weekend]: 'Weekendowe wojaże',
+  [TripType.Bike]: 'Wyprawy rowerowe',
+};
 
 export const DefaultArticleCategoryValue = ArticleCategory.Fotorelacje;
 export const DefaultCountryValue = Country.Polska;

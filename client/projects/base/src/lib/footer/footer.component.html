@@ -1,5 +1,5 @@
 <div class="footer-bar">
-  @for (piece of __footerPieces(); track $index) {
+  @for (piece of footerPieces(); track $index) {
     <sf-footer-piece
       [sfTitle]="piece.title"
       [sfContent]="piece.content"

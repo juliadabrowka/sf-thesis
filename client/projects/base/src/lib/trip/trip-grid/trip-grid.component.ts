@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { SfIconAndTextComponent, SfIcons } from '@sf/sf-base';
+import { SfIconAndTextComponent } from '@sf/sf-base';
 import { SfTripInlineComponent } from '../trip-inline/trip-inline.component';
 import { TripFlag } from '../trip-calendar/trip-calendar.component';
 
@@ -13,7 +13,5 @@ import { TripFlag } from '../trip-calendar/trip-calendar.component';
 export class SfTripGridComponent {
   public readonly sfTrips = input<TripFlag[] | null | undefined>();
   public readonly sfTitle = input<string | null | undefined>();
-  public readonly sfIcon = input<string | null>();
-
-  public readonly __icons = SfIcons;
+  public readonly sfIcon = input<string | null | undefined>();
 }

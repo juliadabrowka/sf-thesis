@@ -1,13 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  inject,
+  effect,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { SfButtonComponent, TripTermDTO } from '@sf/sf-base';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -37,9 +36,7 @@ import { DatePipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripTermDetailsComponent {
-  private readonly cdr = inject(ChangeDetectorRef);
-
-  public readonly sfTripTerms = input<TripTermDTO[]>([]);
+  public readonly sfTripTerms = input<TripTermDTO[] | null | undefined>([]);
   public readonly sfTripId = input<number | null | undefined>(undefined);
   public readonly sfTripTermsUpdated = output<TripTermDTO[]>();
 
@@ -51,18 +48,16 @@ export class TripTermDetailsComponent {
     participantsTotal: new FormControl<number>(0, { nonNullable: true }),
     participantsCurrent: new FormControl<number>(0, { nonNullable: true }),
   };
-  public __formGroup = new FormGroup(this.__controls);
+  public readonly __formGroup = new FormGroup(this.__controls);
   public readonly __columns = ['ID terminu', 'Daty', 'Cena', 'Wolne miejsca'];
-  public __editId: number | undefined;
-  __editForms: Record<number, FormGroup> = {};
+  public readonly editId = signal<number | undefined>(undefined);
+  private readonly __editForms = signal<Record<number, FormGroup>>({});
 
   constructor() {
-    toObservable(this.sfTripTerms)
-      .pipe(takeUntilDestroyed())
-      .subscribe((tripTerms) => {
-        //tripTerms.forEach((tripTerm) => this.patchTripTerms(tripTerm));
-        this.cdr.markForCheck();
-      });
+    effect(() => {
+      const tripTerms = this.sfTripTerms();
+      //tripTerms.forEach((tripTerm) => this.patchTripTerms(tripTerm));
+    });
   }
 
   startEdit(tripTermDTO: TripTermDTO): void {
@@ -70,11 +65,11 @@ export class TripTermDetailsComponent {
       throw new Error('TripTerm is required');
     }
     console.log(tripTermDTO);
-    this.__editId = tripTermDTO.Id;
+    this.editId.set(tripTermDTO.Id);
   }
 
   stopEdit(): void {
-    this.__editId = undefined;
+    this.editId.set(undefined);
   }
 
   __addTripTerm() {
@@ -96,10 +91,10 @@ export class TripTermDetailsComponent {
       throw new Error('Trip id is undefined but should not be');
     }
 
-    const form = this.__editForms[id];
+    const form = this.__editForms()[id];
     if (form.invalid) return;
 
-    const updatedTripTerms = this.sfTripTerms().map((term) =>
+    const updatedTripTerms = (this.sfTripTerms() ?? []).map((term) =>
       term.Id === id ? { ...term, ...form.getRawValue() } : term,
     );
 

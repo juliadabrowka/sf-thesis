@@ -24,17 +24,17 @@ import { NzCardComponent } from 'ng-zorro-antd/card';
   providers: [ArticleStore],
 })
 export class SfBackofficeComponent {
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-  private readonly articleStore = inject(ArticleStore);
+  private readonly __router = inject(Router);
+  private readonly __activatedRoute = inject(ActivatedRoute);
+  private readonly __articleStore = inject(ArticleStore);
 
-  public readonly __icons = SfIcons;
-  public readonly __articles$$ = this.articleStore.articles;
-  public readonly __loading$$ = this.articleStore.loading;
+  public readonly icons = SfIcons;
+  public readonly articles = this.__articleStore.articles;
+  public readonly loading = this.__articleStore.loading;
 
-  async __onArticleClicked(article: ArticleDTO) {
-    await this.router.navigate([`articles/${article.Id}`], {
-      relativeTo: this.route,
+  async onArticleClicked(article: ArticleDTO) {
+    await this.__router.navigate([`articles/${article.Id}`], {
+      relativeTo: this.__activatedRoute,
     });
   }
 }

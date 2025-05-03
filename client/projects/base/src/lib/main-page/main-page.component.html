@@ -10,7 +10,7 @@
 </div>
 
 <div class="main-page-content">
-  @for (section of __sections; track section) {
+  @for (section of sections; track section) {
     <sf-page-title
       [sfSubTitle]="section.subtitle"
       [sfTitle]="section.title"
@@ -50,7 +50,7 @@
     }
 
     <sf-tiles
-      [sfArticles]="__articles() | sfFilterArticlesByType: section.articleType"
+      [sfArticles]="articles() | sfFilterArticlesByType: section.articleType"
     ></sf-tiles>
     <span class="divider">
       <nz-divider></nz-divider>

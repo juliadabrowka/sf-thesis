@@ -1,6 +1,6 @@
 <nz-table
   #tripTermTable
-  [nzData]="sfTripTerms()">
+  [nzData]="sfTripTerms() ?? []">
   <thead>
   <tr>
     @for (column of __columns; track column) {
@@ -45,7 +45,7 @@
         <td>
           <div
             class="editable-cell"
-            [hidden]="__editId === tripTerm.Id"
+            [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
             {{ tripTerm.Name }}
@@ -53,7 +53,7 @@
           <input
             nz-input
             [(ngModel)]="tripTerm.Name"
-            [hidden]="__editId !== tripTerm.Id"
+            [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
           />
         </td>
@@ -61,14 +61,14 @@
         <td>
           <div
             class="editable-cell"
-            [hidden]="__editId === tripTerm.Id"
+            [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
             {{ tripTerm.DateFrom | date: 'dd/MM/yyyy' }}
           </div>
           <nz-date-picker
             [(ngModel)]="tripTerm.DateFrom"
-            [hidden]="__editId !== tripTerm.Id"
+            [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
         ></nz-date-picker>
         </td>
@@ -76,13 +76,13 @@
         <td>
           <nz-date-picker
             class="editable-cell"
-            [hidden]="__editId === tripTerm.Id"
+            [hidden]="editId() === tripTerm.Id"
           >
             {{ tripTerm.DateTo | date: 'dd/MM/yyyy' }}
           </nz-date-picker>
           <nz-date-picker
             [(ngModel)]="tripTerm.DateTo"
-            [hidden]="__editId !== tripTerm.Id"
+            [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
         ></nz-date-picker>
         </td>
@@ -90,7 +90,7 @@
         <td>
           <div
             class="editable-cell"
-            [hidden]="__editId === tripTerm.Id"
+            [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
             {{ tripTerm.Price }}
@@ -98,7 +98,7 @@
           </div>
           <nz-input-number
             [(ngModel)]="tripTerm.Price"
-            [hidden]="__editId !== tripTerm.Id"
+            [hidden]="editId() !== tripTerm.Id"
             (blur)="stopEdit()"
         ></nz-input-number>
         </td>
@@ -106,13 +106,13 @@
         <td>
           <div
             class="editable-cell"
-            [hidden]="__editId === tripTerm.Id"
+            [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
             {{ tripTerm.ParticipantsTotal }}
             <nz-input-number
               [(ngModel)]="tripTerm.ParticipantsTotal"
-              [hidden]="__editId !== tripTerm.Id"
+              [hidden]="editId() !== tripTerm.Id"
               (blur)="stopEdit()"
             ></nz-input-number>
           </div>
