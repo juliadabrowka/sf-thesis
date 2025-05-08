@@ -12,6 +12,10 @@ public interface ITripApplicationRepository
     Task<TripApplication> CreateTripApplication(TripApplication tripApplicationEntity);
     Task<TripApplication> GetTripApplicationsDetails(int tripApplicationId);
     Task<TripApplication> UpdateTripApplication(TripApplication newTripApplication);
+    Task<TripApplication[]> GetTripApplications();
+    Task SubmitTripApplication(TripApplication tripApplication);
+    Task SaveChangesAsync();
+    Task AutosaveTripApplication(TripApplication tripApplication);
 }
 public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicationRepository
 {
@@ -29,6 +33,10 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
                 .ThenInclude(t => t.Article)
             .Include(ta => ta.SurveyResponse)
                 .ThenInclude(sr => sr.SurveyAnswers)
+                .ThenInclude(sa => sa.SurveyQuestion)
+            .Include(ta => ta.Trip)
+                .ThenInclude(t => t.Survey)
+            .ThenInclude(s => s.SurveyQuestions)
             .FirstOrDefaultAsync(s => s.Hash == hash);
         
         if (tripApplication == null)
@@ -55,6 +63,7 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
         tripApplicationEntity.Trip = existingTrip;
         // create unique hash per trip application
         tripApplicationEntity.Hash = TripApplicationHashGenerator.GenerateHash(tripApplicationEntity);
+        tripApplicationEntity.Status = Status.Sent;
 
         await sfDbContext.TripApplications.AddAsync(tripApplicationEntity);
         await sfDbContext.SaveChangesAsync();
@@ -66,9 +75,9 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
     {
         var tripApplication = await sfDbContext.TripApplications
             .Include(ta => ta.SurveyResponse)
-            .ThenInclude(sr => sr.SurveyAnswers)
+                .ThenInclude(sr => sr.SurveyAnswers)
             .Include(ta => ta.Trip)
-            .ThenInclude(t => t.Survey)
+                .ThenInclude(t => t.Survey)
             .FirstOrDefaultAsync(ta => ta.Id == tripApplicationId);
 
         if (tripApplication == null)
@@ -84,5 +93,70 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
         sfDbContext.TripApplications.Update(newTripApplication);
         await sfDbContext.SaveChangesAsync();
         return newTripApplication;
+    }
+
+    public async Task<TripApplication[]> GetTripApplications()
+    {
+        return await sfDbContext.TripApplications
+            .Include(ta => ta.SurveyResponse)
+            .ThenInclude(sr => sr.SurveyAnswers)
+            .Include(ta => ta.Trip)
+            .ThenInclude(t => t.Article)
+            .ToArrayAsync();
+    }
+
+    public async Task SubmitTripApplication(TripApplication tripApplication)
+    {
+        var application = await sfDbContext.TripApplications
+            .Include(a => a.SurveyResponse)
+            .ThenInclude(sr => sr.SurveyAnswers)
+            .FirstOrDefaultAsync(a => a.Id == tripApplication.Id);
+
+        if (application == null)
+        {
+            throw new ApplicationException("Trip application doesnt exists!");
+        }
+
+        if (application.SurveyResponse == null)
+        {
+            application.SurveyResponse = new SurveyResponse
+            {
+                RepliedOn = DateTime.UtcNow
+            };
+        }
+
+        foreach (var dtoAnswer in tripApplication.SurveyResponse.SurveyAnswers)
+        {
+            var existingAnswer = application.SurveyResponse.SurveyAnswers
+                .FirstOrDefault(a => a.SurveyQuestionId == dtoAnswer.SurveyQuestionId);
+
+            if (existingAnswer != null)
+            {
+                existingAnswer.Answer = dtoAnswer.Answer;
+            }
+            else
+            {
+                application.SurveyResponse.SurveyAnswers.Add(new SurveyAnswer
+                {
+                    SurveyQuestionId = dtoAnswer.SurveyQuestionId,
+                    Answer = dtoAnswer.Answer
+                });
+            }
+        }
+
+        application.Status = Status.Completed;
+
+        await sfDbContext.SaveChangesAsync();
+    }
+    
+    public async Task SaveChangesAsync()
+    {
+        await sfDbContext.SaveChangesAsync();
+    }
+
+    public async Task AutosaveTripApplication(TripApplication tripApplication)
+    {
+        sfDbContext.Update(tripApplication);
+        await sfDbContext.SaveChangesAsync();
     }
 }

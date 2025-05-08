@@ -87,4 +87,10 @@ export class SfSiderComponent {
       relativeTo: this.__activatedRoute,
     });
   }
+
+  public async goToTripApplications() {
+    await this.__router.navigate(['trip-applications'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
 }

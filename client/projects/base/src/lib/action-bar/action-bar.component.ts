@@ -38,7 +38,10 @@ export class SfActionBarComponent {
         if (event.url === '/') {
           this.currentActionBarClass = 'action-bar-default-page';
           this.currentActionsClass = 'actions-default';
-        } else if (event.url === '/admin' || event.url.includes('/survey/')) {
+        } else if (
+          event.url === '/admin' ||
+          event.url.includes('/trip-application/')
+        ) {
           this.currentActionBarClass = 'action-bar-display-hidden';
         } else {
           this.currentActionBarClass = 'action-bar-other-page';

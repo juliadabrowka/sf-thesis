@@ -7,11 +7,11 @@ export const defaultViewRoutes: Routes = [
     component: SfBackofficeDefaultViewComponent,
     children: [
       {
-        path: 'survey/:hash',
+        path: 'trip-application/:hash',
         loadChildren: () =>
-          import(
-            '../../views/default-view/survey-view/survey-view.routes'
-          ).then((m) => m.surveyViewRoutes),
+          import('./trip-application-view/trip-application-view.routes').then(
+            (m) => m.tripApplicationViewRoutes,
+          ),
       },
       {
         path: 'kalendarium-wypraw',

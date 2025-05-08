@@ -112,8 +112,15 @@ class Program
         builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
         builder.Services.AddScoped<ISurveyService, SurveyService>();
+        
+        builder.Services.AddScoped<ISurveyAnswerRepository, SurveyAnswerRepository>();
+        builder.Services.AddScoped<ISurveyAnswerService, SurveyAnswerService>();
+        
         builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+        builder.Services.AddScoped<ISurveyService, SurveyService>();
+        
         builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>();
+        builder.Services.AddScoped<ISurveyQuestionService, SurveyQuestionService>();
 
         builder.Services.AddScoped<ITripRepository, TripRepository>();
         builder.Services.AddScoped<ITripService, TripService>();

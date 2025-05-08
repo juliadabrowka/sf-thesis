@@ -11,7 +11,9 @@
   <ng-container *nzModalContent>
     <div class="a4-container">
       <div class="a4-content">
-        <sf-survey></sf-survey>
+        <sf-survey
+          [sfSurvey]="sfSurvey()"
+        ></sf-survey>
       </div>
     </div>
   </ng-container>
@@ -19,7 +21,7 @@
 
 <ng-template #surveyTitleTemplate>
   <sf-icon-and-text
-    [sfIcon]="icons.surveyPreview"
+    [sfIcon]="icons.preview"
     [sfText]="'Podgląd ankiety'"
   ></sf-icon-and-text>
 </ng-template>

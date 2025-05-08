@@ -18,15 +18,29 @@ export enum Rating {
   Bad = 'Bad',
 }
 
+export enum SourceOfInformation {
+  FB = 'FB',
+  Instagram = 'Instagram',
+  Polecenie = 'Polecenie',
+}
+
 export enum Status {
   Created = 'Created',
   Sent = 'Sent',
-  Received = 'Received',
   Completed = 'Completed',
   Approved = 'Approved',
   Rejected = 'Rejected',
-  Resigned = 'Resigned',
+  InProgress = 'InProgress',
 }
+
+export const StatusLabels: Record<Status, string> = {
+  [Status.Created]: 'Utworzony',
+  [Status.Sent]: 'Wysłany',
+  [Status.Completed]: 'Uzupełniony',
+  [Status.Approved]: 'Zatwierdzony',
+  [Status.Rejected]: 'Odrzucony',
+  [Status.InProgress]: 'W trakcie',
+};
 
 export enum TripType {
   Classic = 'Classic',
@@ -98,7 +112,7 @@ export class SurveyResponseDTO {
   Id: number | undefined;
   RepliedOn: Date = new Date();
   TripApplicationId: number | undefined;
-  TripApplicationDTOS: TripApplicationDTO | undefined;
+  TripApplicationDTO: TripApplicationDTO | undefined;
   SurveyAnswerIds: number[] = [];
   SurveyAnswerDTOS: SurveyAnswerDTO[] = [];
 }
@@ -145,4 +159,9 @@ export class TripDTO {
   ArticleDTO: ArticleDTO | undefined;
   TripApplicationDTOS: TripApplicationDTO[] = [];
   TripApplicationIds: number[] = [];
+}
+
+export class AutosaveRequestDTO {
+  TripApplicationId: number | undefined;
+  Responses: Record<string, SurveyAnswerDTO> = {};
 }

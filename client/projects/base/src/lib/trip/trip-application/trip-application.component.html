@@ -1,0 +1,80 @@
+@if (!isSubmitted()) {
+  @if (sfTripApplication()) {
+    <div class="container">
+      <div class="trip-application">
+        <div class="pictures">
+          <img [class.extra-margin]="!extraLogoSrc()" src="assets/logotyp-superfemka.png" alt="logo">
+          @if (extraLogoSrc()) {
+            <img class="extra-logo" [src]="extraLogoSrc()" alt="extra-logo">
+          }
+        </div>
+        <div class="content">
+          <img class="article-img" [src]="articleImgSrc()" alt="">
+          <sf-page-title-framed
+            [sfTitle]="title()"
+          ></sf-page-title-framed>
+        </div>
+
+        <div class="response-container">
+          @for (question of surveyQuestions(); track $index) {
+            <div class="response">
+              <div class="question">
+                {{ question.Question }}
+              </div>
+              <div class="answer">
+              <textarea
+                nz-input
+                [ngModel]="responses()[question.Id ?? -1]?.Answer || ''"
+                (ngModelChange)="onAnswerChange(question, $event)"
+              ></textarea>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      @if (showSubmitButton()) {
+        <div class="submit-button-container"
+             nz-tooltip
+             [nzTooltipTrigger]="'click'"
+             [nzTooltipTitle]="submitConfirmation"
+             [nzTooltipPlacement]="'left'"
+        >
+          <sf-icon-and-text
+            [sfText]="'Wyślij ankietę'"
+            [sfIcon]="icons.sendSurvey"
+          ></sf-icon-and-text>
+        </div>
+      }
+      <ng-template #submitConfirmation>
+        <div class="tooltip">
+          <div class="tooltip-content">Wszystko gotowe? :-)</div>
+          <div class="buttons">
+            <button
+              nz-button
+              [nzType]="'default'"
+              [nzSize]="'small'"
+            >Nie
+            </button>
+            <button
+              nz-button
+              [nzType]="'primary'"
+              [nzSize]="'small'"
+              (click)="onSubmit()"
+            >Tak
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  } @else {
+    <nz-empty></nz-empty>
+  }
+} @else {
+  <div class="submitted-message">
+    <img src="assets/thank-you.jpg" alt="Thank You" class="thank-you-image"/>
+    <h2>Twoja aplikacja została przesłana!</h2>
+    <p>Dziękujemy za wypełnienie formularza. Skontaktujemy się z Tobą wkrótce.</p>
+  </div>
+}
+
+

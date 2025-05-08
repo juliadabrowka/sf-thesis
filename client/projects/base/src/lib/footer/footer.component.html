@@ -1,15 +1,15 @@
-<div class="footer-bar">
-  @for (piece of footerPieces(); track $index) {
-    <sf-footer-piece
-      [sfTitle]="piece.title"
-      [sfContent]="piece.content"
-    ></sf-footer-piece>
-  }
+@if (!hideFooter()) {
+    <div class="footer-bar">
+        @for (piece of footerPieces(); track $index) {
+            <sf-footer-piece
+                    [sfTitle]="piece.title"
+                    [sfContent]="piece.content"
+            ></sf-footer-piece>
+        }
 
-  <ng-template #newsletterTemplate>
-    <input type="email" placeholder="Twój email"/>
-    <div class="newsletter-button">Zapisz się</div>
-  </ng-template>
-</div>
-
-
+        <ng-template #newsletterTemplate>
+            <input type="email" placeholder="Twój email"/>
+            <div class="newsletter-button">Zapisz się</div>
+        </ng-template>
+    </div>
+}

@@ -1,0 +1,166 @@
+.container {
+  width: 100%;
+  padding: 20mm;
+  box-sizing: border-box;
+  background: var(--blue-sider-background-color);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  height: 100px;
+  margin-bottom: var(--margin-lg);
+}
+
+.trip-application {
+  margin: 0 auto;
+  width: 210mm;
+  height: 297mm;
+  text-align: center;
+  background: white;
+}
+
+img {
+  position: relative;
+  object-fit: cover;
+  width: 100%;
+  height: 150px;
+  object-position: top;
+}
+
+.pictures {
+  display: flex;
+  text-align: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+}
+
+.pictures img {
+  max-width: 60mm;
+  height: auto;
+}
+
+.article-img {
+  opacity: 0.8;
+  height: 100px;
+  border-radius: 5px;
+}
+
+.extra-logo {
+  scale: 0.8
+}
+
+
+sf-page-title-framed {
+  z-index: 2;
+  position: absolute;
+  margin: 0;
+  font-size: 18px;
+}
+
+.extra-margin {
+  margin-top: 30mm;
+}
+
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  .container {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm;
+    box-shadow: none;
+    page-break-after: always;
+  }
+
+  .pictures img {
+    max-width: 50mm;
+  }
+}
+
+.response-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.response-container .response {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.response-container .question {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 16px;
+}
+
+.response-container .answer textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.submit-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.tooltip-content {
+  margin-bottom: 5px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.tooltip {
+  padding: 6px;
+}
+
+.submitted-message {
+  text-align: center;
+  padding: 60px 20px;
+
+  img {
+    height: 350px;
+  }
+}
+
+.thank-you-image {
+  max-width: 200px;
+  margin-bottom: 20px;
+}

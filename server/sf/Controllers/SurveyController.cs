@@ -43,12 +43,4 @@ public class SurveyController(ISurveyService surveyService): ControllerBase
       var survey = await surveyService.GetSurveyDetails(surveyId);
       return Ok(survey);
    }
-   
-   [HttpGet("survey/{hash}")]
-   public async Task<ActionResult<SurveyDTO>> GetSurveyByHash(string hash)
-   {
-      var survey = await surveyService.GetSurveyByHash(hash);
-
-      return Ok(survey);
-   }
 }

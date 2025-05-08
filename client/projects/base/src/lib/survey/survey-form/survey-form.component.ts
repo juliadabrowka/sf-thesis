@@ -161,12 +161,6 @@ export class SfSurveyFormComponent {
         const surveyState = isNil(survey) ? new SurveyDTO() : survey;
         const tripIds = fg.tripIds.map((id) => parseInt(id));
 
-        const articles = this.__articleStore.articles();
-        const trip = articles.filter((a) => !!a.TripDTO).map((a) => a.TripDTO);
-
-        surveyState.TripDTOS = trip
-          .filter((trip) => !!trip)
-          .filter((t) => t.Id && tripIds.includes(t.Id));
         surveyState.TripIds = tripIds;
         surveyState.SurveyQuestionDTOS = fg.questionsArray;
         surveyState.Title = fg.title;
@@ -277,6 +271,7 @@ export function surveyChanged(prev: SurveyDTO | undefined, current: SurveyDTO) {
     prev.ExtraLogoUrl !== current.ExtraLogoUrl ||
     !arraysEqual(prev.TripIds, current.TripIds) ||
     !questionsEqual(prev.SurveyQuestionDTOS, current.SurveyQuestionDTOS) ||
-    !arraysEqual(prev.SurveyQuestionIds, current.SurveyQuestionIds)
+    !arraysEqual(prev.SurveyQuestionIds, current.SurveyQuestionIds) ||
+    current.SurveyQuestionDTOS.some((q) => !q.Id)
   );
 }

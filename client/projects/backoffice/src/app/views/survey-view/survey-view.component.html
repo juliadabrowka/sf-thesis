@@ -21,10 +21,11 @@
        nz-tooltip
        [nzTooltipTitle]="'Kliknij, aby zobaczyć podgląd ankiety'"
        [nzTooltipPlacement]="'left'">
-    <fa-icon [icon]="icons.surveyPreview" (click)="surveyModal.openSurveyModal()"></fa-icon>
+    <fa-icon [icon]="icons.preview" (click)="surveyModal.openSurveyModal()"></fa-icon>
   </div>
 </ng-template>
 
 <sf-survey-modal
   #surveyModal
+  [sfSurvey]="survey()"
 ></sf-survey-modal>

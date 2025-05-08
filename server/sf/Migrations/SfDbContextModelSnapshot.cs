@@ -153,7 +153,7 @@ namespace sf.Migrations
 
                     b.HasIndex("SurveyResponseId");
 
-                    b.ToTable("SurveyAnswer");
+                    b.ToTable("SurveyAnswers");
                 });
 
             modelBuilder.Entity("sf.Models.SurveyQuestion", b =>
@@ -255,6 +255,9 @@ namespace sf.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("SourceOfInformation")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

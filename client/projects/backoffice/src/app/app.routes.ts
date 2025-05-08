@@ -8,6 +8,7 @@ import { ArticleCategory, SfIcons, TripType } from '@sf/sf-base';
 import { SfFilteredTableViewComponent } from './views/filtered-table-view/filtered-table-view.component';
 import { SfBackofficeSurveyListComponent } from './views/survey-view/survey-list/survey-list.component';
 import { SfBackofficeSurveyViewComponent } from './views/survey-view/survey-view.component';
+import { SfTripApplicationListComponent } from '../../../base/src/lib/trip/trip-application-list/trip-application-list.component';
 
 const filteredTableRoutes: Routes = [
   {
@@ -100,6 +101,10 @@ export const backofficeRoutes: Routes = [
         component: SfBackofficeSurveyListComponent,
       },
       { path: 'surveys/:surveyId', component: SfBackofficeSurveyViewComponent },
+      {
+        path: 'trip-applications',
+        component: SfTripApplicationListComponent,
+      },
       ...filteredTableRoutes,
     ],
   },

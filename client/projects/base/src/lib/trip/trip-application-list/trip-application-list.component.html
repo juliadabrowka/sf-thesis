@@ -1,0 +1,73 @@
+<nz-card [nzTitle]="titleTemplate" [nzBordered]="false">
+  <nz-table
+    #tripApplicationsTable
+    [nzData]="tripApplications()"
+    [nzBordered]="true"
+    [nzOuterBordered]="true"
+    [nzFrontPagination]="false"
+    [nzShowPagination]="true"
+  >
+    <thead>
+    <tr>
+      @for (column of columns; track $index) {
+        <th
+          class="th"
+        >
+          {{ column }}
+        </th>
+      }
+    </tr>
+    </thead>
+
+    <tbody>
+      @for (tripApplication of tripApplicationsTable.data; track $index) {
+        <tr>
+          <td>
+            <div class="trip-name">
+              {{ tripApplication.TripDTO?.Name }}
+            </div>
+          </td>
+          <td>
+            <div class="participant-name">
+              {{ tripApplication.Name }}
+            </div>
+          </td>
+          <td>
+            <div class="phone-number">
+              {{ tripApplication.PhoneNumber }}
+            </div>
+          </td>
+          <td>
+            <div class="application-status">
+              {{ tripApplication.Status }}
+            </div>
+          </td>
+          <td>
+            <div class="survey-preview"
+                 nz-tooltip
+                 [nzTooltipTitle]="'Kliknij, aby zobaczyć podgląd ankiety'"
+                 [nzTooltipPlacement]="'left'">
+              <fa-icon [icon]="icons.preview"
+                       (click)="tripApplicationModal.openTripApplicationModal(tripApplication)"></fa-icon>
+            </div>
+          </td>
+          <td>
+            <nz-select
+              [nzOptions]="channels()"></nz-select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #titleTemplate>
+  <sf-icon-and-text
+    [sfIcon]="icons.tripApplications"
+    [sfText]="'Zgłoszenia'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<sf-trip-application-modal
+  #tripApplicationModal
+></sf-trip-application-modal>

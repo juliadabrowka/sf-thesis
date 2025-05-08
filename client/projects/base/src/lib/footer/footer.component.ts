@@ -2,11 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
   signal,
   TemplateRef,
   viewChild,
 } from '@angular/core';
 import { FooterPieceComponent } from './footer-piece/footer-piece.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'sf-footer',
@@ -16,6 +19,8 @@ import { FooterPieceComponent } from './footer-piece/footer-piece.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfFooterComponent {
+  private readonly __router = inject(Router);
+
   public readonly newsletterTemplate =
     viewChild<TemplateRef<any>>('newsletterTemplate');
   public readonly footerPieces = signal<
@@ -44,8 +49,17 @@ export class SfFooterComponent {
       content: [''],
     },
   ]);
+  public readonly hideFooter = signal(false);
 
   constructor() {
+    this.__router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
+      if (
+        event instanceof NavigationEnd &&
+        event.url.includes('/trip-application/')
+      )
+        this.hideFooter.set(true);
+    });
+
     effect(() => {
       const template = this.newsletterTemplate();
       if (template) {

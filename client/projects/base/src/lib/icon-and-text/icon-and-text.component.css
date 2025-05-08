@@ -4,7 +4,7 @@
   align-items: center;
 
   fa-icon {
-    margin-right: 4px;
+    margin-right: var(--margin-s);
   }
 }
 

@@ -1,15 +1,11 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'sf-trip-calendar-view',
-  imports: [
-    RouterOutlet
-  ],
+  imports: [RouterOutlet],
   templateUrl: './trip-calendar-view.component.html',
   styleUrl: './trip-calendar-view.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SfBackofficeTripCalendarViewComponent {
-
-}
+export class SfBackofficeTripCalendarViewComponent {}

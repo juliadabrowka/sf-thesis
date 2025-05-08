@@ -99,14 +99,6 @@ export const SurveyStore = signalStore(
       await firstValueFrom(deleteSurveysApiCall$);
       patchState(store, { loading: false });
     },
-
-    async getSurveyByHash(hash: string) {
-      patchState(store, { loading: true });
-      const getSurveyByHashApiCall$ = store.surveyService.getSurveyByHash(hash);
-      const survey = await firstValueFrom(getSurveyByHashApiCall$);
-
-      this.setSurvey(survey);
-    },
   })),
   withHooks({
     async onInit(store) {

@@ -1,16 +1,26 @@
-<div class="container">
-  <div class="survey">
-    <div class="pictures">
-      <img [class.extra-margin]="!survey()?.ExtraLogoUrl" src="assets/logotyp-superfemka.png" alt="logo">
-      @if (survey()?.ExtraLogoUrl) {
-        <img class="extra-logo" [src]="survey()?.ExtraLogoUrl" alt="extra-logo">
+@if (survey(); as survey) {
+  <div class="container">
+    <div class="survey">
+      <div class="pictures">
+        <img [class.extra-margin]="!survey.ExtraLogoUrl" src="assets/logotyp-superfemka.png" alt="logo">
+        @if (survey.ExtraLogoUrl) {
+          <img class="extra-logo" [src]="survey.ExtraLogoUrl" alt="extra-logo">
+        }
+      </div>
+      <div class="content">
+        <img class="article-img" [src]="articleImgSrc()" alt="">
+        <sf-page-title-framed
+          [sfTitle]="title()"
+        ></sf-page-title-framed>
+      </div>
+
+      @for (question of survey.SurveyQuestionDTOS; track $index) {
+        <div class="question">
+          {{ question.Question }}
+        </div>
       }
     </div>
-    <div class="content">
-      <img class="article-img" [src]="articleImgSrc()" alt="">
-      <sf-page-title-framed
-        [sfTitle]="title()"
-      ></sf-page-title-framed>
-    </div>
   </div>
-</div>
+} @else {
+  <nz-empty></nz-empty>
+}

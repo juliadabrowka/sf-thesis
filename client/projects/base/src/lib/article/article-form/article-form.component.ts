@@ -226,7 +226,7 @@ export class SfArticleFormComponent {
         .map((tt) => tt.Id)
         .filter((id): id is number => id !== undefined) ?? [];
 
-    const updatedArticle = { ...a, TripDto: t };
+    const updatedArticle = { ...a, TripDTO: t };
     this.__articleStore.setArticle(updatedArticle);
   }
 }

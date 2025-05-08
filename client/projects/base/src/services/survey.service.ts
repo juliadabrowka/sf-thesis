@@ -29,8 +29,4 @@ export class SurveyService {
   deleteSurveys(surveyIds: number[]) {
     return this.http.post(this.apiUrl + `/deleteSurveys`, surveyIds);
   }
-
-  getSurveyByHash(hash: string) {
-    return this.http.get<SurveyDTO>(this.apiUrl + '/survey/' + hash);
-  }
 }

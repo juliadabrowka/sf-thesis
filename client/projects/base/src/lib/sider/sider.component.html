@@ -41,14 +41,39 @@
   <nz-collapse [nzExpandIconPosition]="'end'">
     <nz-collapse-panel [nzHeader]="formsTemplate">
       <sf-icon-and-text
-        [sfIcon]="icons.allForms"
-        [sfText]="'Wszystkie ankiety'"
-        (click)="goToSurveys()"
+        [sfIcon]="icons.addForm"
+        [sfText]="'Dodaj nową'"
+        (click)="goToStories()"
       ></sf-icon-and-text>
       <sf-icon-and-text
-        [sfIcon]="icons.addForm"
-        [sfText]="'Stwórz ankietę'"
-        (click)="goToStories()"
+        [sfIcon]="icons.allForms"
+        [sfText]="'Wszystkie'"
+        (click)="goToSurveys()"
+      ></sf-icon-and-text>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+  <nz-collapse [nzExpandIconPosition]="'end'">
+    <nz-collapse-panel [nzHeader]="tripApplicationsTemplate">
+      <sf-icon-and-text
+        [sfIcon]="icons.tripApplications"
+        [sfText]="'Wszystkie'"
+        (click)="goToTripApplications()"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="icons.tripApplicationsSent"
+        [sfText]="'Wysłane'"
+        (click)="goToTripApplications()"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="icons.tripApplicationsReceived"
+        [sfText]="'Wypełnione'"
+        (click)="goToTripApplications()"
+      ></sf-icon-and-text>
+      <sf-icon-and-text
+        [sfIcon]="icons.tripApplicationsArchived"
+        [sfText]="'Zarchiwizowane'"
+        (click)="goToTripApplications()"
       ></sf-icon-and-text>
     </nz-collapse-panel>
   </nz-collapse>
@@ -71,6 +96,13 @@
 <ng-template #formsTemplate>
   <sf-icon-and-text
     [sfIcon]="icons.forms"
-    [sfText]="'Formularze'"
+    [sfText]="'Ankiety'"
+  ></sf-icon-and-text>
+</ng-template>
+
+<ng-template #tripApplicationsTemplate>
+  <sf-icon-and-text
+    [sfIcon]="icons.tripApplications"
+    [sfText]="'Zgłoszenia uczestniczek'"
   ></sf-icon-and-text>
 </ng-template>

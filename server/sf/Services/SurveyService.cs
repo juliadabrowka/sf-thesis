@@ -12,7 +12,6 @@ public interface ISurveyService
     Task<SurveyDTO[]> GetSurveys();
     Task<SurveyDTO> GetSurveyDetails(int surveyId);
     Task DeleteSurveys(int[] surveyIds);
-    Task<SurveyDTO> GetSurveyByHash(string hash);
 }
 public class SurveyService(
     ISurveyRepository surveyRepository, 
@@ -135,13 +134,6 @@ public class SurveyService(
     public async Task DeleteSurveys(int[] surveyIds)
     {
         await surveyRepository.DeleteSurveys(surveyIds);
-    }
-
-    public async Task<SurveyDTO> GetSurveyByHash(string hash)
-    {
-        var survey = await surveyRepository.GetSurveyByHash(hash);
-        
-        return mapper.Map<SurveyDTO>(survey);
     }
 
     private SurveyQuestion CompareSurveyQuestions(SurveyQuestion existingQuestion,

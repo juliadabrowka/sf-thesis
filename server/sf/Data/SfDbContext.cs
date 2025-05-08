@@ -8,6 +8,7 @@ public class SfDbContext(DbContextOptions<SfDbContext> options) : DbContext(opti
     public DbSet<Opinion> Opinions { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Survey> Surveys { get; set; }
+    public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
     public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
     public DbSet<SurveyResponse> SurveyResponses { get; set; }
     public DbSet<Trip> Trips { get; set; }

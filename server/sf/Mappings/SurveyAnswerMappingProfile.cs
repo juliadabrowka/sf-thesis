@@ -11,10 +11,14 @@ public class SurveyAnswerMappingProfile : Profile
             .ForMember(dest => dest.SurveyQuestionId,
                 opt => opt.MapFrom(
                     src => src.SurveyQuestion.Id))
-            .ForMember(dest => dest.SurveyResponseId,
+            .ForMember(dest => dest.SurveyQuestionDTO,
                 opt => opt.MapFrom(
-                    src => 
-                        src.SurveyResponse != null ? src.SurveyResponse.Id : (int?)null))
+                    src => src.SurveyQuestion))
+            .ForMember(dest => dest.SurveyResponseDTO,
+                opt => opt.MapFrom(
+                    src => src.SurveyResponse))
+            .MaxDepth(4)
+            .PreserveReferences()
             .ReverseMap();
     }
 }

@@ -16,7 +16,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 @Component({
-  selector: 'sf-backoffice-survey-view',
+  selector: 'sf-backoffice-trip-application-view',
   imports: [
     SfButtonComponent,
     SfSurveyFormComponent,

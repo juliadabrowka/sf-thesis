@@ -10,6 +10,10 @@ public interface ITripApplicationService
     Task<TripApplicationDTO> GetTripApplicationByHash(string hash);
     Task<TripApplicationDTO> GetTripApplicationsDetails(int id);
     Task<TripApplicationDTO> CreateTripApplication(TripApplicationDTO tripApplicationDto);
+    Task<TripApplicationDTO[]> GetTripApplications();
+    Task<TripApplicationDTO> UpdateTripApplication(TripApplicationDTO tripApplicationDto);
+    Task SubmitTripApplication(int tripApplicationDto, Dictionary<string, SurveyAnswerDTO> responses);
+    Task AutosaveTripApplication(int requestTripApplicationId, Dictionary<string, SurveyAnswerDTO> requestResponses);
 }
 
 public class TripApplicationService(
@@ -48,7 +52,7 @@ public class TripApplicationService(
 
         if (!string.IsNullOrWhiteSpace(clientEmail))
         {
-            var baseUrl = configuration["Frontend:SurveyUrlBase"] ?? "https://yourdomain.com/survey-fill";
+            var baseUrl = configuration["Frontend:TripApplicationUrlBase"] ?? "https://yourdomain.com/survey-fill";
             var surveyLink = $"{baseUrl}/{hash}";
         
             await emailService.SendAsync(
@@ -59,5 +63,167 @@ public class TripApplicationService(
         }
 
         return mapper.Map<TripApplicationDTO>(newTripApplication);
+    }
+
+    public async Task<TripApplicationDTO[]> GetTripApplications()
+    {
+        var tripApplications = await tripApplicationRepository.GetTripApplications();
+
+        return mapper.Map<TripApplicationDTO[]>(tripApplications);
+    }
+
+    public async Task<TripApplicationDTO> UpdateTripApplication(TripApplicationDTO tripApplicationDto)
+    {
+        if (!tripApplicationDto.Id.HasValue)
+        {
+            throw new ApplicationException("This tripApplication does not have an ID but should have.");
+        }
+
+        var tripApplication = await tripApplicationRepository.GetTripApplicationsDetails(tripApplicationDto.Id.Value);
+
+        if (tripApplication == null)
+        {
+            throw new ApplicationException($"Article with ID {tripApplicationDto.Id.Value} not found.");
+        }
+
+        bool isUpdated = false;
+        if (tripApplication.Status != tripApplicationDto.Status)
+        {
+            isUpdated = true;
+            tripApplication.Status = tripApplicationDto.Status;
+        }
+
+        if (tripApplication.SourceOfInformation != tripApplicationDto.SourceOfInformation)
+        {
+            isUpdated = true;
+            tripApplication.SourceOfInformation = tripApplicationDto.SourceOfInformation;
+        }
+
+        foreach (SurveyAnswer surveyAnswer in tripApplication.SurveyResponse.SurveyAnswers)
+        {
+            foreach (SurveyAnswerDTO surveyAnswerDto in tripApplicationDto.SurveyResponseDTO.SurveyAnswerDTOS)
+            {
+              if (surveyAnswer.Answer != surveyAnswerDto.Answer)
+             {
+                // TODO
+             }  
+            }
+        }
+        
+
+        if (isUpdated)
+        {
+            await tripApplicationRepository.UpdateTripApplication(tripApplication);
+        }
+
+        return mapper.Map<TripApplicationDTO>(tripApplication);
+    }
+
+   public async Task SubmitTripApplication(int tripApplicationId, Dictionary<string, SurveyAnswerDTO> responses)
+{
+    var tripApplication = await tripApplicationRepository
+        .GetTripApplicationsDetails(tripApplicationId);
+
+    if (tripApplication == null)
+    {
+        throw new Exception($"TripApplication with ID {tripApplicationId} not found.");
+    }
+
+    var surveyResponse = tripApplication.SurveyResponse ?? new SurveyResponse
+    {
+        TripApplicationId = tripApplicationId,
+        RepliedOn = DateTime.UtcNow,
+        SurveyAnswers = new List<SurveyAnswer>()
+    };
+
+    foreach (var (questionIdStr, dto) in responses)
+    {
+        if (!int.TryParse(questionIdStr, out var questionId))
+        {
+            continue;
+        }
+
+        var existingAnswer = surveyResponse.SurveyAnswers
+            .FirstOrDefault(a => a.SurveyQuestionId == questionId);
+
+        if (existingAnswer != null)
+        {
+            existingAnswer.Answer = dto.Answer;
+        }
+        else
+        {
+            surveyResponse.SurveyAnswers.Add(new SurveyAnswer
+            {
+                SurveyQuestionId = questionId,
+                Answer = dto.Answer
+            });
+        }
+    }
+
+    if (tripApplication.SurveyResponse == null)
+    {
+        tripApplication.SurveyResponse = surveyResponse;
+    }
+
+    tripApplication.Status = Status.Completed;
+    tripApplication.AppliedAt = DateTime.UtcNow;
+
+    await tripApplicationRepository.SubmitTripApplication(tripApplication);
+
+    // TODO: CONFIRMATION EMAIL?
+}
+
+   public async Task AutosaveTripApplication(int tripApplicationId, Dictionary<string, SurveyAnswerDTO> responses) 
+   {
+    var tripApp = await tripApplicationRepository
+        .GetTripApplicationsDetails(tripApplicationId);
+
+    if (tripApp == null)
+    {
+        throw new Exception($"TripApplication with ID {tripApplicationId} not found.");
+    }
+
+    var surveyResponse = tripApp.SurveyResponse ?? new SurveyResponse
+    {
+        TripApplicationId = tripApplicationId,
+        RepliedOn = DateTime.UtcNow,
+        SurveyAnswers = new List<SurveyAnswer>()
+    };
+
+    foreach (var (questionIdStr, dto) in responses)
+    {
+        if (!int.TryParse(questionIdStr, out var questionId))
+        {
+            continue;
+        }
+
+        var existingAnswer = surveyResponse.SurveyAnswers
+            .FirstOrDefault(a => a.SurveyQuestionId == questionId);
+
+        if (existingAnswer != null)
+        {
+            existingAnswer.Answer = dto.Answer;
+        }
+        else
+        {
+            surveyResponse.SurveyAnswers.Add(new SurveyAnswer
+            {
+                SurveyQuestionId = questionId,
+                Answer = dto.Answer
+            });
+        }
+    }
+
+    if (tripApp.SurveyResponse == null)
+    {
+        tripApp.SurveyResponse = surveyResponse;
+    }
+    
+    if (tripApp.Status != Status.InProgress)
+    {
+        tripApp.Status = Status.InProgress;
+    }
+
+    await tripApplicationRepository.AutosaveTripApplication(tripApp);
     }
 }
