@@ -19,7 +19,7 @@ export enum Rating {
 }
 
 export enum SourceOfInformation {
-  FB = 'FB',
+  Facebook = 'Facebook',
   Instagram = 'Instagram',
   Polecenie = 'Polecenie',
 }
@@ -127,6 +127,7 @@ export class TripApplicationDTO {
   PhoneNumber: string = '';
   ExtraInfo: string = '';
   Status: Status = DefaultStatusValue;
+  SourceOfInformation: SourceOfInformation | undefined;
   TripId: number | undefined;
   TripDTO: TripDTO | undefined;
   SurveyResponseId: number | undefined;

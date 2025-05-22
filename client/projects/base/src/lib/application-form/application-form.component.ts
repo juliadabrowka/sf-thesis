@@ -56,6 +56,7 @@ export class ApplicationFormComponent {
       PhoneNumber: this.controls.phone.value,
       ExtraInfo: this.controls.extra.value,
       Status: DefaultStatusValue,
+      SourceOfInformation: undefined,
       TripId: undefined,
       TripDTO: undefined,
       SurveyResponseId: undefined,

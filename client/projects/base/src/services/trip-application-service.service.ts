@@ -18,6 +18,7 @@ export class TripApplicationService {
   }
 
   public updateTripApplication(tripApplicationDto: TripApplicationDTO) {
+    console.log(tripApplicationDto);
     return this.http.post<TripApplicationDTO>(
       this.apiUrl + '/updateTripApplication',
       tripApplicationDto,

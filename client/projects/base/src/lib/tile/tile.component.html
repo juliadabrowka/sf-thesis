@@ -26,7 +26,7 @@
             Koszt wyprawy
           </div>
           <span class="bold trip-length">
-            {{ trip.TripTermDTOS[0].Price ?? 0 }}
+            {{ trip.TripTermDTOS[0]?.Price ?? 0 }}
           </span>
         </div>
       }

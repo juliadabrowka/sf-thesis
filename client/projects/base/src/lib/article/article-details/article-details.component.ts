@@ -25,27 +25,31 @@ export class SfArticleDetailsComponent {
 
   public readonly article = this.__articleStore.article;
   private readonly __articles = this.__articleStore.articles;
-  private readonly __customLink = signal<string>('');
+  private readonly __customLink = signal<string | undefined>('');
 
   constructor() {
     this.__activatedRoute.paramMap
       .pipe(takeUntilDestroyed())
       .subscribe((params) => {
-        const param = params.get('customLink') ?? '';
-        this.__customLink.set(param);
+        const param = params.get('customLink');
+        if (param) this.__customLink.set(param);
       });
 
     effect(async () => {
-      const link = this.__customLink();
-      const articles = this.__articles();
-      if (articles.length) {
-        const article = articles.find((a) => a.Url === link);
+      if (this.__customLink()) {
+        const link = this.__customLink();
+        console.log('Link from Signal:', link); // Check if link is being set properly
+        const articles = this.__articles();
+        if (articles) {
+          const article = articles.find((a) => a.Url === link);
+          console.log('Found Article:', article); // Verify if the article is being found
 
-        if (!article?.Id) {
-          return;
+          if (!article?.Id) {
+            return;
+          }
+
+          await this.__articleStore.getArticleDetails(article.Id);
         }
-
-        await this.__articleStore.getArticleDetails(article.Id);
       }
     });
   }

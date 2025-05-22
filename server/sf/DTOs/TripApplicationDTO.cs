@@ -16,7 +16,7 @@ public class TripApplicationDTO
     [JsonConverter(typeof(StringEnumConverter))]
     public SourceOfInformation? SourceOfInformation { get; set; }
     public int TripId { get; set; }
-    public TripDTO TripDTO { get; set; }
+    public TripDTO? TripDTO { get; set; }
     public int? SurveyResponseId { get; set; }
     public SurveyResponseDTO? SurveyResponseDTO { get; set; }
 }

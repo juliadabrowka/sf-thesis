@@ -97,6 +97,14 @@ export const TripApplicationStore = signalStore(
 
       this.setTripApplication(tripApplication);
     },
+
+    async updateTripApplication(tripApplication: TripApplicationDTO) {
+      patchState(store, { loading: true });
+      const updateTripApplicationApiCall$ =
+        store.tripApplicationService.updateTripApplication(tripApplication);
+      await firstValueFrom(updateTripApplicationApiCall$);
+      patchState(store, { loading: false });
+    },
   })),
   withHooks({
     async onInit(store) {

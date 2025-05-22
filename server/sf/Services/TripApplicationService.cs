@@ -98,19 +98,7 @@ public class TripApplicationService(
             isUpdated = true;
             tripApplication.SourceOfInformation = tripApplicationDto.SourceOfInformation;
         }
-
-        foreach (SurveyAnswer surveyAnswer in tripApplication.SurveyResponse.SurveyAnswers)
-        {
-            foreach (SurveyAnswerDTO surveyAnswerDto in tripApplicationDto.SurveyResponseDTO.SurveyAnswerDTOS)
-            {
-              if (surveyAnswer.Answer != surveyAnswerDto.Answer)
-             {
-                // TODO
-             }  
-            }
-        }
         
-
         if (isUpdated)
         {
             await tripApplicationRepository.UpdateTripApplication(tripApplication);

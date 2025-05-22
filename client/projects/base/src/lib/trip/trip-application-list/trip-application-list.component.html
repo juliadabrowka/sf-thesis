@@ -53,7 +53,10 @@
           </td>
           <td>
             <nz-select
-              [nzOptions]="channels()"></nz-select>
+              [nzOptions]="channels()"
+              [nzPlaceHolder]="'Jak do nas trafiła?'"
+              [ngModel]="tripApplication.SourceOfInformation"
+              (ngModelChange)="updateTripApplication($event, tripApplication)"></nz-select>
           </td>
         </tr>
       }

@@ -10,8 +10,6 @@ import {
   SfIconAndTextComponent,
   SfIcons,
   SourceOfInformation,
-  Status,
-  StatusLabels,
   TripApplicationDTO,
 } from '@sf/sf-base';
 import { NzTableCellDirective, NzTableModule } from 'ng-zorro-antd/table';
@@ -20,6 +18,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { SfTripApplicationModalComponent } from '../trip-application-modal/trip-application-modal.component';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'sf-trip-application-list',
@@ -32,6 +31,7 @@ import { NzSelectComponent } from 'ng-zorro-antd/select';
     NzTooltipDirective,
     SfTripApplicationModalComponent,
     NzSelectComponent,
+    FormsModule,
   ],
   templateUrl: './trip-application-list.component.html',
   styleUrl: './trip-application-list.component.css',
@@ -56,7 +56,7 @@ export class SfTripApplicationListComponent {
   public readonly channels = signal([
     {
       label: 'Facebook',
-      value: SourceOfInformation.FB,
+      value: SourceOfInformation.Facebook,
     },
     {
       label: 'Instagram',
@@ -73,11 +73,19 @@ export class SfTripApplicationListComponent {
       const tripApplications = this.sfTripApplications().map(
         (tripApplication) => ({
           ...tripApplication,
-          Status: StatusLabels[tripApplication.Status] as Status,
+          Status: tripApplication.Status,
         }),
       );
 
       this.tripApplications.set(tripApplications);
     });
+  }
+
+  async updateTripApplication(
+    source: SourceOfInformation,
+    tripApplication: TripApplicationDTO,
+  ) {
+    tripApplication.SourceOfInformation = source;
+    await this.tripApplicationStore.updateTripApplication(tripApplication);
   }
 }
