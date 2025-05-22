@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using sf.Program.Data;
@@ -11,9 +12,11 @@ using sf.Program.Data;
 namespace sf.Migrations
 {
     [DbContext(typeof(SfDbContext))]
-    partial class SfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522120820_add free spots in trip term")]
+    partial class addfreespotsintripterm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,9 +217,6 @@ namespace sf.Migrations
                         .HasColumnType("text");
 
                     b.Property<int?>("SurveyId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TripDifficultity")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")

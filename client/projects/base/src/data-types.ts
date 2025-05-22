@@ -5,13 +5,33 @@ export enum ArticleCategory {
   Wyprawy = 'Wyprawy',
 }
 
-export enum Country {
-  Polska = 'Polska',
-  Norwegia = 'Norwegia',
-  Japonia = 'Japonia',
-  Portugalia = 'Portugalia',
-  Kuba = 'Kuba',
+export enum Difficulty {
+  Easy = 'Easy',
+  Medium = 'Medium',
+  Hard = 'Hard',
 }
+
+export const DifficultyLabels: Record<Difficulty, string> = {
+  [Difficulty.Easy]: 'Łatwa',
+  [Difficulty.Medium]: 'Średnia',
+  [Difficulty.Hard]: 'Trudna',
+};
+
+export enum Country {
+  Poland = 'Poland',
+  Norway = 'Norway',
+  Japan = 'Japan',
+  Portugal = 'Portugal',
+  Cuba = 'Cuba',
+}
+
+export const CountryLabels: Record<Country, string> = {
+  [Country.Poland]: 'Polska',
+  [Country.Norway]: 'Norwegia',
+  [Country.Japan]: 'Japonia',
+  [Country.Portugal]: 'Portugalia',
+  [Country.Cuba]: 'Kuba',
+};
 
 export enum Rating {
   Good = 'Good',
@@ -21,8 +41,14 @@ export enum Rating {
 export enum SourceOfInformation {
   Facebook = 'Facebook',
   Instagram = 'Instagram',
-  Polecenie = 'Polecenie',
+  Recommendation = 'Recommendation',
 }
+
+export const SourceOfInformationLabels: Record<SourceOfInformation, string> = {
+  [SourceOfInformation.Facebook]: 'Facebook',
+  [SourceOfInformation.Instagram]: 'Instagram',
+  [SourceOfInformation.Recommendation]: 'Polecenie',
+};
 
 export enum Status {
   Created = 'Created',
@@ -55,7 +81,7 @@ export const TripTypeLabels: Record<TripType, string> = {
 };
 
 export const DefaultArticleCategoryValue = ArticleCategory.Fotorelacje;
-export const DefaultCountryValue = Country.Polska;
+export const DefaultCountryValue = Country.Poland;
 
 export class ArticleDTO {
   Id: number | undefined;
@@ -135,6 +161,7 @@ export class TripApplicationDTO {
 }
 
 export const DefaultTripTypeValue = TripType.Classic;
+export const DefaultDifficultityValue = Difficulty.Medium;
 
 export class TripTermDTO {
   Id: number | undefined;
@@ -144,6 +171,7 @@ export class TripTermDTO {
   DateTo: Date | null | undefined;
   ParticipantsCurrent: number = 0;
   ParticipantsTotal: number = 0;
+  FreeSpots: number = 0;
   TripId: number | undefined;
   TripDTO: TripDTO | undefined;
 }
@@ -154,6 +182,7 @@ export class TripDTO {
   TripTermIds: number[] = [];
   TripTermDTOS: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
+  TripDifficultity: Difficulty = DefaultDifficultityValue;
   SurveyId: number | undefined;
   SurveyDTO: SurveyDTO | undefined;
   ArticleId: number | undefined;
@@ -165,4 +194,22 @@ export class TripDTO {
 export class AutosaveRequestDTO {
   TripApplicationId: number | undefined;
   Responses: Record<string, SurveyAnswerDTO> = {};
+}
+
+export function getDifficultyLabel(difficulty: Difficulty): string {
+  return DifficultyLabels[difficulty] ?? difficulty;
+}
+
+export function getStatusLabels(status: Status): string {
+  return StatusLabels[status] ?? status;
+}
+
+export function getSourceOfInformationLabels(
+  status: SourceOfInformation,
+): string {
+  return SourceOfInformationLabels[status] ?? status;
+}
+
+export function getCountryLabel(country: Country): string {
+  return CountryLabels[country] ?? country;
 }

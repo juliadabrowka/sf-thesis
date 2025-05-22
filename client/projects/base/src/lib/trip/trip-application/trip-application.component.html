@@ -24,7 +24,7 @@
               <div class="answer">
               <textarea
                 nz-input
-                [ngModel]="responses()[question.Id ?? -1]?.Answer || ''"
+                [ngModel]="responses()[question.Id ?? -1].Answer || ''"
                 (ngModelChange)="onAnswerChange(question, $event)"
               ></textarea>
               </div>

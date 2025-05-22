@@ -13,6 +13,8 @@ public class Trip
     public string Name { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
     public TripType Type { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public Difficulty TripDifficulty { get; set; }
     public ICollection<TripTerm> TripTerms { get; set; }
     public int? SurveyId { get; set; }
     public Survey? Survey { get; set; }

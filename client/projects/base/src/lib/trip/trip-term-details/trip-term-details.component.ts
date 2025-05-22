@@ -6,7 +6,13 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { SfButtonComponent, SfIcons, TripTermDTO } from '@sf/sf-base';
+import {
+  DefaultDifficultityValue,
+  Difficulty,
+  SfButtonComponent,
+  SfIcons,
+  TripTermDTO,
+} from '@sf/sf-base';
 import {
   FormControl,
   FormGroup,
@@ -49,6 +55,10 @@ export class TripTermDetailsComponent {
     price: new FormControl<number>(0, { nonNullable: true }),
     participantsTotal: new FormControl<number>(0, { nonNullable: true }),
     participantsCurrent: new FormControl<number>(0, { nonNullable: true }),
+    freeSpots: new FormControl<number>(0, { nonNullable: true }),
+    difficultity: new FormControl<Difficulty>(DefaultDifficultityValue, {
+      nonNullable: true,
+    }),
   };
   public readonly __formGroup = new FormGroup(this.__controls);
   public readonly __columns = ['ID terminu', 'Daty', 'Cena', 'Wolne miejsca'];
@@ -72,14 +82,9 @@ export class TripTermDetailsComponent {
             dateFrom: new FormControl(tripTerm.DateFrom ?? null),
             dateTo: new FormControl(tripTerm.DateTo ?? null),
             price: new FormControl(tripTerm.Price ?? 0, { nonNullable: true }),
-            participantsTotal: new FormControl(
-              tripTerm.ParticipantsTotal ?? 0,
-              { nonNullable: true },
-            ),
-            participantsCurrent: new FormControl(
-              tripTerm.ParticipantsCurrent ?? 0,
-              { nonNullable: true },
-            ),
+            participantsTotal: new FormControl(tripTerm.ParticipantsTotal),
+            participantsCurrent: new FormControl(tripTerm.ParticipantsCurrent),
+            freeSpots: new FormControl(tripTerm.FreeSpots),
           });
         });
       }
@@ -107,6 +112,8 @@ export class TripTermDetailsComponent {
       Price: this.__controls.price.value,
       ParticipantsTotal: this.__controls.participantsTotal.value,
       ParticipantsCurrent: this.__controls.participantsCurrent.value,
+      FreeSpots: this.__controls.freeSpots.value,
+      TripDifficultity: this.__controls.difficultity.value,
     } as TripTermDTO;
     this.sfTripTermsUpdated.emit([...(this.sfTripTerms() ?? []), newTripTerm]);
     this.__formGroup.reset();

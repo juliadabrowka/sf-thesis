@@ -75,7 +75,12 @@
         </h3>
 
         <nz-form-item>
-          <nz-form-label>Nazwa</nz-form-label>
+          <nz-form-label>Nazwa
+            <sf-hint
+              [sfTooltipTitle]="'Ta nazwa będzie widoczna w KALENDARIUM WYPRAW obok flagi'"
+              [sfTooltipPlacement]="'right'"
+            ></sf-hint>
+          </nz-form-label>
           <nz-form-control>
             <input nz-input [formControl]="controls.tripName"/>
           </nz-form-control>
@@ -87,6 +92,14 @@
             <nz-select [formControl]="controls.tripType" [nzOptions]="tripTypes"></nz-select>
           </nz-form-control>
         </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label>Poziom trudności</nz-form-label>
+          <nz-form-control>
+            <nz-select [formControl]="controls.difficultity" [nzOptions]="tripTypes"></nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
         <sf-trip-term-details
           [sfTripTerms]="sfArticle()?.TripDTO?.TripTermDTOS ?? []"
           [sfTripId]="sfArticle()?.TripDTO?.Id"

@@ -18,7 +18,10 @@ import {
   Country,
   DefaultArticleCategoryValue,
   DefaultCountryValue,
+  DefaultDifficultityValue,
   DefaultTripTypeValue,
+  Difficulty,
+  DifficultyLabels,
   TripDTO,
   TripTermDTO,
   TripType,
@@ -42,6 +45,7 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { SfUploadComponent } from '../../upload/upload.component';
 import { TripTermDetailsComponent } from '../../trip/trip-term-details/trip-term-details.component';
 import { QuillModules } from 'ngx-quill/config/quill-editor.interfaces';
+import { HintComponent } from '../../hint/hint.component';
 
 @Component({
   selector: 'sf-article-form',
@@ -57,6 +61,7 @@ import { QuillModules } from 'ngx-quill/config/quill-editor.interfaces';
     QuillEditorComponent,
     SfUploadComponent,
     TripTermDetailsComponent,
+    HintComponent,
   ],
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.css',
@@ -100,6 +105,9 @@ export class SfArticleFormComponent {
       nonNullable: true,
     }),
     picture: new FormControl<File | null>(null),
+    difficultity: new FormControl<Difficulty>(DefaultDifficultityValue, {
+      nonNullable: true,
+    }),
   };
   public readonly categories = Object.values(ArticleCategory).map((o) => ({
     label: o,
@@ -112,6 +120,11 @@ export class SfArticleFormComponent {
   public readonly tripTypes = Object.keys(TripType).map((k) => ({
     label: TripTypeLabels[k as keyof typeof TripType],
     value: k as TripType,
+  }));
+
+  public readonly difficultyTypes = Object.keys(Difficulty).map((k) => ({
+    label: DifficultyLabels[k as keyof typeof Difficulty],
+    value: k as Difficulty,
   }));
   public readonly formGroup = new FormGroup(this.controls);
   public isTripCategorySelected = false;
@@ -245,44 +258,4 @@ export function articleChanged(
     isNotNil(prev?.TripDTO) ||
     isNotNil(current.TripDTO)
   );
-}
-export function tripChanged(prev: TripDTO | undefined, current: TripDTO) {
-  const arraysEqualSet = (arr1: number[], arr2: number[]): boolean => {
-    return (
-      arr1.length === arr2.length &&
-      new Set(arr1).size === new Set([...arr1, ...arr2]).size
-    );
-  };
-
-  const compareTripTerms = (arr1: TripTermDTO[], arr2: TripTermDTO[]) => {
-    if (arr1.length !== arr2.length) return true;
-
-    return arr1.some((term, index) => {
-      const otherTerm = arr2[index];
-      return (
-        term.Id !== otherTerm.Id ||
-        term.DateFrom !== otherTerm.DateFrom ||
-        term.DateTo !== otherTerm.DateTo ||
-        term.ParticipantsCurrent !== otherTerm.ParticipantsCurrent ||
-        term.ParticipantsTotal !== otherTerm.ParticipantsTotal ||
-        term.Price !== otherTerm.Price ||
-        term.TripId !== otherTerm.TripId ||
-        term.TripDTO !== otherTerm.TripDTO
-      );
-    });
-  };
-
-  if (
-    prev?.Id !== current.Id ||
-    prev?.Type !== current.Type ||
-    prev?.SurveyId !== current.SurveyId ||
-    compareTripTerms(prev?.TripTermDTOS, current.TripTermDTOS) ||
-    arraysEqualSet(
-      prev?.TripApplicationIds ?? [],
-      current.TripApplicationIds ?? [],
-    )
-  ) {
-    return true;
-  }
-  return false;
 }

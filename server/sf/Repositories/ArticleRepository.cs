@@ -28,8 +28,8 @@ public class ArticleRepository(SfDbContext sfDbContext) : IArticleRepository
         var articles =  await sfDbContext.Articles
             .Include(a => a.Trip)
                 .ThenInclude(t => t.TripTerms)
-            // .Include(a => a.Trip)
-            //     .ThenInclude(t => t.TripApplications)
+            .Include(a => a.Trip)
+                .ThenInclude(t => t.TripApplications)
             .ToArrayAsync();
 
         return articles;

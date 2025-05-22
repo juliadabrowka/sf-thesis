@@ -115,9 +115,9 @@
             [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
-            {{ tripTerm.ParticipantsTotal }}
+            {{ tripTerm.FreeSpots }}
             <nz-input-number
-              [(ngModel)]="tripTerm.ParticipantsTotal"
+              [(ngModel)]="tripTerm.FreeSpots"
               [hidden]="editId() !== tripTerm.Id"
               (blur)="stopEdit()"
             ></nz-input-number>

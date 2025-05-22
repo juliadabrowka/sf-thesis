@@ -66,7 +66,6 @@ export class SfTripInlineComponent {
       .subscribe({
         next: (res) => {
           console.log('TripApplication created:', res);
-          // Optionally: show success message, navigate, etc.
         },
         error: (err) => {
           console.error('Error creating TripApplication', err);

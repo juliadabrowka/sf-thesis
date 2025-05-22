@@ -53,12 +53,32 @@ public class TripApplicationService(
         if (!string.IsNullOrWhiteSpace(clientEmail))
         {
             var baseUrl = configuration["Frontend:TripApplicationUrlBase"] ?? "https://yourdomain.com/survey-fill";
+
             var surveyLink = $"{baseUrl}/{hash}";
+            var emailBody = $@"
+            <html>
+              <body style='font-family: Arial, sans-serif; color: #333;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;'>
+                  <div style='text-align: center; margin-bottom: 20px;'>
+                    <img src='https://localhost:4200/assets/logotyp-superfemka.png' alt='Superfemka Logo' style='max-height: 60px;' />
+                  </div>
+                  <h2 style='color: #f04a7e;'>Wypełnij swoją ankietę</h2>
+                  <p>Dziękujemy za zgłoszenie! Prosimy o wypełnienie ankiety dotyczącej Twojej wyprawy.</p>
+                  <p style='margin: 30px 0; text-align: center;'>
+                    <a href='{surveyLink}' style='background-color: #f04a7e; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                      Wypełnij ankietę
+                    </a>
+                  </p>
+                  <p style='font-size: 12px; color: #888;'>Jeśli przycisk nie działa, skopiuj i wklej ten link w przeglądarce:<br /><a href='{surveyLink}'>{surveyLink}</a></p>
+                </div>
+              </body>
+            </html>";
+
         
             await emailService.SendAsync(
                 clientEmail,
-                "Wypełnij swoją ankietę",
-                $"Kliknij link, aby wypełnić ankietę: <a href=\"{surveyLink}\">{surveyLink}</a>"
+                "Superfemka Projekt - ankieta na wyprawę",
+                emailBody
             );
         }
 

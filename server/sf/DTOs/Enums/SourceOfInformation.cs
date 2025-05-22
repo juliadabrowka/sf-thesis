@@ -4,5 +4,5 @@ public enum SourceOfInformation
 {
     Facebook,
     Instagram,
-    Polecenie,
+    Recommendation,
 }

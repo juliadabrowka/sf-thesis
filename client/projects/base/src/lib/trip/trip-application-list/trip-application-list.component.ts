@@ -64,7 +64,7 @@ export class SfTripApplicationListComponent {
     },
     {
       label: 'Polecenie',
-      value: SourceOfInformation.Polecenie,
+      value: SourceOfInformation.Recommendation,
     },
   ]);
 

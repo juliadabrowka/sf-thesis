@@ -9,6 +9,8 @@ public class TripDTO
     public string Name { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
     public TripType Type { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public Difficulty TripDifficulty { get; set; }
     public ICollection<int> TripTermIds { get; set; }
     public ICollection<TripTermDTO> TripTermDTOS { get; set; }
     public int? SurveyId { get; set; }
