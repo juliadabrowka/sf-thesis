@@ -2,8 +2,8 @@ namespace sf.Models;
 
 public enum ArticleCategory
 {
-    Fotorelacje,
-    Ciekawostki,
-    Rekomendacje,
-    Wyprawy,
+    Photostories,
+    Recommendations,
+    Tips, 
+    Trips
 }

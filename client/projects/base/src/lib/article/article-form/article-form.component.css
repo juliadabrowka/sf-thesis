@@ -46,3 +46,7 @@
 sf-hint {
   margin-left: var(--margin-xs);
 }
+
+nz-form-item.level {
+  margin-bottom: var(--margin-s);
+}

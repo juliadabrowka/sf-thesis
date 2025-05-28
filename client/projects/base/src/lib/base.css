@@ -15,12 +15,13 @@
   --text-grey-color: #8a8989; /* very light grey */
   --button-grey-color: #939393; /* very light grey */
   --button-grey-hover-color: #6c6c6c; /* very light grey */
+  --remove-grey-hover-color: #f1efef; /* very light grey when row is to be removed */
   --blue-sider-background-color: #424D7C9C; /* blue */
   --blue-color: #7aa5ed; /* blue */
   --blue-hover-color: #5779b3; /* blue */
   --divider-grey-color: #dad0d0; /* very light grey */
   --danger-color: #d53838; /* Red */
-  --danger-hover-color: #c53838; /* Red */
+  --danger-hover-color: #c53838; /* Red hover */
   --header-dark-blue-color: #11162A;
   --header-hover-dark-blue-color: #272F57FF;
   --table-header-dark-blue-color: #242950;

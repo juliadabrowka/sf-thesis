@@ -73,6 +73,4 @@ public class ArticleRepository(SfDbContext sfDbContext) : IArticleRepository
         sfDbContext.Articles.RemoveRange(articles);
         await sfDbContext.SaveChangesAsync();
     }
-    
-
 }

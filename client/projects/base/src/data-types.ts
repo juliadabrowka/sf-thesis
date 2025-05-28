@@ -1,9 +1,16 @@
 export enum ArticleCategory {
-  Fotorelacje = 'Fotorelacje',
-  Ciekawostki = 'Ciekawostki',
-  Rekomendacje = 'Rekomendacje',
-  Wyprawy = 'Wyprawy',
+  Photostories = 'Photostories',
+  Tips = 'Tips',
+  Recommendations = 'Recommendations',
+  Trips = 'Trips',
 }
+
+export const ArticleCategoryLabels: Record<ArticleCategory, string> = {
+  [ArticleCategory.Photostories]: 'Fotorelacje',
+  [ArticleCategory.Tips]: 'Ciekawostki',
+  [ArticleCategory.Recommendations]: 'Rekomendacje',
+  [ArticleCategory.Trips]: 'Wyprawy',
+};
 
 export enum Difficulty {
   Easy = 'Easy',
@@ -12,9 +19,9 @@ export enum Difficulty {
 }
 
 export const DifficultyLabels: Record<Difficulty, string> = {
-  [Difficulty.Easy]: 'Łatwa',
-  [Difficulty.Medium]: 'Średnia',
-  [Difficulty.Hard]: 'Trudna',
+  [Difficulty.Easy]: 'Łatwy',
+  [Difficulty.Medium]: 'Średni',
+  [Difficulty.Hard]: 'Trudny',
 };
 
 export enum Country {
@@ -80,7 +87,7 @@ export const TripTypeLabels: Record<TripType, string> = {
   [TripType.Bike]: 'Wyprawy rowerowe',
 };
 
-export const DefaultArticleCategoryValue = ArticleCategory.Fotorelacje;
+export const DefaultArticleCategoryValue = ArticleCategory.Photostories;
 export const DefaultCountryValue = Country.Poland;
 
 export class ArticleDTO {
@@ -182,7 +189,7 @@ export class TripDTO {
   TripTermIds: number[] = [];
   TripTermDTOS: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
-  TripDifficultity: Difficulty = DefaultDifficultityValue;
+  TripDifficulty: Difficulty = DefaultDifficultityValue;
   SurveyId: number | undefined;
   SurveyDTO: SurveyDTO | undefined;
   ArticleId: number | undefined;

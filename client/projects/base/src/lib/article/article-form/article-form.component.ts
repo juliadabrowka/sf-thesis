@@ -14,8 +14,10 @@ import {
 } from '@angular/forms';
 import {
   ArticleCategory,
+  ArticleCategoryLabels,
   ArticleDTO,
   Country,
+  CountryLabels,
   DefaultArticleCategoryValue,
   DefaultCountryValue,
   DefaultDifficultityValue,
@@ -105,24 +107,24 @@ export class SfArticleFormComponent {
       nonNullable: true,
     }),
     picture: new FormControl<File | null>(null),
-    difficultity: new FormControl<Difficulty>(DefaultDifficultityValue, {
+    difficulty: new FormControl<Difficulty>(DefaultDifficultityValue, {
       nonNullable: true,
     }),
   };
   public readonly categories = Object.values(ArticleCategory).map((o) => ({
-    label: o,
+    label: ArticleCategoryLabels[o],
     value: o,
   }));
   public readonly countries = Object.values(Country).map((o) => ({
-    label: o,
-    value: o,
+    label: CountryLabels[o as keyof typeof Country],
+    value: o as Country,
   }));
   public readonly tripTypes = Object.keys(TripType).map((k) => ({
     label: TripTypeLabels[k as keyof typeof TripType],
     value: k as TripType,
   }));
 
-  public readonly difficultyTypes = Object.keys(Difficulty).map((k) => ({
+  public readonly difficulties = Object.keys(Difficulty).map((k) => ({
     label: DifficultyLabels[k as keyof typeof Difficulty],
     value: k as Difficulty,
   }));
@@ -185,7 +187,7 @@ export class SfArticleFormComponent {
         takeUntilDestroyed(),
       )
       .subscribe((fg) => {
-        this.isTripCategorySelected = fg.category === ArticleCategory.Wyprawy;
+        this.isTripCategorySelected = fg.category === ArticleCategory.Trips;
         const article = this.sfArticle();
         const articleState = isNil(article) ? new ArticleDTO() : article;
 

@@ -26,22 +26,22 @@ export class SfMainPageComponent {
     {
       title: 'superfemka to wyprawy rowerowe, wyjazdy i warsztaty dla kobiet',
       subtitle: 'niezapomniana podróż dla każdej z nas!',
-      articleType: ArticleCategory.Wyprawy,
+      articleType: ArticleCategory.Trips,
     },
     {
       title: 'wyjazdy dla kobiet - fotorelacje z naszych podróży',
       subtitle: 'nasze wyprawy',
-      articleType: ArticleCategory.Fotorelacje,
+      articleType: ArticleCategory.Photostories,
     },
     {
       title: 'Ciekawostki od Superfemki',
       subtitle: 'Informacje bliskie i dalekie',
-      articleType: ArticleCategory.Ciekawostki,
+      articleType: ArticleCategory.Tips,
     },
     {
       title: 'rekomendacje superfemki',
       subtitle: 'sprzęt, porady i wiele innych',
-      articleType: ArticleCategory.Rekomendacje,
+      articleType: ArticleCategory.Recommendations,
     },
   ];
 }

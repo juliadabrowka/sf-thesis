@@ -15,7 +15,7 @@ const filteredTableRoutes: Routes = [
     path: 'recommendations',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Rekomendacje,
+      categoryFilter: ArticleCategory.Recommendations,
       title: 'Rekomendacje',
       icon: SfIcons.recommendations,
     },
@@ -24,7 +24,7 @@ const filteredTableRoutes: Routes = [
     path: 'tips',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Ciekawostki,
+      categoryFilter: ArticleCategory.Tips,
       title: 'Ciekawostki',
       icon: SfIcons.tips,
     },
@@ -33,7 +33,7 @@ const filteredTableRoutes: Routes = [
     path: 'photo-stories',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Fotorelacje,
+      categoryFilter: ArticleCategory.Photostories,
       title: 'Fotorelacje',
       icon: SfIcons.photoRel,
     },
@@ -42,7 +42,7 @@ const filteredTableRoutes: Routes = [
     path: 'classic-trips',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Wyprawy,
+      categoryFilter: ArticleCategory.Trips,
       tripFilter: TripType.Classic,
       title: 'Wyprawy classic',
       icon: SfIcons.classicTrip,
@@ -52,7 +52,7 @@ const filteredTableRoutes: Routes = [
     path: 'weekend-trips',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Wyprawy,
+      categoryFilter: ArticleCategory.Trips,
       tripFilter: TripType.Weekend,
       title: 'Weekendowe wojaże',
       icon: SfIcons.weekendTrip,
@@ -62,7 +62,7 @@ const filteredTableRoutes: Routes = [
     path: 'bike-trips',
     component: SfFilteredTableViewComponent,
     data: {
-      categoryFilter: ArticleCategory.Wyprawy,
+      categoryFilter: ArticleCategory.Trips,
       tripFilter: TripType.Bike,
       title: 'Wyprawy rowerowe',
       icon: SfIcons.bikeTrip,

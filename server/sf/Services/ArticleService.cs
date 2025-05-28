@@ -120,6 +120,7 @@ public class ArticleService(
                 
                 existingTrip.Name = articleDto.TripDTO.Name;
                 existingTrip.Type = articleDto.TripDTO.Type;
+                existingTrip.TripDifficulty = articleDto.TripDTO.TripDifficulty;
                 
                 foreach (var tripTermDto in articleDto.TripDTO.TripTermDTOS)
                 {
@@ -128,14 +129,30 @@ public class ArticleService(
                         TripTerm existingTripTerm = await tripTermRepository.GetTripTermDetails(tripTermDto.Id.Value);
 
                         var updatedTripTerm = CompareTripTerms(existingTripTerm, tripTermDto);
-
-                         await tripTermRepository.UpdateTripTerm(updatedTripTerm);
+                        if (updatedTripTerm != null)
+                        {
+                          await tripTermRepository.UpdateTripTerm(updatedTripTerm);  
+                        }
                     }
                     else
                     {
                         var newTripTerm = mapper.Map<TripTerm>(tripTermDto);
                         existingTrip.TripTerms.Add(newTripTerm);
                         await tripRepository.UpdateTrip(existingTrip);
+                    }
+                }
+
+                if (existingTrip.TripTerms.Select(t => t.Id)
+                    .Any(tt => !articleDto.TripDTO.TripTermDTOS.Select(t => t.Id).Contains(tt)))
+                {
+                    var toRemoveIds = existingTrip.TripTerms
+                        .Where(tt => !articleDto.TripDTO.TripTermDTOS.Select(t => t.Id).Contains(tt.Id))
+                        .Select(tt => tt.Id)
+                        .ToArray();
+    
+                    if (toRemoveIds.Any())
+                    {
+                        await tripTermRepository.DeleteTripTerms(toRemoveIds);
                     }
                 }
                 
@@ -175,38 +192,45 @@ public class ArticleService(
         return mapper.Map<ArticleDTO>(article);
     }
 
-    private TripTerm CompareTripTerms(TripTerm existingTripTerm, TripTermDTO tripTermDto)
+    private TripTerm? CompareTripTerms(TripTerm existingTripTerm, TripTermDTO tripTermDto)
     {
+        bool isChanged = false;
         if (existingTripTerm.Name != tripTermDto.Name)
         {
+            isChanged = true;
             existingTripTerm.Name = tripTermDto.Name;
         }
 
         if (existingTripTerm.Price != tripTermDto.Price)
         {
+            isChanged = true;
             existingTripTerm.Price = tripTermDto.Price;
         }
 
         if (existingTripTerm.DateFrom != tripTermDto.DateFrom)
         {
+            isChanged = true;
             existingTripTerm.DateFrom = tripTermDto.DateFrom;
         }
 
         if (existingTripTerm.DateTo != tripTermDto.DateTo)
         {
+            isChanged = true;
             existingTripTerm.DateTo = tripTermDto.DateTo;
         }
 
         if (existingTripTerm.ParticipantsCurrent != tripTermDto.ParticipantsCurrent)
         {
+            isChanged = true;
             existingTripTerm.ParticipantsCurrent = tripTermDto.ParticipantsCurrent;
         }
 
         if (existingTripTerm.ParticipantsTotal != tripTermDto.ParticipantsTotal)
         {
+            isChanged = true;
             existingTripTerm.ParticipantsTotal = tripTermDto.ParticipantsTotal;
         }
 
-        return existingTripTerm;
+        return isChanged ? existingTripTerm : null;
     }
 }

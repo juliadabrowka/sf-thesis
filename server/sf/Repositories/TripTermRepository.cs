@@ -46,8 +46,18 @@ public class TripTermRepository(SfDbContext sfDbContext) : ITripTermRepository
         return existingTripTerm;
     }
 
-    public Task DeleteTripTerms(int[] tripIds)
+    public async Task DeleteTripTerms(int[] tripIds)
     {
-        throw new NotImplementedException();
+        var tripTerms = await sfDbContext.TripTerms
+            .Where(tripTerm => tripIds.Contains(tripTerm.Id))
+            .ToListAsync(); 
+        
+        if (!tripTerms.Any())
+        {
+            throw new AggregateException("No articles found to delete");
+        }
+        
+        sfDbContext.TripTerms.RemoveRange(tripTerms);
+        await sfDbContext.SaveChangesAsync();
     }
 }

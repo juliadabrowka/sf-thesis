@@ -2,17 +2,29 @@
   position: relative;
   padding: 5px 12px;
   cursor: pointer;
+
+  &:hover {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
 }
 
-.editable-row:hover .editable-cell {
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  padding: 4px 11px;
+.editable-row:has(.remove-btn:hover) {
+  background-color: var(--remove-grey-hover-color);
+  border-radius: 10px;
 }
 
 .dates {
   display: flex;
   align-items: center;
+  width: 264px;
+
+  .editable-cell {
+    width: 124px;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .dash {
@@ -24,4 +36,15 @@
   margin-right: var(--margin-xs);
 }
 
+.remove-btn {
+  color: var(--danger-hover-color);
+}
 
+.add-icon {
+  color: var(--focus-dark-color);
+  cursor: pointer;
+}
+
+.custom-input {
+  width: 70px
+}

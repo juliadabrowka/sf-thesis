@@ -17,7 +17,6 @@ public class TripTerm
     public int ParticipantsCurrent { get; set; }
     public int ParticipantsTotal { get; set; }
     public int FreeSpots => ParticipantsTotal - ParticipantsCurrent;
-    
     public int? TripId { get; set; }
     public Trip? Trip { get; set; }
 }

@@ -6,13 +6,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  DefaultDifficultityValue,
-  Difficulty,
-  SfButtonComponent,
-  SfIcons,
-  TripTermDTO,
-} from '@sf/sf-base';
+import { SfIcons, TripTermDTO } from '@sf/sf-base';
 import {
   FormControl,
   FormGroup,
@@ -24,6 +18,7 @@ import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { NzCellAlignDirective, NzTableComponent } from 'ng-zorro-antd/table';
 import { NzInputDirective } from 'ng-zorro-antd/input';
 import { DatePipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'sf-trip-term-details',
@@ -32,11 +27,11 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     NzDatePickerModule,
     NzTableComponent,
-    SfButtonComponent,
     NzInputDirective,
     DatePipe,
     FormsModule,
     NzCellAlignDirective,
+    FaIconComponent,
   ],
   templateUrl: './trip-term-details.component.html',
   styleUrl: './trip-term-details.component.css',
@@ -56,14 +51,21 @@ export class TripTermDetailsComponent {
     participantsTotal: new FormControl<number>(0, { nonNullable: true }),
     participantsCurrent: new FormControl<number>(0, { nonNullable: true }),
     freeSpots: new FormControl<number>(0, { nonNullable: true }),
-    difficultity: new FormControl<Difficulty>(DefaultDifficultityValue, {
-      nonNullable: true,
-    }),
   };
   public readonly __formGroup = new FormGroup(this.__controls);
-  public readonly __columns = ['ID terminu', 'Daty', 'Cena', 'Wolne miejsca'];
+  public readonly __columns = [
+    'ID',
+    'Daty',
+    'Cena',
+    'Wolne miejsca',
+    'Ilość miejsc',
+    '',
+  ];
   public readonly editId = signal<number | undefined>(undefined);
   private readonly __editForms = signal<Record<number, FormGroup>>({});
+
+  public readonly isHovered = signal(false);
+  isHoveredFreeSpots = false;
 
   constructor() {
     effect(() => {
@@ -113,10 +115,18 @@ export class TripTermDetailsComponent {
       ParticipantsTotal: this.__controls.participantsTotal.value,
       ParticipantsCurrent: this.__controls.participantsCurrent.value,
       FreeSpots: this.__controls.freeSpots.value,
-      TripDifficultity: this.__controls.difficultity.value,
     } as TripTermDTO;
     this.sfTripTermsUpdated.emit([...(this.sfTripTerms() ?? []), newTripTerm]);
     this.__formGroup.reset();
     this.stopEdit();
+  }
+
+  removeTripTermById(tripId: number | undefined) {
+    if (!tripId) {
+      throw new Error('TripTerm id is required');
+    }
+    const tripTerms = this.sfTripTerms();
+    const tt = tripTerms?.filter((tt) => tt.Id !== tripId) ?? [];
+    this.sfTripTermsUpdated.emit(tt);
   }
 }

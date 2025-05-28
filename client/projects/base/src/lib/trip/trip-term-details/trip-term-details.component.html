@@ -12,6 +12,7 @@
   <td>
     <input
       nz-input
+      class="custom-input"
       [formControl]="__controls.name"
     />
   </td>
@@ -29,19 +30,27 @@
   <td>
     <nz-input-number
       [formControl]="__controls.price"
+      class="custom-input"
     ></nz-input-number>
   </td>
   <td>
     <nz-input-number
-      [formControl]="__controls.participantsCurrent"
+      [formControl]="__controls.participantsTotal"
+      class="custom-input"
     ></nz-input-number>
   </td>
   <td>
-    <sf-button
-      [sfFontSize]="'12px'"
-      [sfButtonText]="'Dodaj'"
-      (sfOnButtonClicked)="addTripTerm()"
-    ></sf-button>
+    <nz-input-number
+      [formControl]="__controls.freeSpots"
+      class="custom-input"
+    ></nz-input-number>
+  </td>
+  <td>
+    <fa-icon
+      class="add-icon"
+      [icon]="icons.add"
+      (click)="addTripTerm()"
+    ></fa-icon>
   </td>
     @for (tripTerm of tripTermTable.data; track tripTerm.Id) {
       <tr class="editable-row">
@@ -115,16 +124,38 @@
             [hidden]="editId() === tripTerm.Id"
             (click)="startEdit(tripTerm)"
           >
-            {{ tripTerm.FreeSpots }}
-            <nz-input-number
-              [(ngModel)]="tripTerm.FreeSpots"
-              [hidden]="editId() !== tripTerm.Id"
-              (blur)="stopEdit()"
-            ></nz-input-number>
+            {{ tripTerm.ParticipantsTotal }}
           </div>
+          <nz-input-number
+            [(ngModel)]="tripTerm.ParticipantsTotal"
+            [hidden]="editId() !== tripTerm.Id"
+            (blur)="stopEdit()"
+          ></nz-input-number>
+        </td>
+
+        <td>
+          <div
+            class="editable-cell"
+            [hidden]="editId() === tripTerm.Id"
+            (click)="startEdit(tripTerm)"
+          >
+            {{ tripTerm.FreeSpots }}
+          </div>
+          <nz-input-number
+            [(ngModel)]="tripTerm.FreeSpots"
+            [hidden]="editId() !== tripTerm.Id"
+            (blur)="stopEdit()"
+          ></nz-input-number>
+        </td>
+
+        <td>
+          <fa-icon
+            class="remove-btn"
+            [icon]="icons.delete"
+            (click)="removeTripTermById(tripTerm.Id)"
+          ></fa-icon>
         </td>
       </tr>
-
     }
   </tbody>
 </nz-table>

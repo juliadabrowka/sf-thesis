@@ -38,28 +38,28 @@ export class SfSiderComponent {
   public readonly sfOnElementClicked = output<number>();
 
   public async goToRecommendations() {
-    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    this.__store.setCategoryFilter(ArticleCategory.Recommendations);
     await this.__router.navigate(['recommendations'], {
       relativeTo: this.__activatedRoute,
     });
   }
 
   public async goToTips() {
-    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    this.__store.setCategoryFilter(ArticleCategory.Recommendations);
     await this.__router.navigate(['tips'], {
       relativeTo: this.__activatedRoute,
     });
   }
 
   public async goToStories() {
-    this.__store.setCategoryFilter(ArticleCategory.Rekomendacje);
+    this.__store.setCategoryFilter(ArticleCategory.Recommendations);
     await this.__router.navigate(['photo-stories'], {
       relativeTo: this.__activatedRoute,
     });
   }
 
   public async goToClassicTrips() {
-    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setCategoryFilter(ArticleCategory.Trips);
     this.__store.setTripFilter(TripType.Classic);
     await this.__router.navigate(['classic-trips'], {
       relativeTo: this.__activatedRoute,
@@ -67,7 +67,7 @@ export class SfSiderComponent {
   }
 
   public async goToWeekendTrips() {
-    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setCategoryFilter(ArticleCategory.Trips);
     this.__store.setTripFilter(TripType.Weekend);
     await this.__router.navigate(['weekend-trips'], {
       relativeTo: this.__activatedRoute,
@@ -75,7 +75,7 @@ export class SfSiderComponent {
   }
 
   public async goToBikeTrips() {
-    this.__store.setCategoryFilter(ArticleCategory.Wyprawy);
+    this.__store.setCategoryFilter(ArticleCategory.Trips);
     this.__store.setTripFilter(TripType.Bike);
     await this.__router.navigate(['bike-trips'], {
       relativeTo: this.__activatedRoute,
