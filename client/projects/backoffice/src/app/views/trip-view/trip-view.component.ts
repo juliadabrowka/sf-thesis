@@ -1,12 +1,64 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NzCardComponent } from 'ng-zorro-antd/card';
+import {
+  ArticleCategory,
+  ArticleStore,
+  SfArticleFormComponent,
+  SfButtonComponent,
+  SfIconAndTextComponent,
+  SfIcons,
+} from '@sf/sf-base';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'sf-backoffice-trip-view',
-  imports: [],
+  imports: [
+    MatProgressSpinner,
+    NzCardComponent,
+    SfArticleFormComponent,
+    SfButtonComponent,
+    SfIconAndTextComponent,
+  ],
   templateUrl: './trip-view.component.html',
   styleUrl: './trip-view.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfBackofficeTripViewComponent {
+  private readonly __articleStore = inject(ArticleStore);
+  private readonly __message = inject(NzMessageService);
+  private readonly __router = inject(Router);
 
+  public readonly article = this.__articleStore.article;
+  public readonly loading = this.__articleStore.loading;
+  public readonly icons = SfIcons;
+
+  public readonly articleWithCategoryTrip = computed(() => {
+    const article = this.article();
+    if (!article) return;
+
+    return {
+      ...article,
+      ArticleCategory: ArticleCategory.Trips,
+    };
+  });
+
+  async onCreateClick() {
+    const article = this.article();
+    if (article) {
+      await this.__articleStore.createArticle(article);
+      if (!this.loading()) {
+        this.__message.success('Post poprawnie dodany');
+      } else {
+        this.__message.error('Post nie został dodany');
+      }
+      await this.__router.navigate(['admin-backoffice']);
+    }
+  }
 }

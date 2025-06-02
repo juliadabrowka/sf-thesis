@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   input,
   output,
@@ -39,8 +40,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 })
 export class TripTermDetailsComponent {
   public readonly icons = SfIcons;
-  public readonly sfTripTerms = input<TripTermDTO[] | null | undefined>([]);
-  public readonly sfTripId = input<number | null | undefined>(undefined);
+  public readonly sfTripTerms = input<TripTermDTO[] | null | undefined>();
+  public readonly sfTripId = input<number | null | undefined>();
   public readonly sfTripTermsUpdated = output<TripTermDTO[]>();
 
   public readonly __controls = {
@@ -64,13 +65,14 @@ export class TripTermDetailsComponent {
   public readonly editId = signal<number | undefined>(undefined);
   private readonly __editForms = signal<Record<number, FormGroup>>({});
 
-  public readonly isHovered = signal(false);
-  isHoveredFreeSpots = false;
+  public readonly computedTripTerms = computed(() => this.sfTripTerms());
+
+  // private readonly computedEditForms = computed(() => this.__editForms());
 
   constructor() {
     effect(() => {
-      const tripTerms = this.sfTripTerms();
-
+      const tripTerms = this.computedTripTerms();
+      if (!tripTerms) return;
       if (tripTerms) {
         tripTerms.forEach((tripTerm) => {
           const editForms = this.__editForms();

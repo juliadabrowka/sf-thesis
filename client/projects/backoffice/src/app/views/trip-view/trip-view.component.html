@@ -1,1 +1,26 @@
-<p>trip-view works!</p>
+<nz-card [nzTitle]="postTemplate" [nzBordered]="false">
+  @if (loading()) {
+    <div class="loading-container">
+      loading
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+  } @else {
+    <sf-article-form
+      [sfArticle]="articleWithCategoryTrip()"
+      [sfLoading]="loading()"
+    ></sf-article-form>
+
+    <sf-button
+      [sfButtonText]="'Utwórz nowy'"
+      (sfOnButtonClicked)="onCreateClick()"
+    ></sf-button>
+  }
+</nz-card>
+
+<ng-template #postTemplate>
+  <sf-icon-and-text
+    [sfText]="'Post'"
+    [sfIcon]="icons.post"
+  ></sf-icon-and-text>
+</ng-template>
+

@@ -1,6 +1,6 @@
 <nz-table
   #tripTermTable
-  [nzData]="sfTripTerms() ?? []">
+  [nzData]="computedTripTerms() ?? []">
   <thead>
   <tr>
     @for (column of __columns; track $index) {

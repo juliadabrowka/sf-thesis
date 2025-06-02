@@ -1,10 +1,11 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
   effect,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import {
   FormControl,
@@ -40,7 +41,6 @@ import {
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzInputDirective } from 'ng-zorro-antd/input';
 import { ArticleStore } from '../../../state/article-store';
-import { isNil, isNotNil } from '@w11k/rx-ninja';
 import { SfIconAndTextComponent } from '../../icon-and-text/icon-and-text.component';
 import { SfIcons } from '../../icons';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -70,12 +70,12 @@ import { HintComponent } from '../../hint/hint.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfArticleFormComponent {
-  private readonly __cdr = inject(ChangeDetectorRef);
   private readonly __articleStore = inject(ArticleStore);
 
-  public readonly sfArticle = input<ArticleDTO | undefined>(undefined);
-  public readonly sfLoading = input<boolean>(false);
-
+  public readonly sfArticle = input(undefined, {
+    transform: (article: ArticleDTO | null | undefined) => article ?? undefined,
+  });
+  public readonly sfLoading = input<boolean | null | undefined>(false);
   public readonly icons = SfIcons;
   public readonly controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {
@@ -129,7 +129,9 @@ export class SfArticleFormComponent {
     value: k as Difficulty,
   }));
   public readonly formGroup = new FormGroup(this.controls);
-  public isTripCategorySelected = false;
+  public readonly isTripCategorySelected = signal(false);
+
+  public readonly articleId = computed(() => this.sfArticle()?.Id);
 
   public readonly quillConfig: QuillModules = {
     toolbar: [
@@ -153,16 +155,29 @@ export class SfArticleFormComponent {
     effect(() => {
       const article = this.sfArticle();
 
-      this.formGroup.patchValue({
-        category: article?.ArticleCategory ?? DefaultArticleCategoryValue,
-        title: article?.Title ?? '',
-        content: article?.Content ?? '',
-        country: article?.Country ?? DefaultCountryValue,
-        articleUrl: article?.Url ?? '',
-        backgroundImage: article?.BackgroundImageUrl,
-        tripName: article?.TripDTO?.Name,
-        tripType: article?.TripDTO?.Type,
-      });
+      if (article) {
+        this.formGroup.patchValue({
+          category: article.ArticleCategory,
+          title: article.Title,
+          content: article.Content,
+          country: article.Country,
+          articleUrl: article.Url,
+          backgroundImage: article.BackgroundImageUrl,
+          tripName: article.TripDTO?.Name,
+          tripType: article.TripDTO?.Type,
+        });
+      } else {
+        this.formGroup.patchValue({
+          category: DefaultArticleCategoryValue,
+          title: '',
+          content: '',
+          country: DefaultCountryValue,
+          articleUrl: '',
+          backgroundImage: '',
+          tripName: '',
+          tripType: DefaultTripTypeValue,
+        });
+      }
     });
 
     this.controls.title.valueChanges
@@ -187,9 +202,8 @@ export class SfArticleFormComponent {
         takeUntilDestroyed(),
       )
       .subscribe((fg) => {
-        this.isTripCategorySelected = fg.category === ArticleCategory.Trips;
-        const article = this.sfArticle();
-        const articleState = isNil(article) ? new ArticleDTO() : article;
+        this.isTripCategorySelected.set(fg.category === ArticleCategory.Trips);
+        const articleState = new ArticleDTO();
 
         articleState.Title = fg.title;
         articleState.Content = fg.content;
@@ -197,12 +211,15 @@ export class SfArticleFormComponent {
         articleState.Country = fg.country;
         articleState.Url = fg.articleUrl;
         articleState.BackgroundImageUrl = fg.backgroundImage;
+        if (this.articleId()) articleState.Id = this.articleId();
 
-        if (this.isTripCategorySelected) {
-          const trip = articleState.TripDTO ?? new TripDTO();
-          trip.Type = fg.tripType ?? DefaultTripTypeValue;
-          trip.Name = fg.tripName ?? '';
-          trip.ArticleId = articleState?.Id;
+        if (this.isTripCategorySelected()) {
+          const trip = articleState.TripDTO
+            ? articleState.TripDTO
+            : new TripDTO();
+          trip.Type = fg.tripType;
+          trip.Name = fg.tripName;
+          if (this.articleId()) trip.ArticleId = articleState?.Id;
           trip.TripTermIds = articleState.TripDTO?.TripTermIds ?? [];
           trip.TripTermDTOS = articleState.TripDTO?.TripTermDTOS ?? [];
 
@@ -215,10 +232,8 @@ export class SfArticleFormComponent {
           articleState.TripDTO = trip;
         }
 
-        if (articleChanged(article, articleState))
+        if (articleChanged(this.__articleStore.article(), articleState))
           this.__articleStore.setArticle(articleState);
-
-        this.__cdr.markForCheck();
       });
   }
 
@@ -247,7 +262,7 @@ export class SfArticleFormComponent {
 }
 
 export function articleChanged(
-  prev: ArticleDTO | undefined,
+  prev: ArticleDTO | null | undefined,
   current: ArticleDTO,
 ) {
   return (
@@ -256,8 +271,6 @@ export function articleChanged(
     prev?.Content !== current.Content ||
     prev?.Country !== current.Country ||
     prev?.ArticleCategory !== current.ArticleCategory ||
-    prev?.Url !== current.Url ||
-    isNotNil(prev?.TripDTO) ||
-    isNotNil(current.TripDTO)
+    prev?.Url !== current.Url
   );
 }

@@ -64,7 +64,7 @@
       </div>
     </div>
 
-  @if (isTripCategorySelected) {
+    @if (isTripCategorySelected()) {
     <div class="side-panel">
       <div class="trip-section">
         <h3>
@@ -102,7 +102,7 @@
 
         <sf-trip-term-details
           [sfTripTerms]="sfArticle()?.TripDTO?.TripTermDTOS ?? []"
-          [sfTripId]="sfArticle()?.TripDTO?.Id"
+          [sfTripId]="articleId()"
           (sfTripTermsUpdated)="__onTripTermAdded($event)"
         ></sf-trip-term-details>
 

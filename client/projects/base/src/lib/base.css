@@ -25,9 +25,9 @@
   --header-dark-blue-color: #11162A;
   --header-hover-dark-blue-color: #272F57FF;
   --table-header-dark-blue-color: #242950;
-  --table-header-pink-color: rgba(204, 142, 187, 0.73); /* Dusty rose / dirty pink */
-  --table-header-hover-color: #b379a5; /* Muted lilac-gray */
-  --sorters-blue-color: #393f6a; /* Desaturated slate blue */
+  --table-header-blue-color: rgba(80, 94, 149, 0.61);
+  --table-header-hover-color: rgba(61, 72, 115, 0.61); /* Muted lilac-gray */
+  --sorters-blue-color: #ffffff; /* Desaturated slate blue */
 
   --margin-xxs: 2px;
   --margin-xs: 4px;
@@ -158,14 +158,14 @@ body {
 
 .th {
   padding: 5px !important;
-  background-color: var(--table-header-pink-color) !important;
+  background-color: var(--table-header-blue-color) !important;
 
   &:hover {
     background-color: var(--table-header-hover-color) !important;
   }
 
   .ant-table-column-sorter {
-    color: var(--sorters-blue-color) !important;
+    color: var(--table-header-dark-blue-color) !important;
   }
 
   .ant-table-column-title {
