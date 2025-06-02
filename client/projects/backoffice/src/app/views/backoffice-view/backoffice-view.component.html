@@ -8,7 +8,7 @@
 
 <nz-card [nzTitle]="tripsTemplate" [nzBordered]="false">
   <sf-trip-table
-    [sfArticles]="articles()"
+    [sfArticles]="articles() | sfMapArticlesToTrips"
     [sfLoading]="loading()"
     (sfOnTripClick)="onArticleClicked($event)"
   ></sf-trip-table>

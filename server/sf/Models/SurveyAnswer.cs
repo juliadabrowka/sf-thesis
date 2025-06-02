@@ -8,6 +8,8 @@ public class SurveyAnswer
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    
+    [Required]
     public string Answer { get; set; }
     public int SurveyQuestionId { get; set; }
     public SurveyQuestion SurveyQuestion { get; set; }

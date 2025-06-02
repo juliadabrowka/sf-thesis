@@ -103,7 +103,8 @@ class Program
             });
 
         builder.Services.AddDbContext<SfDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
         
         // add services
         builder.Services.AddScoped<IAuthService, AuthService>();

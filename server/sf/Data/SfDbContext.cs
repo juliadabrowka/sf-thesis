@@ -5,7 +5,6 @@ namespace sf.Program.Data;
 
 public class SfDbContext(DbContextOptions<SfDbContext> options) : DbContext(options)
 {
-    public DbSet<Opinion> Opinions { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Survey> Surveys { get; set; }
     public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
@@ -72,5 +71,9 @@ public class SfDbContext(DbContextOptions<SfDbContext> options) : DbContext(opti
             .WithOne(tt => tt.Trip)
             .HasForeignKey(tt => tt.TripId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<TripTerm>()
+            .Property(tt => tt.Price)
+            .HasPrecision(10, 2);
     }
 }

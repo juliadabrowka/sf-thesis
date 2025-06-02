@@ -1,5 +1,4 @@
 using AutoMapper;
-using sf.Migrations;
 using sf.Models;
 using sf.Repositories;
 

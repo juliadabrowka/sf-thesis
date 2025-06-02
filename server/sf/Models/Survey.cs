@@ -10,8 +10,12 @@ public class Survey
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    [Required]
+    [MaxLength(200)]
     public string Title { get; set; }
+    [MaxLength(500)]
     public string? ExtraLogoUrl { get; set; }
+    [Required]
     [JsonConverter(typeof(StringEnumConverter))]
     public Country Country { get; set; }
     public ICollection<int> TripIds = new List<int>();

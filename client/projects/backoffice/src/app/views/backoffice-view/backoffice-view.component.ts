@@ -9,6 +9,7 @@ import {
   SfTripTableComponent,
 } from '@sf/sf-base';
 import { NzCardComponent } from 'ng-zorro-antd/card';
+import { SfMapArticlesToTrips } from './map-articles-to-trips';
 
 @Component({
   selector: 'sf-backoffice-view',
@@ -17,6 +18,7 @@ import { NzCardComponent } from 'ng-zorro-antd/card';
     SfArticleTableComponent,
     SfTripTableComponent,
     NzCardComponent,
+    SfMapArticlesToTrips,
   ],
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',
