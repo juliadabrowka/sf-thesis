@@ -1,6 +1,6 @@
 <nz-table
   #tripTermTable
-  [nzData]="computedTripTerms() ?? []">
+  [nzData]="sfTripTerms() ?? []">
   <thead>
   <tr>
     @for (column of __columns; track $index) {
@@ -152,7 +152,7 @@
           <fa-icon
             class="remove-btn"
             [icon]="icons.delete"
-            (click)="removeTripTermById(tripTerm.Id)"
+            (click)="removeTripTermByIndex($index)"
           ></fa-icon>
         </td>
       </tr>

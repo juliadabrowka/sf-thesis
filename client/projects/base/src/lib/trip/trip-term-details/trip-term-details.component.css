@@ -31,11 +31,6 @@
   margin: 0 var(--margin-xxs);
 }
 
-.custom-width {
-  width: 70px;
-  margin-right: var(--margin-xs);
-}
-
 .remove-btn {
   color: var(--danger-hover-color);
 }

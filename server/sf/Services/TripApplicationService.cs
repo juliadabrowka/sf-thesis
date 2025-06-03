@@ -177,8 +177,6 @@ public class TripApplicationService(
     tripApplication.AppliedAt = DateTime.UtcNow;
 
     await tripApplicationRepository.SubmitTripApplication(tripApplication);
-
-    // TODO: CONFIRMATION EMAIL?
 }
 
    public async Task AutosaveTripApplication(int tripApplicationId, Dictionary<string, SurveyAnswerDTO> responses) 

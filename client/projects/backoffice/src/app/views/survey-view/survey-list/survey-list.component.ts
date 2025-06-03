@@ -1,15 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import {
   SfIconAndTextComponent,
   SfIcons,
-  SurveyDTO,
   SurveyStore,
   SurveyTableComponent,
 } from '@sf/sf-base';
@@ -20,17 +13,11 @@ import {
   templateUrl: './survey-list.component.html',
   styleUrl: './survey-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SurveyStore],
 })
 export class SfBackofficeSurveyListComponent {
   private readonly surveyStore = inject(SurveyStore);
 
   public readonly icons = SfIcons;
-  public readonly surveys = signal<SurveyDTO[]>([]);
-
-  constructor() {
-    effect(() => {
-      const surveys = this.surveyStore.surveys();
-      this.surveys.set(surveys);
-    });
-  }
+  public readonly surveys = this.surveyStore.surveys;
 }

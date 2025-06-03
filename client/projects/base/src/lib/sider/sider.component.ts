@@ -58,6 +58,12 @@ export class SfSiderComponent {
     });
   }
 
+  public async createSurvey() {
+    await this.__router.navigate(['create-survey'], {
+      relativeTo: this.__activatedRoute,
+    });
+  }
+
   public async goToClassicTrips() {
     this.__store.setCategoryFilter(ArticleCategory.Trips);
     this.__store.setTripFilter(TripType.Classic);

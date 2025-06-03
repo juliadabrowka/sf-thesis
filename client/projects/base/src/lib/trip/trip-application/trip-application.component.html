@@ -1,4 +1,4 @@
-@if (!isSubmitted()) {
+@if (!isSubmittedComputed() || readonlyMode()) {
   @if (sfTripApplication()) {
     <div class="container">
       <div class="trip-application">
@@ -12,6 +12,7 @@
           <img class="article-img" [src]="articleImgSrc()" alt="">
           <sf-page-title-framed
             [sfTitle]="title()"
+            [sfToUpperCase]="true"
           ></sf-page-title-framed>
         </div>
 
@@ -24,7 +25,7 @@
               <div class="answer">
               <textarea
                 nz-input
-                [ngModel]="responses()[question.Id ?? -1].Answer || ''"
+                [ngModel]="question.Id ? responses()[question.Id]?.Answer : ''"
                 (ngModelChange)="onAnswerChange(question, $event)"
               ></textarea>
               </div>
@@ -74,6 +75,7 @@
     <img src="assets/thank-you.jpg" alt="Thank You" class="thank-you-image"/>
     <h2>Twoja aplikacja została przesłana!</h2>
     <p>Dziękujemy za wypełnienie formularza. Skontaktujemy się z Tobą wkrótce.</p>
+    <img class="img-submitted" src="assets/logotyp-superfemka.png" alt="logo">
   </div>
 }
 

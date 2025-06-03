@@ -47,6 +47,6 @@ sf-hint {
   margin-left: var(--margin-xs);
 }
 
-nz-form-item.level {
-  margin-bottom: var(--margin-s);
+.trip-term-details {
+  margin-top: var(--margin-m) !important;
 }

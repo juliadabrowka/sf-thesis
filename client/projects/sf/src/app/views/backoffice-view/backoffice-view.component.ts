@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ArticleStore } from '../../../../../base/src/state/article-store';
 
 @Component({
   selector: 'sf-backoffice-view',
@@ -8,6 +7,5 @@ import { ArticleStore } from '../../../../../base/src/state/article-store';
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ArticleStore],
 })
 export class SfBackofficeViewComponent {}

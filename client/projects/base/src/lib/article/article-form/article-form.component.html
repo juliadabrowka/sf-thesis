@@ -100,12 +100,13 @@
           </nz-form-control>
         </nz-form-item>
 
-        <sf-trip-term-details
-          [sfTripTerms]="sfArticle()?.TripDTO?.TripTermDTOS ?? []"
-          [sfTripId]="articleId()"
-          (sfTripTermsUpdated)="__onTripTermAdded($event)"
-        ></sf-trip-term-details>
-
+        <div class="trip-term-details">
+          <sf-trip-term-details
+            [sfTripTerms]="sfArticle()?.TripDTO?.TripTermDTOS ?? []"
+            [sfTripId]="articleId()"
+            (sfTripTermsUpdated)="__onTripTermAdded($event)"
+          ></sf-trip-term-details>
+        </div>
       </div>
     </div>
   }

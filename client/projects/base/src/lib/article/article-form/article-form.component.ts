@@ -230,6 +230,7 @@ export class SfArticleFormComponent {
 
           articleState.TripId = articleState.TripDTO?.Id;
           articleState.TripDTO = trip;
+          console.log(trip);
         }
 
         if (articleChanged(this.__articleStore.article(), articleState))
@@ -250,6 +251,7 @@ export class SfArticleFormComponent {
     if (!t) {
       throw new Error('Trip is undefined but should not be');
     }
+    console.log(a, tripTerms);
     t.TripTermDTOS = tripTerms;
     t.TripTermIds =
       tripTerms
@@ -264,13 +266,26 @@ export class SfArticleFormComponent {
 export function articleChanged(
   prev: ArticleDTO | null | undefined,
   current: ArticleDTO,
-) {
+): boolean {
+  if (!prev) return true;
+
+  const tripChanged =
+    prev.TripDTO?.Name !== current.TripDTO?.Name ||
+    prev.TripDTO?.Type !== current.TripDTO?.Type ||
+    prev.TripDTO?.TripDifficulty !== current.TripDTO?.TripDifficulty ||
+    JSON.stringify(prev.TripDTO?.TripTermIds) !==
+      JSON.stringify(current.TripDTO?.TripTermIds) ||
+    JSON.stringify(prev.TripDTO?.TripApplicationIds) !==
+      JSON.stringify(current.TripDTO?.TripApplicationIds);
+
   return (
-    prev?.Id !== current.Id ||
-    prev?.Title !== current.Title ||
-    prev?.Content !== current.Content ||
-    prev?.Country !== current.Country ||
-    prev?.ArticleCategory !== current.ArticleCategory ||
-    prev?.Url !== current.Url
+    prev.Id !== current.Id ||
+    prev.Title !== current.Title ||
+    prev.Content !== current.Content ||
+    prev.Country !== current.Country ||
+    prev.ArticleCategory !== current.ArticleCategory ||
+    prev.Url !== current.Url ||
+    prev.BackgroundImageUrl !== current.BackgroundImageUrl ||
+    tripChanged
   );
 }

@@ -25,7 +25,7 @@ export class SfArticleDetailsComponent {
 
   public readonly article = this.__articleStore.article;
   private readonly __articles = this.__articleStore.articles;
-  private readonly __customLink = signal<string | undefined>('');
+  private readonly __customLink = signal<string | undefined>(undefined);
 
   constructor() {
     this.__activatedRoute.paramMap
@@ -38,11 +38,9 @@ export class SfArticleDetailsComponent {
     effect(async () => {
       if (this.__customLink()) {
         const link = this.__customLink();
-        console.log('Link from Signal:', link); // Check if link is being set properly
         const articles = this.__articles();
         if (articles) {
           const article = articles.find((a) => a.Url === link);
-          console.log('Found Article:', article); // Verify if the article is being found
 
           if (!article?.Id) {
             return;

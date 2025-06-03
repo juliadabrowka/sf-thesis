@@ -67,11 +67,9 @@ export class TripTermDetailsComponent {
 
   public readonly computedTripTerms = computed(() => this.sfTripTerms());
 
-  // private readonly computedEditForms = computed(() => this.__editForms());
-
   constructor() {
     effect(() => {
-      const tripTerms = this.computedTripTerms();
+      const tripTerms = this.sfTripTerms();
       if (!tripTerms) return;
       if (tripTerms) {
         tripTerms.forEach((tripTerm) => {
@@ -123,12 +121,13 @@ export class TripTermDetailsComponent {
     this.stopEdit();
   }
 
-  removeTripTermById(tripId: number | undefined) {
-    if (!tripId) {
-      throw new Error('TripTerm id is required');
+  removeTripTermByIndex(index: number) {
+    const tripTerms = [...(this.sfTripTerms() ?? [])];
+    if (index < 0 || index >= tripTerms.length) {
+      throw new Error('Invalid index for TripTerm removal');
     }
-    const tripTerms = this.sfTripTerms();
-    const tt = tripTerms?.filter((tt) => tt.Id !== tripId) ?? [];
-    this.sfTripTermsUpdated.emit(tt);
+
+    tripTerms.splice(index, 1);
+    this.sfTripTermsUpdated.emit(tripTerms);
   }
 }
