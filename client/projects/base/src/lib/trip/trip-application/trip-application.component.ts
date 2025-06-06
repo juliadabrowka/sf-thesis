@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   signal,
@@ -41,65 +42,67 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
   styleUrl: './trip-application.component.css',
 })
 export class SfTripApplicationComponent {
-  private readonly messageService = inject(NzMessageService);
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly __messageService = inject(NzMessageService);
+  private readonly __destroyRef = inject(DestroyRef);
+  private readonly __tripService = inject(TripApplicationService);
 
   public readonly icons = SfIcons;
 
-  public readonly sfTripApplication = input(undefined, {
-    transform: (tripApplication: TripApplicationDTO | null | undefined) => {
-      if (tripApplication) {
-        this.assignTripApplicationData(tripApplication);
-        this.ensureSurveyResponse(tripApplication);
-        this.internalTripApplication.set(tripApplication);
-      }
-
-      return tripApplication ?? undefined;
-    },
-  });
+  public readonly sfTripApplication = input<
+    TripApplicationDTO | null | undefined
+  >();
   public readonly sfReadonlyMode = input(false, {
     transform: (readonly: boolean | null | undefined) => readonly,
   });
-  public readonly internalTripApplication = signal<
-    TripApplicationDTO | undefined
-  >(undefined);
+  public readonly tripApplication = signal<TripApplicationDTO | undefined>(
+    undefined,
+  );
 
   public readonly sfShowSubmitButton = input<boolean | null | undefined>();
 
   public readonly isSubmittedComputed = computed(
-    () => this.internalTripApplication()?.Status === Status.Completed,
+    () => this.tripApplication()?.Status === Status.Completed,
   );
 
   public readonly title = computed(
-    () => this.sfTripApplication()?.TripDTO?.ArticleDTO?.Title,
+    () => this.tripApplication()?.TripDTO?.ArticleDTO?.Title,
   );
   public readonly articleImgSrc = computed(
-    () =>
-      this.sfTripApplication()?.TripDTO?.ArticleDTO?.BackgroundImageUrl ?? '',
+    () => this.tripApplication()?.TripDTO?.ArticleDTO?.BackgroundImageUrl ?? '',
   );
   public readonly extraLogoSrc = computed(
-    () => this.sfTripApplication()?.TripDTO?.SurveyDTO?.ExtraLogoUrl ?? '',
+    () => this.tripApplication()?.TripDTO?.SurveyDTO?.ExtraLogoUrl ?? '',
   );
   public readonly surveyQuestions = computed(
-    () =>
-      this.sfTripApplication()?.TripDTO?.SurveyDTO?.SurveyQuestionDTOS ?? [],
+    () => this.tripApplication()?.TripDTO?.SurveyDTO?.SurveyQuestionDTOS ?? [],
   );
   public readonly responses = signal<Record<string, SurveyAnswerDTO>>({});
 
   private autosaveTrigger$ = new Subject<void>();
 
-  constructor(private tripService: TripApplicationService) {
+  constructor() {
+    effect(() => {
+      const tripApplication = this.sfTripApplication();
+
+      if (tripApplication) {
+        this.assignTripApplicationData(tripApplication);
+        this.ensureSurveyResponse(tripApplication);
+      }
+
+      this.tripApplication.set(tripApplication ?? undefined);
+    });
+
     this.autosaveTrigger$
       .pipe(debounceTime(1000))
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.__destroyRef))
       .subscribe(() => {
         this.autosaveApplication();
-        this.messageService.info('Ankieta została automatycznie zapisana');
+        this.__messageService.info('Ankieta została automatycznie zapisana');
       });
   }
 
   onAnswerChange(question: SurveyQuestionDTO, answer: string): void {
-    const app = this.sfTripApplication();
+    const app = this.tripApplication();
     if (!app) return;
 
     const response = app.SurveyResponseDTO;
@@ -136,7 +139,7 @@ export class SfTripApplicationComponent {
   }
 
   private autosaveApplication() {
-    const tripApplication = this.sfTripApplication();
+    const tripApplication = this.tripApplication();
     if (!tripApplication) {
       throw new Error('Trip Application Not Found!!');
     }
@@ -150,9 +153,9 @@ export class SfTripApplicationComponent {
       Responses: this.responses(),
     };
 
-    this.tripService
+    this.__tripService
       .autosaveApplication(payload)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.__destroyRef))
       .subscribe({
         next: (res) => console.log('Autosave success'),
         error: (err) => console.error('Autosave failed', err),
@@ -160,7 +163,7 @@ export class SfTripApplicationComponent {
   }
 
   onSubmit() {
-    const tripApplication = this.sfTripApplication();
+    const tripApplication = this.tripApplication();
     if (!tripApplication) {
       throw new Error('Trip Application Not Found!!');
     }
@@ -174,9 +177,9 @@ export class SfTripApplicationComponent {
       Responses: this.responses(),
     };
 
-    this.tripService
+    this.__tripService
       .submitApplication(payload)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.__destroyRef))
       .subscribe({
         next: (res) => {
           console.log('Submit success');
@@ -184,7 +187,7 @@ export class SfTripApplicationComponent {
             ...tripApplication,
             Status: Status.Completed,
           };
-          this.internalTripApplication.set(updated);
+          this.tripApplication.set(updated);
         },
         error: (err) => console.error('Submit failed', err),
       });

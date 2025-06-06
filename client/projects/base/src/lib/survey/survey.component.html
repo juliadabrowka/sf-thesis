@@ -1,10 +1,10 @@
-@if (survey(); as survey) {
+@if (sfSurvey(); as survey) {
   <div class="container">
     <div class="survey">
       <div class="pictures">
-        <img [class.extra-margin]="!survey.ExtraLogoUrl" src="assets/logotyp-superfemka.png" alt="logo">
-        @if (survey.ExtraLogoUrl) {
-          <img class="extra-logo" [src]="survey.ExtraLogoUrl" alt="extra-logo">
+        <img [class.extra-margin]="!extraLogoSrc()" src="assets/logotyp-superfemka.png" alt="logo">
+        @if (extraLogoSrc()) {
+          <img class="extra-logo" [src]="extraLogoSrc()" alt="extra-logo">
         }
       </div>
       <div class="content">

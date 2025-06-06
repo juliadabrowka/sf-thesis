@@ -26,12 +26,8 @@ public class TripMappingProfile : Profile
                 opt => opt.MapFrom(
                     src => src.Article.Id))
             .ForMember(dest => dest.SurveyDTO, 
-                opt =>
-                {
-                    opt.PreCondition(src => src.Survey != null);
-                    opt.MapFrom(
-                        src => src.Survey);
-                })
+                opt => opt.MapFrom(
+                        src => src.Survey))
             .MaxDepth(4)
             .PreserveReferences()
             .ReverseMap();

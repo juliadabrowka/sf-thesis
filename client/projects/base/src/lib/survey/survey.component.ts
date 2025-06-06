@@ -29,13 +29,13 @@ export class SfSurveyComponent {
     }[]
   >([]);
 
-  public readonly survey = computed(() => this.surveyStore.survey());
   public readonly title = computed(
-    () => this.survey()?.TripDTOS[0]?.ArticleDTO?.Title,
+    () => this.sfSurvey()?.TripDTOS[0]?.ArticleDTO?.Title,
   );
   public readonly articleImgSrc = computed(
-    () => this.survey()?.TripDTOS[0]?.ArticleDTO,
+    () => this.sfSurvey()?.TripDTOS[0]?.ArticleDTO?.BackgroundImageUrl,
   );
+  public readonly extraLogoSrc = computed(() => this.sfSurvey()?.ExtraLogoUrl);
 
   constructor() {
     effect(() => {

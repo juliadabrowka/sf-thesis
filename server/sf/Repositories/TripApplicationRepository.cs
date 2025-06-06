@@ -99,9 +99,13 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
     {
         return await sfDbContext.TripApplications
             .Include(ta => ta.SurveyResponse)
-                .ThenInclude(sr => sr.SurveyAnswers)
+            .ThenInclude(sr => sr.SurveyAnswers)
+            .ThenInclude(sa => sa.SurveyQuestion)
             .Include(ta => ta.Trip)
-                .ThenInclude(t => t.Article)
+            .ThenInclude(t => t.Article)
+            .Include(ta => ta.Trip)
+            .ThenInclude(t => t.Survey)
+            .ThenInclude(s => s.SurveyQuestions)
             .ToArrayAsync();
     }
 

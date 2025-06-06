@@ -16,7 +16,7 @@ import {
 } from '@sf/sf-base';
 import { ApplicationFormComponent } from '../../application-form/application-form.component';
 import { Router } from '@angular/router';
-import { TripApplicationService } from '../../../services/trip-application-service.service';
+import { TripApplicationStore } from '../../../state/trip-application-store';
 
 @Component({
   selector: 'sf-trip-inline',
@@ -32,8 +32,8 @@ import { TripApplicationService } from '../../../services/trip-application-servi
 })
 export class SfTripInlineComponent {
   private readonly __router = inject(Router);
-  private readonly __store = inject(ArticleStore);
-  private readonly __tripApplicationService = inject(TripApplicationService);
+  private readonly __articleStore = inject(ArticleStore);
+  private readonly __tripApplicationStore = inject(TripApplicationStore);
 
   public readonly sfTripInfo = input<TripFlag | null | undefined>();
   public readonly showSlider = signal(false);
@@ -46,8 +46,8 @@ export class SfTripInlineComponent {
     if (trip.ArticleId === undefined) {
       throw new Error('Article trip id not found');
     }
-    await this.__store.getArticleDetails(trip.ArticleId);
-    const article = this.__store.article();
+    await this.__articleStore.getArticleDetails(trip.ArticleId);
+    const article = this.__articleStore.article();
 
     if (article === undefined) {
       throw new Error('Article not found');
@@ -55,21 +55,11 @@ export class SfTripInlineComponent {
     await this.__router.navigate([article.Url]);
   }
 
-  createTripApplication(tripApplication: TripApplicationDTO) {
+  async createTripApplication(tripApplication: TripApplicationDTO) {
     const trip = this.sfTripInfo()?.trip;
-    console.log(trip);
     tripApplication.TripDTO = trip;
     tripApplication.TripId = trip?.Id;
 
-    this.__tripApplicationService
-      .createTripApplication(tripApplication)
-      .subscribe({
-        next: (res) => {
-          console.log('TripApplication created:', res);
-        },
-        error: (err) => {
-          console.error('Error creating TripApplication', err);
-        },
-      });
+    await this.__tripApplicationStore.createTripApplication(tripApplication);
   }
 }

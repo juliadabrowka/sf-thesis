@@ -29,9 +29,7 @@ public class SurveyAnswerRepository(SfDbContext sfDbContext) : ISurveyAnswerRepo
     {
         return await sfDbContext.SurveyAnswers
             .Include(sa => sa.SurveyQuestion)
-                .ThenInclude(sq => sq.Surveys)
             .Include(sa => sa.SurveyResponse)
-                .ThenInclude(sr => sr.TripApplication)
             .ToArrayAsync();
     }
 

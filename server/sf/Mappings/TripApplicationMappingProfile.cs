@@ -10,8 +10,12 @@ public class TripApplicationMappingProfile : Profile
         CreateMap<TripApplication, TripApplicationDTO>()
             .ForMember(dest => dest.SurveyResponseDTO,
                 opt => opt.MapFrom(src => src.SurveyResponse))
+            .ForMember(dest => dest.SurveyResponseId,
+                opt => opt.MapFrom(src => src.SurveyResponse.Id))
             .ForMember(dest => dest.TripDTO,
                 opt => opt.MapFrom(src => src.Trip))
+            .MaxDepth(4)
+            .PreserveReferences()
             .ReverseMap();
     }
 }

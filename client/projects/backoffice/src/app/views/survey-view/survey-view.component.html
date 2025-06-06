@@ -11,7 +11,7 @@
 
 <ng-template #surveyTitleTemplate>
   <sf-icon-and-text
-    [sfText]="'Kreator ankiet'"
+    [sfText]="survey()?.Id ? 'Edytor ankiety' : 'Kreator ankiet'"
     [sfIcon]="icons.surveyAdd"
   ></sf-icon-and-text>
 </ng-template>
@@ -27,5 +27,4 @@
 
 <sf-survey-modal
   #surveyModal
-  [sfSurvey]="survey()"
 ></sf-survey-modal>

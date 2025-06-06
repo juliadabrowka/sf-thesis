@@ -11,6 +11,7 @@ import {
   SfIconAndTextComponent,
   SfIcons,
   SourceOfInformation,
+  Status,
   TripApplicationDTO,
 } from '@sf/sf-base';
 import { NzTableCellDirective, NzTableModule } from 'ng-zorro-antd/table';
@@ -20,6 +21,7 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { SfTripApplicationModalComponent } from '../trip-application-modal/trip-application-modal.component';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'sf-trip-application-list',
@@ -40,6 +42,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class SfTripApplicationListComponent {
   private readonly tripApplicationStore = inject(TripApplicationStore);
+  private readonly messageService = inject(NzMessageService);
 
   public readonly icons = SfIcons;
   public readonly sfTripApplications = computed(() =>
@@ -70,6 +73,7 @@ export class SfTripApplicationListComponent {
       value: SourceOfInformation.Recommendation,
     },
   ]);
+  public readonly statusCompleted = Status.Completed;
 
   constructor() {
     effect(() => {
@@ -90,5 +94,7 @@ export class SfTripApplicationListComponent {
   ) {
     tripApplication.SourceOfInformation = source;
     await this.tripApplicationStore.updateTripApplication(tripApplication);
+
+    this.messageService.success('Zgłoszenie zostało poprawnie zaktualizowane');
   }
 }

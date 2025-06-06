@@ -45,43 +45,12 @@ public class TripApplicationService(
 
         var tripApplicationEntity = mapper.Map<TripApplication>(tripApplicationDto);
         var newTripApplication = await tripApplicationRepository.CreateTripApplication(tripApplicationEntity);
-        // come back to see if anything should be mapped
-        
-        var clientEmail = newTripApplication.Email;
-        var hash = newTripApplication.Hash;
 
-        if (!string.IsNullOrWhiteSpace(clientEmail))
+        if (!string.IsNullOrWhiteSpace(newTripApplication.Email))
         {
-            var baseUrl = configuration["Frontend:TripApplicationUrlBase"] ?? "https://yourdomain.com/survey-fill";
-
-            var surveyLink = $"{baseUrl}/{hash}";
-            var emailBody = $@"
-            <html>
-              <body style='font-family: Arial, sans-serif; color: #333;'>
-                <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;'>
-                  <div style='text-align: center; margin-bottom: 20px;'>
-                    <img src='https://localhost:4200/assets/logotyp-superfemka.png' alt='Superfemka Logo' style='max-height: 60px;' />
-                  </div>
-                  <h2 style='color: #f04a7e;'>Wypełnij swoją ankietę</h2>
-                  <p>Dziękujemy za zgłoszenie! Prosimy o wypełnienie ankiety dotyczącej Twojej wyprawy.</p>
-                  <p style='margin: 30px 0; text-align: center;'>
-                    <a href='{surveyLink}' style='background-color: #f04a7e; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
-                      Wypełnij ankietę
-                    </a>
-                  </p>
-                  <p style='font-size: 12px; color: #888;'>Jeśli przycisk nie działa, skopiuj i wklej ten link w przeglądarce:<br /><a href='{surveyLink}'>{surveyLink}</a></p>
-                </div>
-              </body>
-            </html>";
-
-        
-            await emailService.SendAsync(
-                clientEmail,
-                "Superfemka Projekt - ankieta na wyprawę",
-                emailBody
-            );
+            await SendTripApplicationEmail(newTripApplication);
         }
-
+        
         return mapper.Map<TripApplicationDTO>(newTripApplication);
     }
 
@@ -181,55 +150,94 @@ public class TripApplicationService(
 
    public async Task AutosaveTripApplication(int tripApplicationId, Dictionary<string, SurveyAnswerDTO> responses) 
    {
-    var tripApp = await tripApplicationRepository
-        .GetTripApplicationsDetails(tripApplicationId);
+        var tripApplication = await tripApplicationRepository
+            .GetTripApplicationsDetails(tripApplicationId);
 
-    if (tripApp == null)
-    {
-        throw new Exception($"TripApplication with ID {tripApplicationId} not found.");
-    }
-
-    var surveyResponse = tripApp.SurveyResponse ?? new SurveyResponse
-    {
-        TripApplicationId = tripApplicationId,
-        RepliedOn = DateTime.UtcNow,
-        SurveyAnswers = new List<SurveyAnswer>()
-    };
-
-    foreach (var (questionIdStr, dto) in responses)
-    {
-        if (!int.TryParse(questionIdStr, out var questionId))
+        if (tripApplication == null)
         {
-            continue;
+            throw new Exception($"TripApplication with ID {tripApplicationId} not found.");
         }
 
-        var existingAnswer = surveyResponse.SurveyAnswers
-            .FirstOrDefault(a => a.SurveyQuestionId == questionId);
+        var surveyResponse = tripApplication.SurveyResponse ?? new SurveyResponse
+        {
+            TripApplicationId = tripApplicationId,
+            RepliedOn = DateTime.UtcNow,
+            SurveyAnswers = new List<SurveyAnswer>()
+        };
 
-        if (existingAnswer != null)
+        foreach (var (questionIdStr, dto) in responses)
         {
-            existingAnswer.Answer = dto.Answer;
-        }
-        else
-        {
-            surveyResponse.SurveyAnswers.Add(new SurveyAnswer
+            if (!int.TryParse(questionIdStr, out var questionId))
             {
-                SurveyQuestionId = questionId,
-                Answer = dto.Answer
-            });
+                continue;
+            }
+
+            var existingAnswer = surveyResponse.SurveyAnswers
+                .FirstOrDefault(a => a.SurveyQuestionId == questionId);
+
+            if (existingAnswer != null)
+            {
+                existingAnswer.Answer = dto.Answer;
+            }
+            else
+            {
+                surveyResponse.SurveyAnswers.Add(new SurveyAnswer
+                {
+                    SurveyQuestionId = questionId,
+                    Answer = dto.Answer
+                });
+            }
         }
-    }
 
-    if (tripApp.SurveyResponse == null)
-    {
-        tripApp.SurveyResponse = surveyResponse;
-    }
-    
-    if (tripApp.Status != Status.InProgress)
-    {
-        tripApp.Status = Status.InProgress;
-    }
+        if (tripApplication.SurveyResponse == null)
+        {
+            tripApplication.SurveyResponse = surveyResponse;
+        }
+        
+        if (tripApplication.Status != Status.InProgress)
+        {
+            tripApplication.Status = Status.InProgress;
+        }
 
-    await tripApplicationRepository.AutosaveTripApplication(tripApp);
-    }
+        await tripApplicationRepository.AutosaveTripApplication(tripApplication);
+   }
+
+   private async Task SendTripApplicationEmail(TripApplication newTripApplication)
+   {
+       
+       var clientEmail = newTripApplication.Email;
+       var hash = newTripApplication.Hash;
+
+       if (!string.IsNullOrWhiteSpace(clientEmail))
+       {
+           var baseUrl = configuration["Frontend:TripApplicationUrlBase"] ?? "https://yourdomain.com/survey-fill";
+
+           var surveyLink = $"{baseUrl}/{hash}";
+           var emailBody = $@"
+            <html>
+              <body style='font-family: Arial, sans-serif; color: #333;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;'>
+                  <div style='text-align: center; margin-bottom: 20px;'>
+                    <img src='https://localhost:4200/assets/logotyp-superfemka.png' alt='Superfemka Logo' style='max-height: 60px;' />
+                  </div>
+                  <h2 style='color: #f04a7e;'>Wypełnij swoją ankietę</h2>
+                  <p>Dziękujemy za zgłoszenie! Prosimy o wypełnienie ankiety dotyczącej Twojej wyprawy.</p>
+                  <p style='margin: 30px 0; text-align: center;'>
+                    <a href='{surveyLink}' style='background-color: #f04a7e; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                      Wypełnij ankietę
+                    </a>
+                  </p>
+                  <p style='font-size: 12px; color: #888;'>Jeśli przycisk nie działa, skopiuj i wklej ten link w przeglądarce:<br /><a href='{surveyLink}'>{surveyLink}</a></p>
+                </div>
+              </body>
+            </html>";
+
+        
+           await emailService.SendAsync(
+               clientEmail,
+               "Superfemka Projekt - ankieta na wyprawę",
+               emailBody
+           );
+       }
+   }
 }

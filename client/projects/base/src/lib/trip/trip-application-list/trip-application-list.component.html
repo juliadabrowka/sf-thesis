@@ -43,13 +43,15 @@
             </div>
           </td>
           <td>
-            <div class="survey-preview"
-                 nz-tooltip
-                 [nzTooltipTitle]="'Kliknij, aby zobaczyć podgląd ankiety'"
-                 [nzTooltipPlacement]="'left'">
-              <fa-icon [icon]="icons.preview"
-                       (click)="tripApplicationModal.openTripApplicationModal(tripApplication)"></fa-icon>
-            </div>
+            @if (tripApplication.Status === statusCompleted) {
+              <div class="survey-preview"
+                   nz-tooltip
+                   [nzTooltipTitle]="'Kliknij, aby zobaczyć podgląd ankiety'"
+                   [nzTooltipPlacement]="'left'">
+                <fa-icon [icon]="icons.preview"
+                         (click)="tripApplicationModal.openTripApplicationModal(tripApplication)"></fa-icon>
+              </div>
+            }
           </td>
           <td>
             <nz-select
@@ -67,7 +69,7 @@
 <ng-template #titleTemplate>
   <sf-icon-and-text
     [sfIcon]="icons.tripApplications"
-    [sfText]="'Zgłoszenia'"
+    [sfText]="'Zgłoszenia uczestniczek'"
   ></sf-icon-and-text>
 </ng-template>
 

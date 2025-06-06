@@ -8,15 +8,12 @@ public class SurveyAnswerMappingProfile : Profile
     public SurveyAnswerMappingProfile()
     {
         CreateMap<SurveyAnswer, SurveyAnswerDTO>()
-            .ForMember(dest => dest.SurveyQuestionId,
-                opt => opt.MapFrom(
-                    src => src.SurveyQuestion.Id))
-            .ForMember(dest => dest.SurveyQuestionDTO,
-                opt => opt.MapFrom(
-                    src => src.SurveyQuestion))
             .ForMember(dest => dest.SurveyResponseDTO,
                 opt => opt.MapFrom(
                     src => src.SurveyResponse))
+            .ForMember(dest => dest.SurveyQuestionDTO,
+                opt => opt.MapFrom(
+                    src => src.SurveyQuestion))
             .MaxDepth(4)
             .PreserveReferences()
             .ReverseMap();

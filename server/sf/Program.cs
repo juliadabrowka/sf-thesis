@@ -122,6 +122,9 @@ class Program
         
         builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>();
         builder.Services.AddScoped<ISurveyQuestionService, SurveyQuestionService>();
+        
+        builder.Services.AddScoped<ISurveyResponseRepository, SurveyResponseRepository>();
+        builder.Services.AddScoped<ISurveyResponseService, SurveyResponseService>();
 
         builder.Services.AddScoped<ITripRepository, TripRepository>();
         builder.Services.AddScoped<ITripService, TripService>();

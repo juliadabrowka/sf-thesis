@@ -15,6 +15,8 @@ public class SurveyResponseMappingProfile : Profile
                     src => src.SurveyAnswers))
             .ForMember(dest => dest.SurveyAnswerIds,
                 opt => opt.MapFrom(src => src.SurveyAnswers.Select(sa => sa.Id)))
+            .MaxDepth(4)
+            .PreserveReferences()
             .ReverseMap();
     }
 }
