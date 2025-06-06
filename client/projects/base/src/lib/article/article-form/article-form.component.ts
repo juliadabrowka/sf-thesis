@@ -122,16 +122,17 @@ export class SfArticleFormComponent {
     label: TripTypeLabels[k as keyof typeof TripType],
     value: k as TripType,
   }));
-
   public readonly difficulties = Object.keys(Difficulty).map((k) => ({
     label: DifficultyLabels[k as keyof typeof Difficulty],
     value: k as Difficulty,
   }));
+
   public readonly formGroup = new FormGroup(this.controls);
   public readonly isTripCategorySelected = signal(false);
 
   public readonly articleId = computed(() => this.sfArticle()?.Id);
   public readonly sfButtonDisabled = output<boolean>();
+  public readonly article = signal<ArticleDTO | undefined>(undefined);
 
   public readonly quillConfig: QuillModules = {
     toolbar: [
@@ -172,6 +173,7 @@ export class SfArticleFormComponent {
             difficulty: article.TripDTO.TripDifficulty,
           });
         }
+        this.article.set(article);
       } else {
         this.formGroup.patchValue({
           category: DefaultArticleCategoryValue,
@@ -210,7 +212,8 @@ export class SfArticleFormComponent {
       )
       .subscribe((fg) => {
         this.isTripCategorySelected.set(fg.category === ArticleCategory.Trips);
-        const articleState = new ArticleDTO();
+        const article = this.article();
+        const articleState = article ? article : new ArticleDTO();
 
         articleState.Title = fg.title;
         articleState.Content = fg.content;
@@ -238,7 +241,7 @@ export class SfArticleFormComponent {
           articleState.TripId = articleState.TripDTO?.Id;
           articleState.TripDTO = trip;
         }
-
+        console.log(articleState);
         if (articleChanged(this.__articleStore.article(), articleState))
           this.__articleStore.setArticle(articleState);
       });
