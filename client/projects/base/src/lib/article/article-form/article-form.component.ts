@@ -5,6 +5,7 @@ import {
   effect,
   inject,
   input,
+  output,
   signal,
 } from '@angular/core';
 import {
@@ -130,6 +131,7 @@ export class SfArticleFormComponent {
   public readonly isTripCategorySelected = signal(false);
 
   public readonly articleId = computed(() => this.sfArticle()?.Id);
+  public readonly sfButtonDisabled = output<boolean>();
 
   public readonly quillConfig: QuillModules = {
     toolbar: [
@@ -240,6 +242,14 @@ export class SfArticleFormComponent {
         if (articleChanged(this.__articleStore.article(), articleState))
           this.__articleStore.setArticle(articleState);
       });
+
+    this.formGroup.statusChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() =>
+        this.sfButtonDisabled.emit(
+          this.formGroup.invalid || this.formGroup.pending,
+        ),
+      );
   }
 
   __onFilesUpload(imgUrl: string) {

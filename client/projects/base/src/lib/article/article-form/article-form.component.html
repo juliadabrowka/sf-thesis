@@ -45,23 +45,18 @@
         </nz-form-control>
       </nz-form-item>
 
-      <div class="media-section">
-        <h3>
-          <sf-icon-and-text
-            [sfIcon]="icons.backgroundImage"
-            [sfText]="'Zdjęcie w tle'"
-          ></sf-icon-and-text>
-        </h3>
-
-        <div>
+      <nz-form-item>
+        <nz-form-label nzRequired>Zdjęcie w tle</nz-form-label>
+        <nz-form-control nzErrorTip="Link nie może być pusty">
           <sf-upload
             (sfUploadedImgUrl)="__onFilesUpload($event)"
           ></sf-upload>
-        </div>
+        </nz-form-control>
+
         @if (controls.backgroundImage.value) {
           <img [src]="controls.backgroundImage.value" height="250" alt="">
         }
-      </div>
+      </nz-form-item>
     </div>
 
     @if (isTripCategorySelected()) {

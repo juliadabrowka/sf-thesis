@@ -50,3 +50,7 @@ sf-hint {
 .trip-term-details {
   margin-top: var(--margin-m) !important;
 }
+
+.bg-display {
+  display: flex;
+}

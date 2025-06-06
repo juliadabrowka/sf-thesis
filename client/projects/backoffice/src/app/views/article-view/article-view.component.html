@@ -5,10 +5,12 @@
     <sf-article-form
       [sfArticle]="article()"
       [sfLoading]="loading()"
+      (sfButtonDisabled)="disabled.set($event)"
     ></sf-article-form>
 
     <sf-button
       [sfButtonText]="article()?.Id ? 'Zapisz zmiany' : 'Utwórz nowy'"
+      [sfDisabled]="disabled()"
       (sfOnButtonClicked)="article()?.Id ? onSaveClick() : onCreateClick()"
     ></sf-button>
   }

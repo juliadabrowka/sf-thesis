@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  signal,
 } from '@angular/core';
 import {
   ArticleStore,
@@ -43,6 +44,8 @@ export class SfBackofficeArticleViewComponent {
   public readonly article = computed(() => this.__articleStore.article());
   public readonly loading = computed(() => this.__articleStore.loading());
   public readonly icons = SfIcons;
+
+  public readonly disabled = signal(true);
 
   constructor() {
     this.__route.paramMap
