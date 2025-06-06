@@ -28,6 +28,7 @@
   --table-header-blue-color: rgba(80, 94, 149, 0.61);
   --table-header-hover-color: rgba(61, 72, 115, 0.61); /* Muted lilac-gray */
   --sorters-blue-color: #ffffff; /* Desaturated slate blue */
+  --menu-font-grey: #888888;
 
   --margin-xxs: 2px;
   --margin-xs: 4px;
@@ -250,9 +251,8 @@ nz-content {
 }
 
 .logo {
-  width: 175px;
-  height: 45px;
-  filter: invert();
+  width: 88%;
+  height: 88%;
 }
 
 .bold {

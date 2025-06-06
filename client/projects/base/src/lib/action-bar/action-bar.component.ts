@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NgClass } from '@angular/common';
 import {
   NzDropDownDirective,
@@ -25,29 +34,53 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './action-bar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SfActionBarComponent {
+export class SfActionBarComponent implements OnInit, OnDestroy {
   private readonly __router = inject(Router);
+  private readonly __destroyRef = inject(DestroyRef);
+  private readonly __cdr = inject(ChangeDetectorRef);
 
   public readonly icons = SfIcons;
-  public currentActionBarClass = 'action-bar-default-page';
-  public currentActionsClass = 'actions-default';
+  public readonly currentActionBarClass = signal('action-bar-default-page');
+  public readonly transformBarHeight = signal(false);
 
-  constructor() {
-    this.__router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url === '/') {
-          this.currentActionBarClass = 'action-bar-default-page';
-          this.currentActionsClass = 'actions-default';
-        } else if (
-          event.url === '/admin' ||
-          event.url.includes('/trip-application/')
-        ) {
-          this.currentActionBarClass = 'action-bar-display-hidden';
-        } else {
-          this.currentActionBarClass = 'action-bar-other-page';
-          this.currentActionsClass = 'actions-bw';
+  ngOnInit() {
+    this.updateActionBarClasses();
+
+    this.__router.events
+      .pipe(takeUntilDestroyed(this.__destroyRef))
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.updateActionBarClasses();
         }
-      }
-    });
+      });
+
+    window.addEventListener('scroll', this.onScroll.bind(this));
+  }
+
+  private updateActionBarClasses() {
+    const currentUrl = this.__router.url;
+
+    if (currentUrl === '/') {
+      this.currentActionBarClass.set('action-bar-default-page');
+    } else if (
+      currentUrl.startsWith('/admin') ||
+      currentUrl.includes('/trip-application/')
+    ) {
+      this.currentActionBarClass.set('action-bar-display-hidden');
+    } else {
+      this.currentActionBarClass.set('action-bar-other-page');
+    }
+  }
+
+  private onScroll(): void {
+    const scrollPosition = window.scrollY;
+    this.transformBarHeight.set(scrollPosition > 150);
+    this.transformBarHeight()
+      ? this.currentActionBarClass.set('action-bar-other-page')
+      : this.currentActionBarClass.set('action-bar-default-page');
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.onScroll.bind(this));
   }
 }

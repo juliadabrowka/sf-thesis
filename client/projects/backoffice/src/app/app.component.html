@@ -1,6 +1,8 @@
 <nz-layout class="container">
   <nz-header class="header">
-    <img src="../assets/logotyp-superfemka.png" class="logo" alt="logo" [routerLink]="'./'"/>
+    <div class="logotype">
+      <img src="../assets/logotyp-superfemka.png" alt="logo" [routerLink]="'./'"/>
+    </div>
     <ul nz-menu nzTheme="dark" nzMode="horizontal">
       <li nz-submenu [nzTitle]="addPostTemplate" (click)="createNewArticle()"></li>
       <li nz-submenu [nzTitle]="addTripTemplate" (click)="createNewTrip()"></li>

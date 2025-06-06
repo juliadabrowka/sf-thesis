@@ -1,4 +1,4 @@
-<div class="action-bar-container" [ngClass]="currentActionBarClass">
+<div class="action-bar-container" [ngClass]="currentActionBarClass()" [class.action-bar-small]="transformBarHeight()">
   <div class="inner-container">
     <div class="logo">
       <img src="/assets/logotyp-superfemka.png"
@@ -7,7 +7,7 @@
            [routerLink]="'/'"
       >
     </div>
-    <div [ngClass]="currentActionsClass">
+    <div class="actions">
       <span [routerLink]="'kalendarium-wypraw'">KALENDARIUM WYPRAW</span>
       <span nz-dropdown [nzDropdownMenu]="menu">
         PODRÓŻUJ Z NAMI

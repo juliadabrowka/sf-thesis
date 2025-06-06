@@ -24,10 +24,18 @@ nz-header {
     color: white;
     padding: 7px 15px 8px 15px;
   }
-}
 
-img {
-  cursor: pointer;
+  .logotype {
+    cursor: pointer;
+    filter: invert();
+    width: 190px;
+
+    img {
+      width: 100%;
+      scale: 0.9
+    }
+  }
+
 }
 
 .main-layout {
@@ -37,16 +45,10 @@ img {
 }
 
 sf-sider {
-  width: 230px;
   background: var(--blue-sider-background-color);
   height: 100vh;
 }
 
 nz-footer {
   background-color: var(--primary-color);
-}
-
-.logo {
-  margin: 15px;
-  height: 95%;
 }
