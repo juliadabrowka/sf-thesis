@@ -4,7 +4,6 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import {
   ArticleCategory,
@@ -17,11 +16,12 @@ import {
 } from '@sf/sf-base';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { SfSkeletonComponent } from '../../../../../base/src/lib/skeleton/skeleton.component';
 
 @Component({
   selector: 'sf-backoffice-trip-view',
   imports: [
-    MatProgressSpinner,
+    SfSkeletonComponent,
     NzCardComponent,
     SfArticleFormComponent,
     SfButtonComponent,

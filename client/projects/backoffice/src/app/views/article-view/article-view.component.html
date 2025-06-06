@@ -1,9 +1,6 @@
 <nz-card [nzTitle]="postTemplate" [nzExtra]="article()?.Id ? extraTemplate : undefined" [nzBordered]="false">
   @if (loading()) {
-    <div class="loading-container">
-      loading
-      <mat-spinner [diameter]="50"></mat-spinner>
-    </div>
+    <sf-skeleton></sf-skeleton>
   } @else {
     <sf-article-form
       [sfArticle]="article()"

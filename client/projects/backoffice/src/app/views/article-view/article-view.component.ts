@@ -17,7 +17,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { SfSkeletonComponent } from '../../../../../base/src/lib/skeleton/skeleton.component';
 
 @Component({
   selector: 'sf-backoffice-article-view',
@@ -28,7 +28,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     SfIconAndTextComponent,
     NzTooltipDirective,
     NzButtonComponent,
-    MatProgressSpinner,
+    SfSkeletonComponent,
   ],
   templateUrl: './article-view.component.html',
   styleUrl: './article-view.component.css',
@@ -41,7 +41,7 @@ export class SfBackofficeArticleViewComponent {
   private readonly __message = inject(NzMessageService);
 
   public readonly article = computed(() => this.__articleStore.article());
-  public readonly loading = this.__articleStore.loading;
+  public readonly loading = computed(() => this.__articleStore.loading());
   public readonly icons = SfIcons;
 
   constructor() {
