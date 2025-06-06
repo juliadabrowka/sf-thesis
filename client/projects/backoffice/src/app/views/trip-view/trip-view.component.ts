@@ -13,6 +13,7 @@ import {
   SfButtonComponent,
   SfIconAndTextComponent,
   SfIcons,
+  TripType,
 } from '@sf/sf-base';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -46,6 +47,7 @@ export class SfBackofficeTripViewComponent {
     return {
       ...article,
       ArticleCategory: ArticleCategory.Trips,
+      Type: TripType.Classic,
     };
   });
 

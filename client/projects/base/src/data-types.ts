@@ -89,6 +89,10 @@ export const TripTypeLabels: Record<TripType, string> = {
 
 export const DefaultArticleCategoryValue = ArticleCategory.Photostories;
 export const DefaultCountryValue = Country.Poland;
+export const DefaultRatingValue = Rating.Good;
+export const DefaultStatusValue = Status.Created;
+export const DefaultTripTypeValue = TripType.Classic;
+export const DefaultDifficultyValue = Difficulty.Medium;
 
 export class ArticleDTO {
   Id: number | undefined;
@@ -101,8 +105,6 @@ export class ArticleDTO {
   TripId: number | undefined;
   TripDTO: TripDTO | undefined;
 }
-
-export const DefaultRatingValue = Rating.Good;
 
 export class OpinionDTO {
   Id: number | undefined;
@@ -150,8 +152,6 @@ export class SurveyResponseDTO {
   SurveyAnswerDTOS: SurveyAnswerDTO[] = [];
 }
 
-export const DefaultStatusValue = Status.Created;
-
 export class TripApplicationDTO {
   Id: number | undefined;
   Hash: string | undefined;
@@ -166,9 +166,6 @@ export class TripApplicationDTO {
   SurveyResponseId: number | undefined;
   SurveyResponseDTO: SurveyResponseDTO | undefined;
 }
-
-export const DefaultTripTypeValue = TripType.Classic;
-export const DefaultDifficultityValue = Difficulty.Medium;
 
 export class TripTermDTO {
   Id: number | undefined;
@@ -189,7 +186,7 @@ export class TripDTO {
   TripTermIds: number[] = [];
   TripTermDTOS: TripTermDTO[] = [];
   Type: TripType = DefaultTripTypeValue;
-  TripDifficulty: Difficulty = DefaultDifficultityValue;
+  TripDifficulty: Difficulty = DefaultDifficultyValue;
   SurveyId: number | undefined;
   SurveyDTO: SurveyDTO | undefined;
   ArticleId: number | undefined;

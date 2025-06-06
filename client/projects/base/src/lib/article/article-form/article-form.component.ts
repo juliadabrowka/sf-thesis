@@ -21,7 +21,7 @@ import {
   CountryLabels,
   DefaultArticleCategoryValue,
   DefaultCountryValue,
-  DefaultDifficultityValue,
+  DefaultDifficultyValue,
   DefaultTripTypeValue,
   Difficulty,
   DifficultyLabels,
@@ -72,7 +72,7 @@ import { HintComponent } from '../../hint/hint.component';
 export class SfArticleFormComponent {
   private readonly __articleStore = inject(ArticleStore);
 
-  public readonly sfArticle = input<ArticleDTO | undefined>();
+  public readonly sfArticle = input<ArticleDTO | null | undefined>();
   public readonly sfLoading = input<boolean | null | undefined>();
   public readonly icons = SfIcons;
   public readonly controls = {
@@ -105,7 +105,7 @@ export class SfArticleFormComponent {
       nonNullable: true,
     }),
     picture: new FormControl<File | null>(null),
-    difficulty: new FormControl<Difficulty>(DefaultDifficultityValue, {
+    difficulty: new FormControl<Difficulty>(DefaultDifficultyValue, {
       nonNullable: true,
     }),
   };
@@ -161,9 +161,15 @@ export class SfArticleFormComponent {
           country: article.Country,
           articleUrl: article.Url,
           backgroundImage: article.BackgroundImageUrl,
-          tripName: article.TripDTO?.Name,
-          tripType: article.TripDTO?.Type,
         });
+
+        if (article.TripDTO) {
+          this.formGroup.patchValue({
+            tripName: article.TripDTO.Name,
+            tripType: article.TripDTO.Type,
+            difficulty: article.TripDTO.TripDifficulty,
+          });
+        }
       } else {
         this.formGroup.patchValue({
           category: DefaultArticleCategoryValue,
@@ -174,6 +180,7 @@ export class SfArticleFormComponent {
           backgroundImage: '',
           tripName: '',
           tripType: DefaultTripTypeValue,
+          difficulty: DefaultDifficultyValue,
         });
       }
     });
@@ -228,7 +235,6 @@ export class SfArticleFormComponent {
 
           articleState.TripId = articleState.TripDTO?.Id;
           articleState.TripDTO = trip;
-          console.log(trip);
         }
 
         if (articleChanged(this.__articleStore.article(), articleState))
