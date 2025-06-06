@@ -1,28 +1,38 @@
 <form nz-form [formGroup]="formGroup" (ngSubmit)="submitForm()">
   <nz-form-item>
     <nz-form-label nzRequired>Imię</nz-form-label>
-    <nz-form-control>
+    <nz-form-control nzHasFeedback [nzErrorTip]="nameErrorTemplate">
       <input nz-input [formControl]="controls.name"/>
+      <ng-template #nameErrorTemplate let-control>
+        @if (control.errors?.['required']) {
+          Wpisz swoje imię
+        }
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label nzRequired>E-mail</nz-form-label>
-    <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
+    <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTemplate">
       <input nz-input [formControl]="controls.email" placeholder="email" type="email"/>
-      <ng-template #emailErrorTpl let-control>
+      <ng-template #emailErrorTemplate let-control>
         @if (control.errors?.['email']) {
-          The input is not valid E-mail!
+          Wpisz poprawny adres email
         }
         @if (control.errors?.['required']) {
-          Please input your E-mail!
+          Email jest niezbędny
         }
       </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label nzRequired>Telefon</nz-form-label>
-    <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
+    <nz-form-control nzHasFeedback [nzErrorTip]="phoneErrorTemplate">
       <input nz-input type="tel" [formControl]="controls.phone"/>
+      <ng-template #phoneErrorTemplate let-control>
+        @if (control.errors?.['invalidPhone']) {
+          Nieprawidłowy numer. Musi mieć od 8 do 15 cyfr i składać się z samych cyfr
+        }
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>

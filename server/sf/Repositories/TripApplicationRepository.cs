@@ -49,7 +49,7 @@ public class TripApplicationRepository(SfDbContext sfDbContext) : ITripApplicati
 
     public async Task<TripApplication> CreateTripApplication(TripApplication tripApplicationEntity)
     {
-        if (tripApplicationEntity.SurveyResponse != null)
+        if (tripApplicationEntity.SurveyResponse != null && tripApplicationEntity.SurveyResponse.SurveyAnswers.Count != 0)
         {
             var response = sfDbContext.SurveyResponses
                 .First(sr => sr.Id == tripApplicationEntity.SurveyResponseId);

@@ -17,6 +17,7 @@ import {
 import { ApplicationFormComponent } from '../../application-form/application-form.component';
 import { Router } from '@angular/router';
 import { TripApplicationStore } from '../../../state/trip-application-store';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'sf-trip-inline',
@@ -34,9 +35,11 @@ export class SfTripInlineComponent {
   private readonly __router = inject(Router);
   private readonly __articleStore = inject(ArticleStore);
   private readonly __tripApplicationStore = inject(TripApplicationStore);
+  private readonly __messageService = inject(NzMessageService);
 
   public readonly sfTripInfo = input<TripFlag | null | undefined>();
   public readonly showSlider = signal(false);
+  public readonly disabled = signal(true);
 
   public __onShowSlider() {
     this.showSlider.set(!this.showSlider());
@@ -61,5 +64,6 @@ export class SfTripInlineComponent {
     tripApplication.TripId = trip?.Id;
 
     await this.__tripApplicationStore.createTripApplication(tripApplication);
+    this.__messageService.success('Zgłoszenie zostało wysłane. Dziękujemy!');
   }
 }

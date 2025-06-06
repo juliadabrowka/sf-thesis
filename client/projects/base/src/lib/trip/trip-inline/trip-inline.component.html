@@ -39,9 +39,12 @@
         <div class="application-form">
           <sf-application-form
             #surveyForm
-            (sfClientData)="createTripApplication($event)"></sf-application-form>
+            (sfClientData)="createTripApplication($event)"
+            (sfButtonDisabled)="disabled.set($event)"
+          ></sf-application-form>
           <sf-button
             [sfButtonText]="'REZERWUJ'"
+            [sfDisabled]="disabled()"
             (click)="surveyForm.submitForm()"
           ></sf-button>
         </div>
