@@ -103,8 +103,10 @@ sf-button .button:hover:enabled {
 }
 
 .application-form {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
   padding: 20px;
-  transition: all 4s cubic-bezier(0.25, 0.8, 0.25, 1);
   background-color: var(--background-lighter-color);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -112,4 +114,10 @@ sf-button .button:hover:enabled {
   button {
     margin-top: 8px
   }
+}
+
+.application-form.open {
+  max-height: 1000px;
+  opacity: 1;
+  padding: 20px;
 }
