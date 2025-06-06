@@ -18,7 +18,6 @@ import {
   templateUrl: './survey-list.component.html',
   styleUrl: './survey-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [SurveyStore],
 })
 export class SfBackofficeSurveyListComponent {
   private readonly surveyStore = inject(SurveyStore);

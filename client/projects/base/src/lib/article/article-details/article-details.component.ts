@@ -18,7 +18,6 @@ import { ArticleDetailsInnerComponent } from '../article-details-inner/article-d
   templateUrl: './article-details.component.html',
   styleUrl: './article-details.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ArticleStore],
 })
 export class SfArticleDetailsComponent {
   private readonly __activatedRoute = inject(ActivatedRoute);

@@ -25,7 +25,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
-import { TripApplicationStore } from '../../../state/trip-application-store';
 
 @Component({
   selector: 'sf-trip-application',
@@ -40,7 +39,6 @@ import { TripApplicationStore } from '../../../state/trip-application-store';
   ],
   templateUrl: './trip-application.component.html',
   styleUrl: './trip-application.component.css',
-  providers: [TripApplicationStore],
 })
 export class SfTripApplicationComponent {
   private readonly messageService = inject(NzMessageService);
