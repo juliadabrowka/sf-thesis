@@ -1,4 +1,4 @@
-@if (!isSubmittedComputed() || readonlyMode()) {
+@if (!isSubmittedComputed() || sfReadonlyMode()) {
   @if (sfTripApplication()) {
     <div class="container">
       <div class="trip-application">
@@ -33,7 +33,7 @@
           }
         </div>
       </div>
-      @if (showSubmitButton()) {
+      @if (sfShowSubmitButton()) {
         <div class="submit-button-container"
              nz-tooltip
              [nzTooltipTrigger]="'click'"

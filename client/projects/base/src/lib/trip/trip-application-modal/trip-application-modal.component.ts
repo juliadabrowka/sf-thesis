@@ -22,11 +22,9 @@ import { SfTripApplicationComponent } from '../trip-application/trip-application
 export class SfTripApplicationModalComponent {
   public readonly icons = SfIcons;
 
-  public readonly sfTripApplication = input(undefined, {
-    transform: (tripApplication: TripApplicationDTO | null | undefined) =>
-      tripApplication ?? undefined,
-  });
-
+  public readonly sfTripApplication = input<
+    TripApplicationDTO | null | undefined
+  >();
   public readonly visible = signal(false);
   public readonly tripApplication = signal<TripApplicationDTO | undefined>(
     undefined,
@@ -34,7 +32,6 @@ export class SfTripApplicationModalComponent {
 
   openTripApplicationModal(tripApplication: TripApplicationDTO) {
     this.visible.set(true);
-
-    this.tripApplication.set(tripApplication);
+    if (tripApplication) this.tripApplication.set(tripApplication);
   }
 }

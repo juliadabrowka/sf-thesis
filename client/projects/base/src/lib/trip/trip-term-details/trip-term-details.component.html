@@ -3,7 +3,7 @@
   [nzData]="sfTripTerms() ?? []">
   <thead>
   <tr>
-    @for (column of __columns; track $index) {
+    @for (column of __columns(); track $index) {
       <th [nzAlign]="'center'" [class.custom-width]="$index === 0" class="th">{{ column }}</th>
     }
   </tr>

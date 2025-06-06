@@ -21,9 +21,7 @@ export class SfSurveyModalComponent {
   public readonly icons = SfIcons;
   public readonly visible = signal(false);
 
-  public readonly sfSurvey = input(undefined, {
-    transform: (survey: SurveyDTO | null | undefined) => survey ?? undefined,
-  });
+  public readonly sfSurvey = input<SurveyDTO | null | undefined>();
 
   openSurveyModal() {
     this.visible.set(true);

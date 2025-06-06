@@ -36,7 +36,6 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzEmptyComponent } from 'ng-zorro-antd/empty';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
-import { ArticleStore } from '../../../state/article-store';
 import { SurveyStore } from '../../../state/survey-store';
 import { isNil } from '@w11k/rx-ninja';
 import { SfUploadComponent } from '../../upload/upload.component';
@@ -67,16 +66,12 @@ import { map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfSurveyFormComponent {
-  private readonly __articleStore = inject(ArticleStore);
   private readonly __surveyStore = inject(SurveyStore);
 
-  public readonly sfTrips = input([], {
-    transform: (trips: TripDTO[] | null | undefined) => trips ?? [],
-  });
+  public readonly sfTrips = input<TripDTO[] | null | undefined>();
   public readonly sfSurvey = input(undefined, {
     transform: (survey: SurveyDTO | null | undefined) => survey ?? undefined,
   });
-
   public readonly icons = SfIcons;
   public readonly questionsArray = new FormArray<
     FormControl<SurveyQuestionDTO>
@@ -141,7 +136,7 @@ export class SfSurveyFormComponent {
     });
 
     effect(() => {
-      const trips = this.sfTrips();
+      const trips = this.sfTrips() ?? [];
 
       const tripOpts = trips.map((trip) => ({
         label: trip?.Name ?? '',

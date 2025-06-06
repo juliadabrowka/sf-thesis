@@ -19,10 +19,7 @@ export class SurveyTableComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-  public readonly sfSurveys = input([], {
-    transform: (surveys: SurveyDTO[] | null | undefined) => surveys ?? [],
-  });
-
+  public readonly sfSurveys = input<SurveyDTO[] | null | undefined>([]);
   public readonly columns = ['Nazwa ankiety', 'Nazwa wyprawy', 'Kraj wyprawy'];
 
   async goToSurvey(surveyId: number | undefined) {

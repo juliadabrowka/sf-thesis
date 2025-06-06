@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
@@ -23,8 +24,8 @@ export class SfArticleDetailsComponent {
   private readonly __activatedRoute = inject(ActivatedRoute);
   private readonly __articleStore = inject(ArticleStore);
 
-  public readonly article = this.__articleStore.article;
-  private readonly __articles = this.__articleStore.articles;
+  public readonly article = computed(() => this.__articleStore.article());
+  private readonly __articles = computed(() => this.__articleStore.articles());
   private readonly __customLink = signal<string | undefined>(undefined);
 
   constructor() {

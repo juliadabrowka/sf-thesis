@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { SfTripGridComponent } from '../trip-grid/trip-grid.component';
 import { PageTitleFramedComponent } from '../../page-title-framed/page-title-framed.component';
 import { ArticleStore, TripDTO, TripType, TripTypeLabels } from '@sf/sf-base';
@@ -26,7 +31,7 @@ export interface TripFlag {
 export class SfTripCalendarComponent {
   private readonly __store = inject(ArticleStore);
 
-  public readonly sfTrips = this.__store.trips;
+  public readonly sfTrips = computed(() => this.__store.trips());
 
   public readonly titleFramed = 'KALENDARIUM WYPRAW 2024/2025';
   public readonly tripTypes = Object.keys(TripType).map((k) => ({

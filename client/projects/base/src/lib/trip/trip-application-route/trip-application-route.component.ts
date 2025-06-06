@@ -1,14 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   inject,
-  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { TripApplicationStore } from '../../../state/trip-application-store';
-import { TripApplicationDTO } from '@sf/sf-base';
 import { SfTripApplicationComponent } from '../trip-application/trip-application.component';
 
 @Component({
@@ -22,11 +20,8 @@ export class SfTripApplicationRouteComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly tripApplicationStore = inject(TripApplicationStore);
 
-  private readonly __tripApplication =
-    this.tripApplicationStore.tripApplication;
-
-  public readonly tripApplication = signal<TripApplicationDTO | undefined>(
-    undefined,
+  public readonly tripApplication = computed(() =>
+    this.tripApplicationStore.tripApplication(),
   );
 
   constructor() {
@@ -37,11 +32,5 @@ export class SfTripApplicationRouteComponent {
         if (hash)
           await this.tripApplicationStore.getTripApplicationByHash(hash);
       });
-
-    effect(() => {
-      const tripApplication = this.__tripApplication();
-
-      this.tripApplication.set(tripApplication);
-    });
   }
 }

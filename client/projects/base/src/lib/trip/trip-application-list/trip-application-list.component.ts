@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
@@ -41,17 +42,19 @@ export class SfTripApplicationListComponent {
   private readonly tripApplicationStore = inject(TripApplicationStore);
 
   public readonly icons = SfIcons;
-  public readonly sfTripApplications =
-    this.tripApplicationStore.tripApplications;
+  public readonly sfTripApplications = computed(() =>
+    this.tripApplicationStore.tripApplications(),
+  );
 
-  public readonly columns = [
+  public readonly columns = computed(() => [
     'Nazwa wyprawy',
     'Imię uczestniczki',
     'Numer telefonu',
     'Status ankiety',
     'Podgląd',
     'Jak się dowiedziała?',
-  ];
+  ]);
+
   public readonly tripApplications = signal<TripApplicationDTO[]>([]);
   public readonly channels = signal([
     {

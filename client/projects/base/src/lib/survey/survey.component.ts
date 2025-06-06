@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   input,
@@ -20,13 +21,7 @@ import { NzEmptyComponent } from 'ng-zorro-antd/empty';
 export class SfSurveyComponent {
   private readonly surveyStore = inject(SurveyStore);
 
-  public readonly sfSurvey = input(undefined, {
-    transform: (survey: SurveyDTO | null | undefined) => survey ?? undefined,
-  });
-
-  public readonly survey = signal<SurveyDTO | undefined>(undefined);
-  public readonly title = signal('');
-  public readonly articleImgSrc = signal('');
+  public readonly sfSurvey = input<SurveyDTO | null | undefined>(undefined);
   public responses = signal<
     {
       question: SurveyQuestionDTO | undefined;
@@ -34,20 +29,16 @@ export class SfSurveyComponent {
     }[]
   >([]);
 
-  private readonly __survey = this.surveyStore.survey;
+  public readonly survey = computed(() => this.surveyStore.survey());
+  public readonly title = computed(
+    () => this.survey()?.TripDTOS[0]?.ArticleDTO?.Title,
+  );
+  public readonly articleImgSrc = computed(
+    () => this.survey()?.TripDTOS[0]?.ArticleDTO,
+  );
 
   constructor() {
     effect(() => {
-      const survey = this.__survey();
-
-      this.survey.set(survey);
-
-      const title = survey?.TripDTOS[0]?.ArticleDTO?.Title ?? '';
-      this.title.set(title);
-
-      const article = survey?.TripDTOS[0]?.ArticleDTO;
-      this.articleImgSrc.set(article?.BackgroundImageUrl ?? '');
-
       // const responseArray =
       //   tripApplication?.SurveyResponseDTO?.SurveyAnswerDTOS?.map(
       //     (surveyAnswer) => ({

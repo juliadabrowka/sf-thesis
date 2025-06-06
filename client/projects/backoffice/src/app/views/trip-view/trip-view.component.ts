@@ -35,8 +35,8 @@ export class SfBackofficeTripViewComponent {
   private readonly __message = inject(NzMessageService);
   private readonly __router = inject(Router);
 
-  public readonly article = this.__articleStore.article;
-  public readonly loading = this.__articleStore.loading;
+  public readonly article = computed(() => this.__articleStore.article());
+  public readonly loading = computed(() => this.__articleStore.loading());
   public readonly icons = SfIcons;
 
   public readonly articleWithCategoryTrip = computed(() => {

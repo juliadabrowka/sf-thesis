@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ArticleDTO,
@@ -23,7 +28,6 @@ import { SfMapArticlesToTrips } from './map-articles-to-trips';
   templateUrl: './backoffice-view.component.html',
   styleUrl: './backoffice-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ArticleStore],
 })
 export class SfBackofficeComponent {
   private readonly __router = inject(Router);
@@ -31,8 +35,8 @@ export class SfBackofficeComponent {
   private readonly __articleStore = inject(ArticleStore);
 
   public readonly icons = SfIcons;
-  public readonly articles = this.__articleStore.articles;
-  public readonly loading = this.__articleStore.loading;
+  public readonly articles = computed(() => this.__articleStore.articles());
+  public readonly loading = computed(() => this.__articleStore.loading());
 
   async onArticleClicked(article: ArticleDTO) {
     await this.__router.navigate([`articles/${article.Id}`], {

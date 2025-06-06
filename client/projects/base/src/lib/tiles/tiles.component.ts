@@ -10,5 +10,5 @@ import { TileComponent } from '../tile/tile.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfTilesComponent {
-  public readonly sfArticles = input<ArticleDTO[] | null | undefined>([]);
+  public readonly sfArticles = input<ArticleDTO[] | null | undefined>();
 }

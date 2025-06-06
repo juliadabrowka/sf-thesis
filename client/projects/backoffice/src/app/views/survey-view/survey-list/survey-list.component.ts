@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import {
   SfIconAndTextComponent,
@@ -19,5 +24,5 @@ export class SfBackofficeSurveyListComponent {
   private readonly surveyStore = inject(SurveyStore);
 
   public readonly icons = SfIcons;
-  public readonly surveys = this.surveyStore.surveys;
+  public readonly surveys = computed(() => this.surveyStore.surveys());
 }

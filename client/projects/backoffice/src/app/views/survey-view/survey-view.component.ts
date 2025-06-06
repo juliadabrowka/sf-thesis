@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import {
   ArticleStore,
   SfButtonComponent,
@@ -39,9 +44,9 @@ export class SfBackofficeSurveyViewComponent {
 
   public readonly icons = SfIcons;
 
-  public readonly trips = this.__articleStore.trips;
-  public readonly survey = this.__surveyStore.survey;
-  public readonly loading = this.__articleStore.loading;
+  public readonly trips = computed(() => this.__articleStore.trips());
+  public readonly survey = computed(() => this.__surveyStore.survey());
+  public readonly loading = computed(() => this.__articleStore.loading());
 
   constructor() {
     this.__route.paramMap
@@ -59,9 +64,9 @@ export class SfBackofficeSurveyViewComponent {
     if (survey) {
       await this.__surveyStore.createSurvey(survey);
       if (!this.loading()) {
-        this.__message.success('Ankieta poprawnie aktualizowana');
+        this.__message.success('Ankieta poprawnie dodana');
       } else {
-        this.__message.error('Ankieta nie została poprawnie aktualizowana');
+        this.__message.error('Ankieta nie została poprawnie dodana');
       }
       await this.__router.navigate(['admin-backoffice/surveys']);
     }
@@ -72,9 +77,9 @@ export class SfBackofficeSurveyViewComponent {
     if (survey) {
       await this.__surveyStore.updateSurvey(survey);
       if (!this.loading()) {
-        this.__message.success('Ankieta poprawnie dodana');
+        this.__message.success('Ankieta poprawnie aktualizowana');
       } else {
-        this.__message.error('Ankieta nie została poprawnie dodana');
+        this.__message.error('Ankieta nie została poprawnie aktualizowana');
       }
       await this.__router.navigate(['admin-backoffice/surveys']);
     }

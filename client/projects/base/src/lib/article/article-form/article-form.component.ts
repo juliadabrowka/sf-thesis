@@ -72,10 +72,8 @@ import { HintComponent } from '../../hint/hint.component';
 export class SfArticleFormComponent {
   private readonly __articleStore = inject(ArticleStore);
 
-  public readonly sfArticle = input(undefined, {
-    transform: (article: ArticleDTO | null | undefined) => article ?? undefined,
-  });
-  public readonly sfLoading = input<boolean | null | undefined>(false);
+  public readonly sfArticle = input<ArticleDTO | undefined>();
+  public readonly sfLoading = input<boolean | null | undefined>();
   public readonly icons = SfIcons;
   public readonly controls = {
     category: new FormControl<ArticleCategory>(DefaultArticleCategoryValue, {

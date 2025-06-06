@@ -1,6 +1,6 @@
 <nz-table
   #articleTable
-  [nzData]="sfArticles()"
+  [nzData]="sfArticles() ?? []"
   [nzBordered]="true"
   [nzOuterBordered]="true"
   [nzFrontPagination]="false"

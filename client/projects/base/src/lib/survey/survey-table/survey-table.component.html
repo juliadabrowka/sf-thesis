@@ -1,6 +1,6 @@
 <nz-table
   #surveyTable
-  [nzData]="sfSurveys()"
+  [nzData]="sfSurveys() ?? []"
   [nzBordered]="true"
   [nzOuterBordered]="true"
   [nzFrontPagination]="false"

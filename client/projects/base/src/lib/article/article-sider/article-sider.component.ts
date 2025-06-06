@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { ArticleStore } from '@sf/sf-base';
 import { SfArticleSiderDataPipe } from './sf-map-articles-to-sider-data.pipe';
 import { SliceTextComponent } from '../../slice-text/slice-text.component';
@@ -14,5 +19,5 @@ import { RouterLink } from '@angular/router';
 export class ArticleSiderComponent {
   private readonly __store = inject(ArticleStore);
 
-  public readonly articles = this.__store.articles;
+  public readonly articles = computed(() => this.__store.articles());
 }

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import {
   ArticleStore,
   SfArticleFormComponent,
@@ -28,7 +33,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   templateUrl: './article-view.component.html',
   styleUrl: './article-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ArticleStore],
 })
 export class SfBackofficeArticleViewComponent {
   private readonly __articleStore = inject(ArticleStore);
@@ -36,7 +40,7 @@ export class SfBackofficeArticleViewComponent {
   private readonly __router = inject(Router);
   private readonly __message = inject(NzMessageService);
 
-  public readonly article = this.__articleStore.article;
+  public readonly article = computed(() => this.__articleStore.article());
   public readonly loading = this.__articleStore.loading;
   public readonly icons = SfIcons;
 

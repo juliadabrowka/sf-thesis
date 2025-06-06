@@ -54,14 +54,14 @@ export class TripTermDetailsComponent {
     freeSpots: new FormControl<number>(0, { nonNullable: true }),
   };
   public readonly __formGroup = new FormGroup(this.__controls);
-  public readonly __columns = [
+  public readonly __columns = signal([
     'ID',
     'Daty',
     'Cena',
     'Wolne miejsca',
     'Ilość miejsc',
     '',
-  ];
+  ]);
   public readonly editId = signal<number | undefined>(undefined);
   private readonly __editForms = signal<Record<number, FormGroup>>({});
 

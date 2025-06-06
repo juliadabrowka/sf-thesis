@@ -68,12 +68,9 @@ export class SfTripApplicationComponent {
 
   public readonly sfShowSubmitButton = input<boolean | null | undefined>();
 
-  public readonly showSubmitButton = computed(() => this.sfShowSubmitButton());
   public readonly isSubmittedComputed = computed(
     () => this.internalTripApplication()?.Status === Status.Completed,
   );
-
-  public readonly readonlyMode = computed(() => this.sfReadonlyMode());
 
   public readonly title = computed(
     () => this.sfTripApplication()?.TripDTO?.ArticleDTO?.Title,

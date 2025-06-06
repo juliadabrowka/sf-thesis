@@ -1,6 +1,6 @@
 <nz-table
   #tripTable
-  [nzData]="sfArticles()"
+  [nzData]="sfArticles() ?? []"
   [nzBordered]="true"
   [nzOuterBordered]="true"
   [nzFrontPagination]="false"

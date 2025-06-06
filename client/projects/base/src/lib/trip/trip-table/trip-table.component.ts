@@ -16,8 +16,8 @@ import { DatePipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SfTripTableComponent {
-  public readonly sfArticles = input<ArticleDTO[]>([]);
-  public readonly sfLoading = input<boolean | null>();
+  public readonly sfArticles = input<ArticleDTO[] | null | undefined>([]);
+  public readonly sfLoading = input<boolean | null | undefined>();
   public readonly sfOnTripClick = output<ArticleDTO>();
   public readonly columns = [
     {

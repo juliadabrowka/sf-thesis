@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
   ArticleDTO,
   ArticleStore,
@@ -26,9 +26,11 @@ export class SfFilteredTableViewComponent {
   public readonly icon = signal<IconDefinition | undefined>(undefined);
   public readonly title = signal('');
 
-  private readonly __articles = this.__store.articles;
-  private readonly __categoryFilter = this.__store.categoryFilter;
-  private readonly __tripFilter = this.__store.tripFilter;
+  private readonly __articles = computed(() => this.__store.articles());
+  private readonly __categoryFilter = computed(() =>
+    this.__store.categoryFilter(),
+  );
+  private readonly __tripFilter = computed(() => this.__store.tripFilter());
 
   constructor() {
     this.__activatedRoute.data.pipe(takeUntilDestroyed()).subscribe((data) => {
@@ -45,6 +47,7 @@ export class SfFilteredTableViewComponent {
       const cf = this.__categoryFilter();
       const tf = this.__tripFilter();
       const articles = this.__articles();
+
       const filteredArticles = articles.filter(
         (article) =>
           article.ArticleCategory === cf &&

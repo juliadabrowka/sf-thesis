@@ -33,9 +33,7 @@ export class SfArticleTableComponent {
         ),
     },
   ];
-  public readonly sfArticles = input([], {
-    transform: (articles: ArticleDTO[] | null | undefined) => articles ?? [],
-  });
+  public readonly sfArticles = input<ArticleDTO[] | null | undefined>();
 
   readonly sfLoading = input<boolean | null | undefined>();
   public readonly sfOnArticleClick = output<ArticleDTO>();
