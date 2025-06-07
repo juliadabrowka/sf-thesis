@@ -85,14 +85,12 @@ body {
 }
 
 .title-framed {
-  color: #fff;
-  border: 2px solid #fff;
+  border-style: solid;
   padding: 5px 10px;
   font-weight: 700;
   max-width: 1000px;
   letter-spacing: 2px;
   text-align: center;
-  text-transform: uppercase;
 }
 
 .remove-button {
@@ -232,6 +230,10 @@ nz-content {
   width: 60%;
 }
 
+sf-button, button {
+  cursor: pointer;
+}
+
 .content {
   display: flex;
   justify-content: center;
@@ -270,6 +272,10 @@ p {
   line-height: 1.8;
   word-wrap: break-word;
   font-size: 14px;
+}
+
+ol > li {
+  margin-bottom: var(--margin-ml);
 }
 
 strong {

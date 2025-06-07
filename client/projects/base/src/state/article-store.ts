@@ -63,6 +63,7 @@ export const ArticleStore = signalStore(
       const createArticleApiCall$ = store.articleService.createArticle(article);
       const createdArticle = await firstValueFrom(createArticleApiCall$);
       patchState(store, addEntity(createdArticle, { selectId }));
+      await this.loadArticleList();
       patchState(store, { loading: false });
     },
 
@@ -85,6 +86,7 @@ export const ArticleStore = signalStore(
               error: 'Failed to update article: missing Id',
             },
       );
+      await this.loadArticleList();
       patchState(store, { loading: false });
     },
 

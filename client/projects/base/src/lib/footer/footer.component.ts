@@ -11,6 +11,16 @@ import { FooterPieceComponent } from './footer-piece/footer-piece.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 
+type FooterPiece =
+  | {
+      title: string;
+      content: { url: string; content: string }[] | string[];
+    }
+  | {
+      title: string;
+      content: TemplateRef<any>;
+    };
+
 @Component({
   selector: 'sf-footer',
   imports: [FooterPieceComponent],
@@ -23,9 +33,7 @@ export class SfFooterComponent {
 
   public readonly newsletterTemplate =
     viewChild<TemplateRef<any>>('newsletterTemplate');
-  public readonly footerPieces = signal<
-    { title: string; content: string[] | TemplateRef<any> }[]
-  >([
+  public readonly footerPieces = signal<FooterPiece[]>([
     {
       title: 'Dane teleadresowe',
       content: ['GSM: 123 456 789', 'email@email.com', 'NIP: 987 654 32 10'],
@@ -33,16 +41,18 @@ export class SfFooterComponent {
     {
       title: 'Na skróty',
       content: [
-        'Ciekawostki',
-        'Wakacje dla aktywnych',
-        'Fotorelacje z podrózy',
-        'Rekomendacje',
-        'Weekendowe wojaże Femki',
+        { url: 'ciekawostki', content: 'Ciekawostki' },
+        { url: 'wakacje-dla-aktywnych', content: 'Wakacje dla aktywnych' },
+        { url: 'fotorelacje', content: 'Fotorelacje z podrózy' },
+        { url: 'rekomendacje', content: 'Rekomendacje' },
+        { url: 'wyjazdy-weekendowe', content: 'Weekendowe wojaże Femki' },
       ],
     },
     {
       title: 'Dokumenty',
-      content: ['Polityka prywatności', 'RODO & cookies'],
+      content: [
+        { url: 'rodocookies', content: 'Polityka prywatności, RODO & cookies' },
+      ],
     },
     {
       title: 'Zapisz się do naszego newslettera',

@@ -132,7 +132,7 @@ export class SfArticleFormComponent {
 
   public readonly articleId = computed(() => this.sfArticle()?.Id);
   public readonly sfButtonDisabled = output<boolean>();
-  public readonly article = signal<ArticleDTO | undefined>(undefined);
+  public readonly article = computed(() => this.sfArticle());
 
   public readonly quillConfig: QuillModules = {
     toolbar: [
@@ -164,16 +164,10 @@ export class SfArticleFormComponent {
           country: article.Country,
           articleUrl: article.Url,
           backgroundImage: article.BackgroundImageUrl,
+          tripName: article.TripDTO?.Name,
+          tripType: article.TripDTO?.Type,
+          difficulty: article.TripDTO?.TripDifficulty,
         });
-
-        if (article.TripDTO) {
-          this.formGroup.patchValue({
-            tripName: article.TripDTO.Name,
-            tripType: article.TripDTO.Type,
-            difficulty: article.TripDTO.TripDifficulty,
-          });
-        }
-        this.article.set(article);
       } else {
         this.formGroup.patchValue({
           category: DefaultArticleCategoryValue,
@@ -241,7 +235,7 @@ export class SfArticleFormComponent {
           articleState.TripId = articleState.TripDTO?.Id;
           articleState.TripDTO = trip;
         }
-        console.log(articleState);
+
         if (articleChanged(this.__articleStore.article(), articleState))
           this.__articleStore.setArticle(articleState);
       });

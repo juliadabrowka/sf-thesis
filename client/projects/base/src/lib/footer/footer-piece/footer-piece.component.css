@@ -20,3 +20,8 @@ li {
   font-family: var(--alternate-font);
   margin: var(--margin-m) 0;
 }
+
+li:hover {
+  color: white;
+  cursor: pointer;
+}

@@ -6,12 +6,17 @@
     @if (sfContent(); as content) {
       @if (isTemplateRef(content)) {
         <ng-container *ngTemplateOutlet="content"></ng-container>
-      } @else {
+      }
+      @if (isStringArray(content)) {
         @for (c of content; track $index) {
           <li> {{ c }}</li>
         }
       }
+      @if (isUrlArray(content)) {
+        @for (c of content; track $index) {
+          <li (click)="goToPageById(c.url)"> {{ c.content }}</li>
+        }
+      }
     }
   </div>
-
 </div>

@@ -218,7 +218,7 @@ public class TripApplicationService(
               <body style='font-family: Arial, sans-serif; color: #333;'>
                 <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;'>
                   <div style='text-align: center; margin-bottom: 20px;'>
-                    <img src='https://localhost:4200/assets/logotyp-superfemka.png' alt='Superfemka Logo' style='max-height: 60px;' />
+                    <img src='http://localhost:4200/assets/logotyp-superfemka.png' alt='Superfemka Logo' style='max-height: 60px;' />
                   </div>
                   <h2 style='color: #f04a7e;'>Wypełnij swoją ankietę</h2>
                   <p>Dziękujemy za zgłoszenie! Prosimy o wypełnienie ankiety dotyczącej Twojej wyprawy.</p>

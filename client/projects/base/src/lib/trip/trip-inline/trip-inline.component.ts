@@ -65,5 +65,6 @@ export class SfTripInlineComponent {
 
     await this.__tripApplicationStore.createTripApplication(tripApplication);
     this.__messageService.success('Zgłoszenie zostało wysłane. Dziękujemy!');
+    this.showSlider.set(false);
   }
 }

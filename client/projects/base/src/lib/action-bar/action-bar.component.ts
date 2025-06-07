@@ -54,7 +54,8 @@ export class SfActionBarComponent implements OnInit, OnDestroy {
         }
       });
 
-    window.addEventListener('scroll', this.onScroll.bind(this));
+    if (this.currentActionBarClass() !== 'action-bar-display-hidden')
+      window.addEventListener('scroll', this.onScroll.bind(this));
   }
 
   private updateActionBarClasses() {
@@ -72,7 +73,7 @@ export class SfActionBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onScroll(): void {
+  private onScroll() {
     const scrollPosition = window.scrollY;
     this.transformBarHeight.set(scrollPosition > 150);
     this.transformBarHeight()

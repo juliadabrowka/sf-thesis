@@ -56,7 +56,7 @@
   background: rgba(255, 255, 255, 0.9);
 
   .logotype {
-    scale: 0.8
+    width: 179px;
   }
 
   color: var(--menu-font-grey);

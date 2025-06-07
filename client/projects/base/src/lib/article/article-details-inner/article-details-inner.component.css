@@ -1,10 +1,10 @@
-.sider-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: auto auto auto 12px;
-}
+/*.sider-content {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  flex-direction: column;*/
+/*  margin: auto auto auto 12px;*/
+/*}*/
 
 .main-content {
   display: flex;

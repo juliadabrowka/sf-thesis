@@ -56,6 +56,7 @@ export class AppComponent {
   }
 
   async createNewTrip() {
+    this.__articleStore.setArticle(undefined);
     await this.__router.navigate(['create-trip'], {
       relativeTo: this.__activatedRoute,
     });

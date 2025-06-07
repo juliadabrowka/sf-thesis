@@ -1,15 +1,59 @@
-<div class="content">
-  <img [src]="article()?.BackgroundImageUrl" alt="">
+@if (article()) {
+  <div class="content article-content">
+    <img [src]="article()?.BackgroundImageUrl" alt="">
   <sf-page-title-framed
     [sfTitle]="article()?.Title"
   ></sf-page-title-framed>
 </div>
-<div>
-  <sf-article-details-inner
-    [sfArticle]="article()"
-  ></sf-article-details-inner>
-</div>
+  <div>
+    <sf-article-details-inner
+      [sfArticle]="article()"
+    ></sf-article-details-inner>
+  </div>
+} @else {
+  <div class="custom-article-wrapper">
+    @if (articleDisplayCustom(); as articleDisplayCustom) {
+      <div>
+        <div class="custom-article-content">
+          <sf-page-title-framed
+            [sfTitle]="articleDisplayCustom.framedTitle"
+            [sfFontSize]="16"
+            [sfColor]="'black'"
+          ></sf-page-title-framed>
+        </div>
+        @if (customLink() === 'ciekawostki') {
+          <div class="main-content">
+            <div class="left-content">
+              <sf-article-vertical-display
+                [sfArticles]="articles() | sfFilterArticlesByType : tips"
+              ></sf-article-vertical-display>
+            </div>
+            <nz-divider [nzType]="'vertical'"></nz-divider>
+            <div class="sider-content">
+              <sf-article-sider></sf-article-sider>
+            </div>
+          </div>
+        }
+        @if (customLink() === 'rekomendacje') {
+          <div class="main-content">
+            <div class="left-content">
+              <sf-article-vertical-display
+                [sfArticles]="articles() | sfFilterArticlesByType : recommendations"
+              ></sf-article-vertical-display>
+            </div>
+            <nz-divider [nzType]="'vertical'"></nz-divider>
+            <div class="sider-content">
+              <sf-article-sider></sf-article-sider>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <div>
 
+  </div>
+}
 @if (loading()) {
   <sf-skeleton></sf-skeleton>
 }

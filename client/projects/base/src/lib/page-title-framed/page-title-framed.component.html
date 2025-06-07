@@ -1,1 +1,9 @@
-<div class="title-framed" [class.uppercase]="sfToUpperCase()"> {{ sfTitle() }}</div>
+<div
+  class="title-framed"
+  [class.uppercase]="sfToUpperCase()"
+  [style.font-size]="sfFontSize() + 'px'"
+  [style.color]="sfColor()"
+  [style.border-width]="sfBorderStroke() + 'px'"
+  [style.border-color]="sfColor()"
+> {{ sfTitle() }}
+</div>

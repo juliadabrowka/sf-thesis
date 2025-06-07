@@ -1,13 +1,16 @@
 <div class="main-container">
-  <div class="tiles-container">
     @if (sfArticles(); as articles) {
+      <div class="tiles-container">
       @for (article of articles.slice(0, 3); track article.Id) {
         <sf-tile
           [sfArticle]="article"
+          [sfMainPage]="true"
+          [sfContainerWidth]="312"
+          [sfMediaHeight]="126"
         ></sf-tile>
       }
+      </div>
+      <div class="button-show-all" (click)="goToAllByCategory(articles[0].ArticleCategory)">Zobacz wszystkie</div>
     }
-  </div>
-  <div class="button-show-all">Zobacz wszystkie</div>
 </div>
 

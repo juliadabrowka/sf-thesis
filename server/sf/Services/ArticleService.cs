@@ -110,7 +110,7 @@ public class ArticleService(
             isUpdated = true;
         }
 
-        if (articleDto.TripDTO != null)
+        if (articleDto.TripDTO != null && articleDto.ArticleCategory == ArticleCategory.Trips)
         {
             isUpdated = true;
             
@@ -158,12 +158,9 @@ public class ArticleService(
                 
                 existingTrip.TripApplications = await applicationRepository.GetByIds(articleDto.TripDTO.TripApplicationIds);
                 //existingTrip.Survey = articleDto.TripDto.
-
-               
-
                 article.Trip = existingTrip;
             }
-            else // article trip id is null = not existing yet
+            if(article.Trip == null) // article trip id is null = not existing yet
             {
                 Trip newTripEntity = mapper.Map<Trip>(articleDto.TripDTO);
                 var newTrip = await tripRepository.CreateTrip(newTripEntity); // set id
@@ -176,10 +173,10 @@ public class ArticleService(
                 article.TripId = t.Id; 
             }
         }
-        else if (article.Trip != null)
+        else
         {
             isUpdated = true;
-            await tripRepository.DeleteTrips([article.Trip.Id]);
+            //await tripRepository.DeleteTrips([article.Trip.Id]);
             article.TripId = null;
             article.Trip = null;
         }

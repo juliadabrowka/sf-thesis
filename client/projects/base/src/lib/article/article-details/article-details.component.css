@@ -1,9 +1,48 @@
-sf-page-title-framed {
-  font-size: 34px;
+.article-content > sf-page-title-framed {
   margin: 80px auto auto auto;
   position: absolute;
 }
 
 img {
   z-index: -1;
+}
+
+.custom-article-wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: var(--remove-grey-hover-color);
+  height: 180px;
+}
+
+.custom-article-content {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  height: 90px;
+  margin-top: 90px;
+  width: 1000px;
+  align-items: center;
+
+  sf-page-title-framed {
+    margin-top: 20px;
+  }
+}
+
+.main-content {
+  display: flex;
+  width: 1000px;
+  flex-direction: row;
+  margin-top: var(--margin-lg);
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ant-divider-vertical {
+  margin-top: 12px;
+  height: 100vh;
+  border-color: var(--divider-grey-color);
 }

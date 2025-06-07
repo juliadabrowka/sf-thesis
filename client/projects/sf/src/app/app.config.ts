@@ -3,7 +3,7 @@ import {
   inject,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { sfAppRoutes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
@@ -36,7 +36,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideAnimationsAsync(),
-    provideRouter(sfAppRoutes),
+    provideRouter(
+      sfAppRoutes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+    ),
     provideQuillConfig({ theme: 'snow' }),
   ],
 };

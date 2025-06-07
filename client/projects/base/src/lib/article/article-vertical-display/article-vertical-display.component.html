@@ -1,0 +1,9 @@
+<div class="tiles-container">
+  @for (article of sfArticles(); track article.Id) {
+    <sf-tile
+      [sfArticle]="article"
+      [sfMainPage]="false"
+      [sfMediaHeight]="300"
+    ></sf-tile>
+  }
+</div>

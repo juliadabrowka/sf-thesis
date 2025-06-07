@@ -1,6 +1,10 @@
 @if (sfArticle(); as article) {
-  <div class="tile-container" [class.is-trip]="article.TripDTO">
-    <div class="media">
+  <div
+    class="tile-container"
+    [style.width]="sfContainerWidth() + 'px'"
+    [style.border-style]="sfMainPage() ? 'dotted' : undefined"
+  >
+    <div class="media" [style.height]="sfMediaHeight() + 'px'">
       <img [src]="article.BackgroundImageUrl" alt="">
       <fa-icon
         (click)="goToArticle(article)"
@@ -10,6 +14,7 @@
 
     <div class="tile-footer">
       <div class="title">{{ article.Title }}</div>
+      <div class="description"> {{ sfDescription() }}</div>
       @if (article.TripDTO; as trip) {
         <div class="trip-container">
           <div class="label-button">
@@ -30,7 +35,7 @@
           </span>
         </div>
       }
-      <div class="button-read-more" (click)="goToArticle(article)">
+      <div [ngClass]="sfMainPage() ? 'button-read-more' : 'custom-article-button'" (click)="goToArticle(article)">
         Czytaj więcej
       </div>
     </div>
