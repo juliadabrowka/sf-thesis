@@ -11,14 +11,11 @@ namespace sf.Services;
 public interface IAuthService
 {
     Task<string> GetAuthentication(string username, string password);
-    
 }
 
 public class AuthService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
     : IAuthService
 {
-    private readonly JwtSettings _jwtSettings = jwtSettings.Value;
-
     public async Task<string> GetAuthentication(string username, string password)
     {
         var user = await userRepository.GetByUsernameAsync(username);
@@ -43,14 +40,14 @@ public class AuthService(IOptions<JwtSettings> jwtSettings, IUserRepository user
             new Claim(ClaimTypes.Name, user.Username),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Value.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
+            issuer: jwtSettings.Value.Issuer,
+            audience: jwtSettings.Value.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
+            expires: DateTime.Now.AddMinutes(jwtSettings.Value.ExpirationInMinutes),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);

@@ -6,6 +6,7 @@ using sf.Repositories;
 using sf.Services;
 using WebApplicationBuilder = Microsoft.AspNetCore.Builder.WebApplicationBuilder;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using sf.Controllers;
@@ -17,6 +18,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        Env.Load();
         var builder = WebApplication.CreateBuilder(args);
 
         // services config
@@ -49,8 +51,11 @@ class Program
                 Console.Write("User already exists");
                 return;
             }
-
-            string password = "admin";
+            string password = Env.GetString("ADMIN_PASSWORD");
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new Exception("Admin password is not set in .env file.");
+            }
             await userService.CreateUser("admin", password);
 
             Console.Write("User created successfully");
@@ -59,13 +64,11 @@ class Program
         {
             Console.Write($"Error creating user: {ex.Message}");
         }
-
-        
     }
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        
+        builder.Configuration.AddEnvironmentVariables();
         builder.Services.Configure<FormOptions>(options =>
         {
             options.MultipartBodyLengthLimit = 209715200;
@@ -80,7 +83,13 @@ class Program
             });
 
         builder.Services.AddAutoMapper(typeof(Program)); 
-        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        builder.Services.Configure<JwtSettings>(options =>
+        {
+            options.Key = Env.GetString("JWT_KEY");
+            options.Issuer = Env.GetString("JWT_ISSUER");
+            options.Audience = Env.GetString("JWT_AUDIENCE");
+            options.ExpirationInMinutes = Env.GetInt("JWT_EXPIRATION_IN_MINUTES", 60);
+        });
 
         builder.Services.AddAuthentication(options =>
             {
@@ -89,21 +98,31 @@ class Program
             })
             .AddJwtBearer(options =>
             {
-                var keyBytes = Convert.FromBase64String(builder.Configuration["JwtSettings:Key"]);
+                var keyBytes = Convert.FromBase64String(Env.GetString("JWT_KEY"));
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+                    ValidIssuer = builder.Configuration["JWT_ISSUER"],
+                    ValidAudience = builder.Configuration["JWT_AUDIENCE"],
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                };
+                
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var expirationTime = Env.GetInt("JWT_EXPIRATION_IN_MINUTES", 60);
+                        context.HttpContext.Response.Headers.Add("JWT-Expiration-Time", expirationTime.ToString());
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
         builder.Services.AddDbContext<SfDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Env.GetString("DB_CONNECTION_STRING")));
 
         
         // add services
@@ -136,7 +155,15 @@ class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         
         builder.Services.AddScoped<IEmailService, EmailService>();
-        builder.Services.AddScoped<SmtpClient>(provider => new SmtpClient("smtp.gmail.com"));
+        builder.Services.AddScoped<SmtpClient>(provider => 
+            new SmtpClient("smtp.gmail.com")
+            {
+                Credentials = new System.Net.NetworkCredential(
+                    builder.Configuration["SMTP_USERNAME"],
+                    builder.Configuration["SMTP_PASSWORD"]
+                ),
+                EnableSsl = true
+            });
 
         builder.Services.AddCors(options =>
         {
