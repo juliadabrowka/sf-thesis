@@ -12,11 +12,11 @@ public class EmailService(IConfiguration configuration) : IEmailService
 {
     public async Task SendAsync(string to, string subject, string htmlBody)
     {
-        var smtpHost = configuration["Smtp:Host"];
-        var smtpPort = int.Parse(configuration["Smtp:Port"]);
-        var smtpUser = configuration["Smtp:Username"];
-        var smtpPass = configuration["Smtp:Password"];
-        var fromAddress = configuration["Smtp:FromEmail"];
+        var smtpHost = configuration["SMTP_HOST"];
+        var smtpPort = int.Parse(configuration["SMTP_PORT"]);
+        var smtpUser = configuration["SMTP_USERNAME"];
+        var smtpPass = configuration["SMTP_PASSWORD"];
+        var fromAddress = configuration["SMTP_FROMEMAIL"];
 
         using var client = new SmtpClient(smtpHost, smtpPort)
         {
