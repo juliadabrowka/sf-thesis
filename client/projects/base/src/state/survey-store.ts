@@ -2,7 +2,6 @@ import { inject } from '@angular/core';
 import {
   patchState,
   signalStore,
-  withHooks,
   withMethods,
   withProps,
   withState,
@@ -53,6 +52,7 @@ export const SurveyStore = signalStore(
         store.surveyService.createSurvey(survey),
       );
       patchState(store, addEntity(newSurvey, { selectId: (s) => s.Id ?? -1 }));
+      await this.loadSurveyList();
       patchState(store, { loading: false });
     },
 
@@ -75,6 +75,7 @@ export const SurveyStore = signalStore(
               error: 'Failed to update survey-form: missing Id',
             },
       );
+      await this.loadSurveyList();
       patchState(store, { loading: false });
     },
 
@@ -100,9 +101,4 @@ export const SurveyStore = signalStore(
       patchState(store, { loading: false });
     },
   })),
-  withHooks({
-    async onInit(store) {
-      await store.loadSurveyList();
-    },
-  }),
 );

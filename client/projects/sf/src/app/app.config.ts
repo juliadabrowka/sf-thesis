@@ -1,6 +1,7 @@
 import {
   ApplicationConfig,
   inject,
+  provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
@@ -13,20 +14,16 @@ import { provideQuillConfig } from 'ngx-quill';
 import { ArticleStore, SurveyStore } from '@sf/sf-base';
 import { TripApplicationStore } from '../../../base/src/state/trip-application-store';
 
-const initializerFnArticleStore = async () => {
+const initializeAppFn = async () => {
   const articleStore = inject(ArticleStore);
-
-  return articleStore.loadArticleList();
-};
-const initializerFnSurveyStore = async () => {
   const surveyStore = inject(SurveyStore);
-
-  return surveyStore.loadSurveyList();
-};
-const initializerFnTripStore = async () => {
   const tripStore = inject(TripApplicationStore);
 
-  return tripStore.loadTripApplicationList();
+  await Promise.all([
+    articleStore.loadArticleList(),
+    surveyStore.loadSurveyList(),
+    tripStore.loadTripApplicationList(),
+  ]);
 };
 
 export const appConfig: ApplicationConfig = {
@@ -41,5 +38,8 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
     ),
     provideQuillConfig({ theme: 'snow' }),
+    provideAppInitializer(() => {
+      return initializeAppFn();
+    }),
   ],
 };

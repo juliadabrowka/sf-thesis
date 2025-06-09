@@ -82,11 +82,11 @@ export class SfArticleFormComponent {
       nonNullable: true,
     }),
     title: new FormControl<string>('', {
-      validators: Validators.required,
+      validators: [Validators.required, Validators.maxLength(250)],
       nonNullable: true,
     }),
     articleUrl: new FormControl<string>('', {
-      validators: Validators.required,
+      validators: [Validators.required, Validators.maxLength(300)],
       nonNullable: true,
     }),
     content: new FormControl<string>('', {
@@ -102,7 +102,7 @@ export class SfArticleFormComponent {
     }),
     tripName: new FormControl<string>('', { nonNullable: true }),
     backgroundImage: new FormControl<string>('', {
-      validators: Validators.required,
+      validators: [Validators.required, Validators.maxLength(500)],
       nonNullable: true,
     }),
     picture: new FormControl<File | null>(null),

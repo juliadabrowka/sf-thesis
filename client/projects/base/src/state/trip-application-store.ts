@@ -2,7 +2,6 @@ import { TripApplicationDTO } from '@sf/sf-base';
 import {
   patchState,
   signalStore,
-  withHooks,
   withMethods,
   withProps,
   withState,
@@ -58,6 +57,7 @@ export const TripApplicationStore = signalStore(
         store,
         addEntity(newTripApplication, { selectId: (s) => s.Id ?? -1 }),
       );
+      await this.loadTripApplicationList();
       patchState(store, { loading: false });
     },
 
@@ -103,12 +103,8 @@ export const TripApplicationStore = signalStore(
       const updateTripApplicationApiCall$ =
         store.tripApplicationService.updateTripApplication(tripApplication);
       await firstValueFrom(updateTripApplicationApiCall$);
+      await this.loadTripApplicationList();
       patchState(store, { loading: false });
     },
   })),
-  withHooks({
-    async onInit(store) {
-      await store.loadTripApplicationList();
-    },
-  }),
 );

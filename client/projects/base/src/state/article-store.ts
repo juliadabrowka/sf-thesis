@@ -9,7 +9,6 @@ import {
   patchState,
   signalStore,
   withComputed,
-  withHooks,
   withMethods,
   withProps,
   withState,
@@ -128,9 +127,4 @@ export const ArticleStore = signalStore(
       patchState(store, { loading: false });
     },
   })),
-  withHooks({
-    async onInit(store) {
-      await store.loadArticleList();
-    },
-  }),
 );
